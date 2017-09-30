@@ -11,11 +11,16 @@ namespace A_Merchants_Tale
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        Texture2D background;
+        MyEntity myTest = new MyEntity(new Rectangle(0,0,1920,1080));
         public Merchants_Tale()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;  
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -29,6 +34,7 @@ namespace A_Merchants_Tale
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -40,6 +46,7 @@ namespace A_Merchants_Tale
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            background = Content.Load<Texture2D>("Textures/Static/BackGround");
             // TODO: use this.Content to load your game content here
         }
 
@@ -74,7 +81,9 @@ namespace A_Merchants_Tale
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            spriteBatch.Begin();
+            myTest.Draw(background, spriteBatch);
+            spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>W:/Programs/A_Merchants_Tale/A_Merchants_Tale/A_Merchants_Tale/Content/Textures/Static/BackGround.jpg</File>
+  </SourceFiles>
+</SourceFileCollection>
