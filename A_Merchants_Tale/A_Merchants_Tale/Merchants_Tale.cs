@@ -12,7 +12,7 @@ namespace A_Merchants_Tale
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D background;
-        MyEntity myTest = new MyEntity(new Rectangle(0,0,1920,1080));
+        Background myTest = new Background(new Rectangle(0,0,1920,1080));
         public Merchants_Tale()
         {
             graphics = new GraphicsDeviceManager(this);

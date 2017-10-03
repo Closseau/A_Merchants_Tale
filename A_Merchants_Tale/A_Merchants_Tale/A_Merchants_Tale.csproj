@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Background.cs" />
     <Compile Include="Merchants_Tale.cs" />
     <Compile Include="MyEntity.cs" />
     <Compile Include="Program.cs" />
