@@ -42,6 +42,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Background.cs" />
+    <Compile Include="Interactable.cs" />
+    <Compile Include="Logic.cs" />
     <Compile Include="Merchants_Tale.cs" />
     <Compile Include="MyEntity.cs" />
     <Compile Include="Program.cs" />

@@ -12,7 +12,9 @@ namespace A_Merchants_Tale
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D background;
+        Texture2D[] tile = new Texture2D[3];
         Background myTest = new Background(new Rectangle(0,0,1920,1080));
+        Interactable myTile = new Interactable(new Rectangle(300, 300, 100, 100));
         public Merchants_Tale()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -47,6 +49,9 @@ namespace A_Merchants_Tale
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             background = Content.Load<Texture2D>("Textures/Static/BackGround");
+            tile[0] = Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile0");
+            tile[1] = Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile1");
+            tile[2] = Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile2");
             // TODO: use this.Content to load your game content here
         }
 
@@ -70,6 +75,14 @@ namespace A_Merchants_Tale
                 Exit();
 
             // TODO: Add your update logic here
+            if (Logic.checkMouseCollison(myTile))
+            {
+                myTile.onHover();
+            }
+            else
+            {
+                myTile.setState(0);
+            }
 
             base.Update(gameTime);
         }
@@ -83,6 +96,7 @@ namespace A_Merchants_Tale
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             myTest.Draw(background, spriteBatch);
+            myTile.Draw(tile[myTile.getState()], spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 
