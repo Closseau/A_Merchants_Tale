@@ -22,6 +22,11 @@ namespace A_Merchants_Tale
             spriteBatch.Draw(texture, MyRectangle, Color.White);
 
         }
+        public Rectangle GetRectangle()
+        {
+            return MyRectangle;
+
+        }
         public int getXPos()
         {
             return MyRectangle.X;

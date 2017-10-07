@@ -19,10 +19,14 @@ namespace A_Merchants_Tale
         {
 
             MouseState myMouse = Mouse.GetState();
+            Rectangle myRectangle = interactable.GetRectangle();
+            /*
+             // old code
             int myWidth = interactable.getWidth();
             int myHeight = interactable.getHeight();
             int myXPosition = interactable.getXPos();
             int myYPosition = interactable.getYPos();
+
             if (myMouse.X > myXPosition && myMouse.X < myXPosition + myWidth)
             {
                 if (myMouse.Y > myYPosition && myMouse.Y < myYPosition + myHeight)
@@ -31,6 +35,18 @@ namespace A_Merchants_Tale
                 }
             }
             return false;
+            */
+            if (myRectangle.Contains(myMouse.Position))
+            {
+                return true;
+            }
+            return false;
+
+        }
+        public static void resetClicked(Interactable interactable)
+        {
+            //need to get array of all interactables besides background
+
         }
     }
 }
