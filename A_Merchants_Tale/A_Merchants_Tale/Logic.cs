@@ -15,9 +15,9 @@ namespace A_Merchants_Tale
         {
 
         }
-        public static Boolean checkMouseCollison(Interactable interactable)
+        public static Boolean checkMouseCollison(Interactable interactable, MouseState mouseState)
         {
-            MouseState myMouse = Mouse.GetState();
+            
             Rectangle myRectangle = interactable.getRectangle();
             /*
              // old code
@@ -35,7 +35,7 @@ namespace A_Merchants_Tale
             }
             return false;
             */
-            if (myRectangle.Contains(myMouse.Position))
+            if (myRectangle.Contains(mouseState.Position))
             {
                 return true;
             }

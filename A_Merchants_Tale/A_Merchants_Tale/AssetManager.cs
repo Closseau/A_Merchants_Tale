@@ -18,7 +18,9 @@ namespace A_Merchants_Tale
         Texture2D[] menuOption = new Texture2D[3];
         Texture2D menu;
         Background myBackground;
-        Interactable[] myTiles;
+        static DynamicMenu myMenu;
+        ShopTile[] myTiles;
+        MouseState myMouse;
         public AssetManager()
         {
             
@@ -28,12 +30,12 @@ namespace A_Merchants_Tale
 
             int i;
             myBackground = new Background(new Rectangle(0, 0, 1920, 1080));
-            myTiles = new Interactable[10];
+            myTiles = new ShopTile[10];
             for (i = 0; i < 10; i++)
             {
-                myTiles[i] = new Interactable(new Rectangle(300 + (150 * (i % 5)), 300 + (150 * (int)(i / 5)), 100, 100));
+                myTiles[i] = new ShopTile(new Rectangle(300 + (150 * (i % 5)), 300 + (150 * (int)(i / 5)), 100, 100));
             }
-
+            myMenu = new DynamicMenu(new Rectangle(0, 0, 150, 300));
         }
         public void loadContent(Game game)
         {
@@ -54,16 +56,17 @@ namespace A_Merchants_Tale
         }
         public void update()
         {
-
+            myMouse = Mouse.GetState();
+            //hover click logic ... need to move/change this
             int i;
             for (i = 0; i < 10; i++)
             {
-                if (Logic.checkMouseCollison(myTiles[i]))
+                if (Logic.checkMouseCollison(myTiles[i], myMouse))
                 {
                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     {
 
-                        myTiles[i].onClick();
+                        myTiles[i].onClick(myMouse);
 
                     }
                     else if (myTiles[i].getState() != 2)
@@ -85,13 +88,21 @@ namespace A_Merchants_Tale
                 }
             }
         }
+        public static void setMenu(Rectangle rectangle, Interactable interactable)
+        {
+            myMenu = new DynamicMenu(rectangle, interactable);
+
+        }
         public void draw(SpriteBatch spriteBatch)
         {
             myBackground.Draw(background, spriteBatch);
             int i;
             for (i = 0; i < 10; i++)
                 myTiles[i].Draw(tile[myTiles[i].getState()], spriteBatch);
-        }
 
+            if (myMenu.getAmDisplayed())
+                myMenu.Draw(menu, spriteBatch);
+        }
+        
     }
 }

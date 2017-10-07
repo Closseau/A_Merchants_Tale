@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,11 +28,11 @@ namespace A_Merchants_Tale
             myState = state;
         }
 
-        public void onHover()
+        public virtual void onHover()
         {
             myState = 1;
         }
-        public void onClick()
+        public virtual void onClick(MouseState mouseState)
         {
             myState = 2;
             // popups and stuff would go here
