@@ -11,10 +11,8 @@ namespace A_Merchants_Tale
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D background;
-        Texture2D[] tile = new Texture2D[3];
-        Background myTest;
-        Interactable[] myTiles;
+
+        AssetManager MyAssets;
         public Merchants_Tale()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -34,13 +32,9 @@ namespace A_Merchants_Tale
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            int i;
-            myTest = new Background(new Rectangle(0, 0, 1920, 1080));
-            myTiles = new Interactable[10];
-            for (i = 0; i < 10; i++)
-            { 
-                myTiles[i] = new Interactable(new Rectangle(300 + (150 * (i % 5)), 300 + (150 * (int)(i/5)), 100, 100));
-            }
+            MyAssets = new AssetManager();
+            MyAssets.initialize();
+
             base.Initialize();
             IsMouseVisible = true;
         }
@@ -54,11 +48,9 @@ namespace A_Merchants_Tale
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            background = Content.Load<Texture2D>("Textures/Static/BackGround");
-            tile[0] = Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile0");
-            tile[1] = Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile1");
-            tile[2] = Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile2");
             // TODO: use this.Content to load your game content here
+
+            MyAssets.loadContent(this);
         }
 
         /// <summary>
@@ -81,35 +73,9 @@ namespace A_Merchants_Tale
                 Exit();
 
             // TODO: Add your update logic here
-            int i;
-            for (i = 0; i < 10; i++)
-            {
-                if (Logic.checkMouseCollison(myTiles[i]))
-                {
-                    if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                    {
 
-                        myTiles[i].onClick();
+            MyAssets.update();
 
-                    }
-                    else if (myTiles[i].getState() != 2)
-                    {
-                        myTiles[i].onHover();
-                    }
-                }
-                else
-                {
-                    if (myTiles[i].getState() == 1 || myTiles[i].getState() == 0)
-                    {
-                        myTiles[i].setState(0);
-                    }
-                    else if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                    {
-                        myTiles[i].setState(0);
-                    }
-
-                }
-            }
             base.Update(gameTime);
         }
 
@@ -121,10 +87,9 @@ namespace A_Merchants_Tale
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
-            myTest.Draw(background, spriteBatch);
-            int i;
-            for (i = 0; i < 10; i++)
-                myTiles[i].Draw(tile[myTiles[i].getState()], spriteBatch);
+
+            MyAssets.draw(spriteBatch);
+
             spriteBatch.End();
             // TODO: Add your drawing code here
 

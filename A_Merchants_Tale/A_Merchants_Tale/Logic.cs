@@ -17,9 +17,8 @@ namespace A_Merchants_Tale
         }
         public static Boolean checkMouseCollison(Interactable interactable)
         {
-
             MouseState myMouse = Mouse.GetState();
-            Rectangle myRectangle = interactable.GetRectangle();
+            Rectangle myRectangle = interactable.getRectangle();
             /*
              // old code
             int myWidth = interactable.getWidth();

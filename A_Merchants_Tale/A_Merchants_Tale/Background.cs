@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace A_Merchants_Tale
 {
-    class Background : MyEntity
+    class Background : Entity
     {
         public Background(Rectangle rectangle) : base(rectangle)
         {

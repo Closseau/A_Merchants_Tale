@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace A_Merchants_Tale
 {
-    public class MyEntity
+    public class Entity
     {
 
         Rectangle MyRectangle;
-        public MyEntity(Rectangle rectangle)
+        public Entity(Rectangle rectangle)
         {
             MyRectangle = rectangle;
 
@@ -22,7 +22,7 @@ namespace A_Merchants_Tale
             spriteBatch.Draw(texture, MyRectangle, Color.White);
 
         }
-        public Rectangle GetRectangle()
+        public Rectangle getRectangle()
         {
             return MyRectangle;
 

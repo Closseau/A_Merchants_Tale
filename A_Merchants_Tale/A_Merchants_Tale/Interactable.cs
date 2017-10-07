@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace A_Merchants_Tale
 {
-    class Interactable : MyEntity
+    class Interactable : Entity
     {
         private int myState = 0;
         
