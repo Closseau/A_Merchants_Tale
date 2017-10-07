@@ -15,6 +15,38 @@ namespace A_Merchants_Tale
         {
 
         }
+        public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState)
+        {
+          //  Boolean hasFoundHover = false;
+
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+                foreach (Interactable element in interactable)
+                {
+                    if (element != null && Logic.checkMouseCollison(element, mouseState))
+                    {
+                        element.onClick(mouseState);
+                        return element;
+                    }
+                }
+            }
+            else
+            {
+                foreach (Interactable element in interactable)
+                {
+                    if (element != null && Logic.checkMouseCollison(element, mouseState) && element.getState() != 2)
+                    {
+                        clearState(interactable);
+                     //  hasFoundHover = true;
+                        element.onHover();
+                        return null;
+                    }
+                }
+            }
+            clearState(interactable);
+
+            return null;
+        }
         public static Boolean checkMouseCollison(Interactable interactable, MouseState mouseState)
         {
             
@@ -42,10 +74,14 @@ namespace A_Merchants_Tale
             return false;
 
         }
-        public static void resetClicked(Interactable interactable)
+        public static void clearState(Interactable[] interactable)
         {
             //need to get array of all interactables besides background
-
-        }
+            foreach (Interactable element in interactable)
+            {
+                if (element != null && element.getState() != 2)
+                 element.setState(0);
+            }
+         }
     }
 }

@@ -18,9 +18,11 @@ namespace A_Merchants_Tale
         Texture2D[] menuOption = new Texture2D[3];
         Texture2D menu;
         Background myBackground;
-        static DynamicMenu myMenu;
-        ShopTile[] myTiles;
+        static DynamicMenu[] myMenu;
+        static ShopTile[] myTiles;
         MouseState myMouse;
+        Interactable previouslyClicked = new DynamicMenu(new Rectangle(0, 0, 150, 300));
+        Interactable currentlyClicked;
         public AssetManager()
         {
             
@@ -31,11 +33,12 @@ namespace A_Merchants_Tale
             int i;
             myBackground = new Background(new Rectangle(0, 0, 1920, 1080));
             myTiles = new ShopTile[10];
+            myMenu = new DynamicMenu[10];
+            myMenu[1] = new DynamicMenu(new Rectangle(0, 0, 150, 300));
             for (i = 0; i < 10; i++)
             {
                 myTiles[i] = new ShopTile(new Rectangle(300 + (150 * (i % 5)), 300 + (150 * (int)(i / 5)), 100, 100));
             }
-            myMenu = new DynamicMenu(new Rectangle(0, 0, 150, 300));
         }
         public void loadContent(Game game)
         {
@@ -59,102 +62,73 @@ namespace A_Merchants_Tale
             myMouse = Mouse.GetState();
             //hover click logic ... need to move/change this
             //change idea.. condition too see if mouse is clicked if so run front to back on interactibles untill one is found activate Onclick() and "break out" and run the rest for hovers
-             Boolean clickEventNotRun = true;
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+
+            currentlyClicked = Logic.hasMouseClicked(myMenu,myMouse);
+            if (currentlyClicked == null)
+            {
+                currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse);
+                if (currentlyClicked == null)
+                {
+                    //Logic.clearState(myMenu);
+                    //Logic.clearState(myTiles);
+                }
+                else if (currentlyClicked == previouslyClicked)
+                {
+
+                }
+                else
+                {
+                    if (currentlyClicked is DynamicMenu)
+                    {
+                        DynamicMenu banana = (DynamicMenu)currentlyClicked;
+                        if (banana.getAttachedToo() != previouslyClicked)
+                        {
+                            previouslyClicked.setState(0);
+                            previouslyClicked = currentlyClicked;
+
+
+                        }
+
+                    }
+                    else
+                    {
+                        previouslyClicked.setState(0);
+                        previouslyClicked = currentlyClicked;
+                    }
+                }
+            }
+            else if (currentlyClicked == previouslyClicked)
             {
 
-
-                //clickEventNotRun = false;
-
-                if (myMenu.getAmDisplayed())
-                {
-                    if (Logic.checkMouseCollison(myMenu, myMouse))
-                    {
-                        if (clickEventNotRun)
-                        {
-                            clickEventNotRun = false;
-                            myMenu.getAttachedToo().setActive(true);
-                        }
-                    }
-                    else
-                    {
-                        myMenu.setAmDisplayed(false);
-                    }
-                }
-                int i;
-                for (i = 0; i < 10; i++)
-                {
-                    if (Logic.checkMouseCollison(myTiles[i], myMouse))
-                    {
-                        if (clickEventNotRun && myMouse.LeftButton == ButtonState.Pressed)
-                        {
-
-                            myTiles[i].onClick(myMouse);
-
-                        }
-                        else if (myTiles[i].getState() != 2)
-                        {
-                            myTiles[i].onHover();
-                        }
-                    }
-                    else
-                    {
-                        if (myTiles[i].getState() == 1 || myTiles[i].getState() == 0)
-                        {
-                            myTiles[i].setState(0);
-                        }
-                        else if (myMouse.LeftButton == ButtonState.Pressed && myTiles[i].getActive() == false)
-                        {
-                            myTiles[i].setState(0);
-                        }
-
-                    }
-                    myTiles[i].setActive(false);
-                }
             }
             else
             {
-
-                int i;
-                for (i = 0; i < 10; i++)
+                if (currentlyClicked is DynamicMenu)
                 {
-                    if (Logic.checkMouseCollison(myTiles[i], myMouse))
+                    DynamicMenu banana = (DynamicMenu)currentlyClicked;
+                    if (banana.getAttachedToo() != previouslyClicked)
                     {
-                        if (clickEventNotRun && myMouse.LeftButton == ButtonState.Pressed)
-                        {
+                        previouslyClicked.setState(0);
+                        previouslyClicked = currentlyClicked;
 
-                            myTiles[i].onClick(myMouse);
-
-                        }
-                        else if (myTiles[i].getState() != 2)
-                        {
-                            myTiles[i].onHover();
-                        }
-                    }
-                    else
-                    {
-                        if (myTiles[i].getState() == 1 || myTiles[i].getState() == 0)
-                        {
-                            myTiles[i].setState(0);
-                        }
-                        else if (myMouse.LeftButton == ButtonState.Pressed && myTiles[i].getActive() == false)
-                        {
-                            myTiles[i].setState(0);
-                        }
 
                     }
-                    myTiles[i].setActive(false);
+
                 }
-
-
+                else
+                {
+                    previouslyClicked.setState(0);
+                    previouslyClicked = currentlyClicked;
+                }
             }
 
-             
-             
+            currentlyClicked = null;
+
+
         }
         public static void setMenu(Rectangle rectangle, Interactable interactable)
         {
-            myMenu = new DynamicMenu(rectangle, interactable);
+            myMenu[1] = new DynamicMenu(rectangle, interactable);
 
         }
         public void draw(SpriteBatch spriteBatch)
@@ -164,8 +138,8 @@ namespace A_Merchants_Tale
             for (i = 0; i < 10; i++)
                 myTiles[i].Draw(tile[myTiles[i].getState()], spriteBatch);
 
-            if (myMenu.getAmDisplayed())
-                myMenu.Draw(menu, spriteBatch);
+            if (myMenu[1].getAmDisplayed())
+                myMenu[1].Draw(menu, spriteBatch);
         }
         
     }
