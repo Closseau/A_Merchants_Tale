@@ -11,11 +11,11 @@ namespace A_Merchants_Tale
     class Interactable : Entity
     {
         private int myState = 0;
-        
+        private Boolean Active;
 
         public Interactable(Rectangle rectangle) : base(rectangle)
         {
-
+            Active = false;
 
         }
         public int getState()
@@ -27,7 +27,14 @@ namespace A_Merchants_Tale
         {
             myState = state;
         }
-
+        public Boolean getActive()
+        {
+            return Active;
+        }
+        public void setActive(Boolean active)
+        {
+            Active = active;
+        }
         public virtual void onHover()
         {
             myState = 1;
@@ -35,7 +42,9 @@ namespace A_Merchants_Tale
         public virtual void onClick(MouseState mouseState)
         {
             myState = 2;
+            Active = true;
             // popups and stuff would go here
         }
+
     }
 }

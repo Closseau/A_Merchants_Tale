@@ -58,35 +58,99 @@ namespace A_Merchants_Tale
         {
             myMouse = Mouse.GetState();
             //hover click logic ... need to move/change this
-            int i;
-            for (i = 0; i < 10; i++)
+            //change idea.. condition too see if mouse is clicked if so run front to back on interactibles untill one is found activate Onclick() and "break out" and run the rest for hovers
+             Boolean clickEventNotRun = true;
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-                if (Logic.checkMouseCollison(myTiles[i], myMouse))
+
+
+                //clickEventNotRun = false;
+
+                if (myMenu.getAmDisplayed())
                 {
-                    if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                    if (Logic.checkMouseCollison(myMenu, myMouse))
                     {
-
-                        myTiles[i].onClick(myMouse);
-
+                        if (clickEventNotRun)
+                        {
+                            clickEventNotRun = false;
+                            myMenu.getAttachedToo().setActive(true);
+                        }
                     }
-                    else if (myTiles[i].getState() != 2)
+                    else
                     {
-                        myTiles[i].onHover();
+                        myMenu.setAmDisplayed(false);
                     }
                 }
-                else
+                int i;
+                for (i = 0; i < 10; i++)
                 {
-                    if (myTiles[i].getState() == 1 || myTiles[i].getState() == 0)
+                    if (Logic.checkMouseCollison(myTiles[i], myMouse))
                     {
-                        myTiles[i].setState(0);
-                    }
-                    else if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                    {
-                        myTiles[i].setState(0);
-                    }
+                        if (clickEventNotRun && myMouse.LeftButton == ButtonState.Pressed)
+                        {
 
+                            myTiles[i].onClick(myMouse);
+
+                        }
+                        else if (myTiles[i].getState() != 2)
+                        {
+                            myTiles[i].onHover();
+                        }
+                    }
+                    else
+                    {
+                        if (myTiles[i].getState() == 1 || myTiles[i].getState() == 0)
+                        {
+                            myTiles[i].setState(0);
+                        }
+                        else if (myMouse.LeftButton == ButtonState.Pressed && myTiles[i].getActive() == false)
+                        {
+                            myTiles[i].setState(0);
+                        }
+
+                    }
+                    myTiles[i].setActive(false);
                 }
             }
+            else
+            {
+
+                int i;
+                for (i = 0; i < 10; i++)
+                {
+                    if (Logic.checkMouseCollison(myTiles[i], myMouse))
+                    {
+                        if (clickEventNotRun && myMouse.LeftButton == ButtonState.Pressed)
+                        {
+
+                            myTiles[i].onClick(myMouse);
+
+                        }
+                        else if (myTiles[i].getState() != 2)
+                        {
+                            myTiles[i].onHover();
+                        }
+                    }
+                    else
+                    {
+                        if (myTiles[i].getState() == 1 || myTiles[i].getState() == 0)
+                        {
+                            myTiles[i].setState(0);
+                        }
+                        else if (myMouse.LeftButton == ButtonState.Pressed && myTiles[i].getActive() == false)
+                        {
+                            myTiles[i].setState(0);
+                        }
+
+                    }
+                    myTiles[i].setActive(false);
+                }
+
+
+            }
+
+             
+             
         }
         public static void setMenu(Rectangle rectangle, Interactable interactable)
         {
