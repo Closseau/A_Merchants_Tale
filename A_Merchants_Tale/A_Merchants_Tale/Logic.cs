@@ -34,12 +34,14 @@ namespace A_Merchants_Tale
             {
                 foreach (Interactable element in interactable)
                 {
-                    if (element != null && Logic.checkMouseCollison(element, mouseState) && element.getState() != 2)
+                    if (element != null && Logic.checkMouseCollison(element, mouseState))
                     {
-                        clearState(interactable);
-                     //  hasFoundHover = true;
-                        element.onHover();
-                        return null;
+                        if (element.getState() != 2)
+                        {
+                            clearState(interactable);
+                            element.onHover();
+                        }
+                        return element; //idea!!! send back interactable then check sent back for state!!! 
                     }
                 }
             }
@@ -51,22 +53,6 @@ namespace A_Merchants_Tale
         {
             
             Rectangle myRectangle = interactable.getRectangle();
-            /*
-             // old code
-            int myWidth = interactable.getWidth();
-            int myHeight = interactable.getHeight();
-            int myXPosition = interactable.getXPos();
-            int myYPosition = interactable.getYPos();
-
-            if (myMouse.X > myXPosition && myMouse.X < myXPosition + myWidth)
-            {
-                if (myMouse.Y > myYPosition && myMouse.Y < myYPosition + myHeight)
-                {
-                    return true;
-                }
-            }
-            return false;
-            */
             if (myRectangle.Contains(mouseState.Position))
             {
                 return true;

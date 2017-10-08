@@ -11,12 +11,13 @@ namespace A_Merchants_Tale
     class Interactable : Entity
     {
         private int myState = 0;
+        Interactable AttachedToo;
         private Boolean Active;
 
         public Interactable(Rectangle rectangle) : base(rectangle)
         {
             Active = false;
-
+            AttachedToo = null;
         }
         public int getState()
         {
@@ -38,6 +39,14 @@ namespace A_Merchants_Tale
         public virtual void onHover()
         {
             myState = 1;
+        }
+        public Interactable getAttachedToo()
+        {
+            return AttachedToo;
+        }
+        public void setAttachedToo(Interactable interactable)
+        {
+            AttachedToo = interactable;
         }
         public virtual void onClick(MouseState mouseState)
         {

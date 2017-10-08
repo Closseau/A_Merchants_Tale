@@ -63,63 +63,27 @@ namespace A_Merchants_Tale
             //hover click logic ... need to move/change this
             //change idea.. condition too see if mouse is clicked if so run front to back on interactibles untill one is found activate Onclick() and "break out" and run the rest for hovers
 
+            Logic.clearState(myMenu);
+            Logic.clearState(myTiles);
+
             currentlyClicked = Logic.hasMouseClicked(myMenu,myMouse);
             if (currentlyClicked == null)
             {
                 currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse);
                 if (currentlyClicked == null)
                 {
-                    //Logic.clearState(myMenu);
-                    //Logic.clearState(myTiles);
+                    // repeat for other arrays
                 }
-                else if (currentlyClicked == previouslyClicked)
+                else if (currentlyClicked.getState() == 2 && currentlyClicked != previouslyClicked && currentlyClicked.getAttachedToo() != previouslyClicked)
                 {
-
-                }
-                else
-                {
-                    if (currentlyClicked is DynamicMenu)
-                    {
-                        DynamicMenu banana = (DynamicMenu)currentlyClicked;
-                        if (banana.getAttachedToo() != previouslyClicked)
-                        {
-                            previouslyClicked.setState(0);
-                            previouslyClicked = currentlyClicked;
-
-
-                        }
-
-                    }
-                    else
-                    {
-                        previouslyClicked.setState(0);
-                        previouslyClicked = currentlyClicked;
-                    }
+                      previouslyClicked.setState(0);
+                      previouslyClicked = currentlyClicked;
                 }
             }
-            else if (currentlyClicked == previouslyClicked)
+            else if (currentlyClicked.getState() == 2 && currentlyClicked != previouslyClicked && currentlyClicked.getAttachedToo() != previouslyClicked)
             {
-
-            }
-            else
-            {
-                if (currentlyClicked is DynamicMenu)
-                {
-                    DynamicMenu banana = (DynamicMenu)currentlyClicked;
-                    if (banana.getAttachedToo() != previouslyClicked)
-                    {
-                        previouslyClicked.setState(0);
-                        previouslyClicked = currentlyClicked;
-
-
-                    }
-
-                }
-                else
-                {
-                    previouslyClicked.setState(0);
-                    previouslyClicked = currentlyClicked;
-                }
+                previouslyClicked.setState(0);
+                previouslyClicked = currentlyClicked;
             }
 
             currentlyClicked = null;

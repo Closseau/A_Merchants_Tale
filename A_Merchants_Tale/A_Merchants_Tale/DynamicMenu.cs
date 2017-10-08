@@ -9,17 +9,16 @@ namespace A_Merchants_Tale
 {
     class DynamicMenu : Interactable
     {
-        //number of options??? 
-        Interactable AttachedToo; // needs reference???
+        //num of options
         Boolean AmDisplayed;
         public DynamicMenu(Rectangle rectangle) : base(rectangle)
         {
-            AttachedToo = null;
+            
             AmDisplayed = false;
         }
         public DynamicMenu(Rectangle rectangle, Interactable interactable) : base(rectangle)
         {
-            AttachedToo = (Interactable)interactable;
+            this.setAttachedToo(interactable);
             AmDisplayed = true;
 
         }
@@ -31,10 +30,6 @@ namespace A_Merchants_Tale
         public Boolean getAmDisplayed()
         {
             return AmDisplayed;
-        }
-        public Interactable getAttachedToo()
-        {
-            return AttachedToo;
         }
         public void setAmDisplayed(Boolean displayed)
         {
