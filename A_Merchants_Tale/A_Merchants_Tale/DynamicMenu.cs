@@ -10,30 +10,28 @@ namespace A_Merchants_Tale
     class DynamicMenu : Interactable
     {
         //num of options
-        Boolean AmDisplayed;
         public DynamicMenu(Rectangle rectangle) : base(rectangle)
         {
-            
-            AmDisplayed = false;
+
+            setActive(false);
         }
         public DynamicMenu(Rectangle rectangle, Interactable interactable) : base(rectangle)
         {
             this.setAttachedToo(interactable);
-            AmDisplayed = true;
+            setActive(true);
+            setState(2);
 
+        }
+        public override void clear()
+        {
+            setState(0);
+            setActive(false);
+            setRectangle(new Rectangle(0,0,0,0));
         }
         public void Display()
         {
 
 
-        }
-        public Boolean getAmDisplayed()
-        {
-            return AmDisplayed;
-        }
-        public void setAmDisplayed(Boolean displayed)
-        {
-            AmDisplayed = displayed;
         }
     }
 }

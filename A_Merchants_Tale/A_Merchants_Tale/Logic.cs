@@ -66,8 +66,21 @@ namespace A_Merchants_Tale
             foreach (Interactable element in interactable)
             {
                 if (element != null && element.getState() != 2)
-                 element.setState(0);
+                    element.clear();
             }
          }
+        public static void clearClickedState(Interactable[] interactable)
+        {
+            foreach (Interactable element in interactable)
+            {
+                if (element != null && element.getState() == 2)
+                {
+                    element.clear();
+
+                }
+                
+
+            }
+        }
     }
 }

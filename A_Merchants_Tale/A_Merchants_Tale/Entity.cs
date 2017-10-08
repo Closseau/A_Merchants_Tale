@@ -27,6 +27,11 @@ namespace A_Merchants_Tale
             return MyRectangle;
 
         }
+        public void setRectangle(Rectangle rectangle)
+        {
+            MyRectangle = rectangle;
+        }
+
         public int getXPos()
         {
             return MyRectangle.X;

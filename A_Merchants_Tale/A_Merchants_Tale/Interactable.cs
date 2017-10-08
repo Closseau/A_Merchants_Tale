@@ -54,6 +54,10 @@ namespace A_Merchants_Tale
             Active = true;
             // popups and stuff would go here
         }
+        public virtual void clear()
+        {
+            myState = 0;
+        }
 
     }
 }

@@ -73,6 +73,13 @@ namespace A_Merchants_Tale
                 if (currentlyClicked == null)
                 {
                     // repeat for other arrays
+
+                    // then on the last one clear clicked
+                    if (myMouse.LeftButton == ButtonState.Pressed)
+                    {
+                        Logic.clearClickedState(myMenu);
+                        Logic.clearClickedState(myTiles);
+                    }
                 }
                 else if (currentlyClicked.getState() == 2 && currentlyClicked != previouslyClicked && currentlyClicked.getAttachedToo() != previouslyClicked)
                 {
@@ -93,7 +100,6 @@ namespace A_Merchants_Tale
         public static void setMenu(Rectangle rectangle, Interactable interactable)
         {
             myMenu[1] = new DynamicMenu(rectangle, interactable);
-
         }
         public void draw(SpriteBatch spriteBatch)
         {
@@ -102,7 +108,7 @@ namespace A_Merchants_Tale
             for (i = 0; i < 10; i++)
                 myTiles[i].Draw(tile[myTiles[i].getState()], spriteBatch);
 
-            if (myMenu[1].getAmDisplayed())
+            if (myMenu[1].getActive())
                 myMenu[1].Draw(menu, spriteBatch);
         }
         
