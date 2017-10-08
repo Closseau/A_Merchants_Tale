@@ -24,9 +24,9 @@ namespace A_Merchants_Tale
         }
         public Rectangle getRectangle()
         {
-            return MyRectangle;
-
+            return MyRectangle;         
         }
+
         public void setRectangle(Rectangle rectangle)
         {
             MyRectangle = rectangle;
@@ -48,7 +48,6 @@ namespace A_Merchants_Tale
         {
             return MyRectangle.Height;
         }
-
-
+        
     }
 }

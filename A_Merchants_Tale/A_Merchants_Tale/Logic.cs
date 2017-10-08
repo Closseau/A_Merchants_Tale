@@ -15,6 +15,7 @@ namespace A_Merchants_Tale
         {
 
         }
+
         public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState)
         {
           //  Boolean hasFoundHover = false;
@@ -49,6 +50,7 @@ namespace A_Merchants_Tale
 
             return null;
         }
+
         public static Boolean checkMouseCollison(Interactable interactable, MouseState mouseState)
         {
             
@@ -60,6 +62,7 @@ namespace A_Merchants_Tale
             return false;
 
         }
+
         public static void clearState(Interactable[] interactable)
         {
             //need to get array of all interactables besides background
@@ -69,6 +72,7 @@ namespace A_Merchants_Tale
                     element.clear();
             }
          }
+
         public static void clearClickedState(Interactable[] interactable)
         {
             foreach (Interactable element in interactable)
@@ -76,10 +80,7 @@ namespace A_Merchants_Tale
                 if (element != null && element.getState() == 2)
                 {
                     element.clear();
-
-                }
-                
-
+                }           
             }
         }
     }
