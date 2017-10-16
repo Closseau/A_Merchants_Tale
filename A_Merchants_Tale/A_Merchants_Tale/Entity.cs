@@ -12,16 +12,19 @@ namespace A_Merchants_Tale
     {
 
         Rectangle MyRectangle;
+
         public Entity(Rectangle rectangle)
         {
             MyRectangle = rectangle;
 
         }
+
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, MyRectangle, Color.White);
 
         }
+
         public Rectangle getRectangle()
         {
             return MyRectangle;         
@@ -36,14 +39,17 @@ namespace A_Merchants_Tale
         {
             return MyRectangle.X;
         }
+
         public int getYPos()
         {
             return MyRectangle.Y;
         }
+
         public int getWidth()
         {
             return MyRectangle.Width;
         }
+
         public int getHeight()
         {
             return MyRectangle.Height;

@@ -37,7 +37,7 @@ namespace A_Merchants_Tale
                 {
                     if (element != null && Logic.checkMouseCollison(element, mouseState))
                     {
-                        if (element.getState() != 2)
+                        if (element.getState() != (int)Interactable.UIState.CLICKED)
                         {
                             clearState(interactable);
                             element.onHover();
@@ -47,20 +47,23 @@ namespace A_Merchants_Tale
                 }
             }
             clearState(interactable);
-
+            
             return null;
         }
 
         public static Boolean checkMouseCollison(Interactable interactable, MouseState mouseState)
         {
-            
+
+            return interactable.getRectangle().Contains(mouseState.Position);
+
+            /*
             Rectangle myRectangle = interactable.getRectangle();
             if (myRectangle.Contains(mouseState.Position))
             {
                 return true;
             }
             return false;
-
+            */
         }
 
         public static void clearState(Interactable[] interactable)
@@ -68,8 +71,10 @@ namespace A_Merchants_Tale
             //need to get array of all interactables besides background
             foreach (Interactable element in interactable)
             {
-                if (element != null && element.getState() != 2)
+                if (element != null && element.getState() != (int)Interactable.UIState.CLICKED)
+                {
                     element.clear();
+                }
             }
          }
 
@@ -77,7 +82,7 @@ namespace A_Merchants_Tale
         {
             foreach (Interactable element in interactable)
             {
-                if (element != null && element.getState() == 2)
+                if (element != null && element.getState() == (int)Interactable.UIState.CLICKED)
                 {
                     element.clear();
                 }           

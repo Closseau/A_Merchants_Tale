@@ -14,12 +14,13 @@ namespace A_Merchants_Tale
         {
 
         }
+
         public override void onClick(MouseState mouseState)
         {
+            setState((int)Interactable.UIState.CLICKED);
 
-            setState(2);
             AssetManager.setMenu(new Rectangle(mouseState.X, mouseState.Y, 150, 300), this);
-
         }
+
     }
 }
