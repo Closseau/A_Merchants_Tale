@@ -14,7 +14,7 @@ namespace A_Merchants_Tale
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new Merchants_Tale())
                 game.Run();
         }
     }
