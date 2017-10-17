@@ -16,22 +16,24 @@ namespace A_Merchants_Tale
         float screenWidth;
         float screenHeight;
 
-        Texture2D background;
+        Texture2D shop;
+        Texture2D startMenu;
         Texture2D[] tile = new Texture2D[3];
         Texture2D[] menuOption = new Texture2D[3];
         Texture2D menu;
 
-        Background myBackground;
+        Background shopBackground;
+        Background startMenuBackground;
 
         static DynamicMenu[] myMenu;
         static ShopTile[] myTiles;
 
         MouseState myMouse;
 
-        Interactable previouslyClicked = new DynamicMenu(new Rectangle(0, 0, 150, 300));
+        Interactable previouslyClicked;
         Interactable currentlyClicked;
 
-        bool atMenu;
+        bool atStartMenu;
 
         public AssetManager()
         {
@@ -43,10 +45,15 @@ namespace A_Merchants_Tale
             screenWidth = width;
             screenHeight = height;
 
-            myBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
+            atStartMenu = true;
+
+            startMenuBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
+            shopBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
             myTiles = new ShopTile[10];
             myMenu = new DynamicMenu[10];
-            myMenu[1] = new DynamicMenu(new Rectangle(0, 0, 150, 300));                
+            myMenu[1] = new DynamicMenu(new Rectangle(0, 0, (int)(0.09375 * screenWidth), (int)(screenHeight/3)));
+
+            previouslyClicked = new DynamicMenu(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
 
 
             //0.1875 and 1/3 are the coefficients needed to start making the tiles at (300,300) on a 1600x900 screen
@@ -61,7 +68,8 @@ namespace A_Merchants_Tale
         public void loadContent(Game game)
         {
 
-            background = game.Content.Load<Texture2D>("Textures/Static/BackGround");
+            startMenu = game.Content.Load<Texture2D>("Textures/Static/Holo1");
+            shop = game.Content.Load<Texture2D>("Textures/Static/Holo2");
 
             tile[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile0");
             tile[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile1");
@@ -123,8 +131,9 @@ namespace A_Merchants_Tale
 
         public void draw(SpriteBatch spriteBatch)
         {
-            
-            myBackground.Draw(background, spriteBatch);
+
+            shopBackground.Draw(shop, spriteBatch);
+
             for (int i = 0; i < 10; i++)
             {
                 myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
@@ -133,6 +142,11 @@ namespace A_Merchants_Tale
             if (myMenu[1].active)
             {
                 myMenu[1].Draw(menu, spriteBatch);
+            }
+
+            if (atStartMenu)
+            {
+                startMenuBackground.Draw(startMenu, spriteBatch);
             }
         }
         
