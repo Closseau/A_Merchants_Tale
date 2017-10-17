@@ -26,7 +26,8 @@ namespace A_Merchants_Tale
         {
             setState(0);
             setActive(false);
-            setRectangle(new Rectangle(0,0,0,0));
+            //setRectangle(new Rectangle(0,0,0,0));
+            rectangle = new Rectangle(0, 0, 0, 0);
         }
         public void Display()
         {
