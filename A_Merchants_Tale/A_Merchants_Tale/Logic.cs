@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 public enum UIState { NEUTRAL = 0, HOVERED = 1, CLICKED = 2 };
+public enum UIType { START = 1000, EXIT = 1001, };
 
 namespace A_Merchants_Tale
 {
