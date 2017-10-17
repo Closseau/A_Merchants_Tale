@@ -50,9 +50,8 @@ namespace A_Merchants_Tale
         public void initialize(float width, float height)
         {
             screenWidth = width;
-            screenHeight = height;
+            screenHeight = height;            
             
-            //shopBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
             myTiles = new ShopTile[amountOfTiles];
             myMenu = new DynamicMenu[amountOfTiles];
             myOptions = new MenuOption[4];
@@ -63,7 +62,6 @@ namespace A_Merchants_Tale
                 myTiles[i] = new ShopTile(new Rectangle((int)(0.1875 * screenWidth) + (int)(0.09375 * screenWidth * (i % 5)), 
                     (int)(screenHeight/3) + ((int)(screenHeight / 6) * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
             }
-
 
             atStartMenu = true;
 
@@ -143,7 +141,7 @@ namespace A_Merchants_Tale
                     atStartMenu = false;
                 } 
                 else if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
-                    && currentlyClicked.type == (int)UIType.EXIT)
+                   && currentlyClicked.type == (int)UIType.EXIT)
                 {
                     game.Exit();
                 }
@@ -200,9 +198,7 @@ namespace A_Merchants_Tale
         }
 
         public void draw(SpriteBatch spriteBatch)
-        {
-            //myBackground.Draw(background, spriteBatch);
-
+        {            
             shopBackground.Draw(shop, spriteBatch);
 
             for (int i = 0; i < amountOfTiles; i++)
