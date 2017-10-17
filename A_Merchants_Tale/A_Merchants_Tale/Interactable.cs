@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace A_Merchants_Tale
 {
     class Interactable : Entity
-    {           
+    {    
         public Interactable(Rectangle rectangle) : base(rectangle)
         {
             active = false;
@@ -19,9 +19,9 @@ namespace A_Merchants_Tale
         public int state { get; set; }
 
         public Boolean active { get; set; }
-
+        
         public Interactable AttachedToo { get; set; }
-
+        
         public virtual void onHover()
         {
             state = (int)UIState.HOVERED;

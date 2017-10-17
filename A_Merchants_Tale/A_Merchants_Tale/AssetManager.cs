@@ -50,7 +50,8 @@ namespace A_Merchants_Tale
 
             for (int i = 0; i < 10; i++)
             {
-                myTiles[i] = new ShopTile(new Rectangle(300 + (150 * (i % 5)), 300 + (150 * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
+                myTiles[i] = new ShopTile(new Rectangle((int)(0.1875 * screenWidth) + (150 * (i % 5)), 
+                    (int)(screenHeight/3) + (150 * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
             }
         }
 
