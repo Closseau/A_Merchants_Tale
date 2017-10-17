@@ -9,17 +9,8 @@ using System.Threading.Tasks;
 namespace A_Merchants_Tale
 {
     class Interactable : Entity
-<<<<<<< HEAD
-<<<<<<< HEAD
     {   
-        //Interactable AttachedToo;
-        
-=======
-    {           
->>>>>>> refs/remotes/origin/master
-=======
-    {    
->>>>>>> origin/Brian's_Branch
+
         public Interactable(Rectangle rectangle) : base(rectangle)
         {
             active = false;
@@ -29,26 +20,14 @@ namespace A_Merchants_Tale
         public int state { get; set; }
 
         public Boolean active { get; set; }
-<<<<<<< HEAD
 
-<<<<<<< HEAD
         public virtual void onHover()
         {
             state = (int)UIState.HOVERED;
         }
 
-=======
->>>>>>> refs/remotes/origin/master
-=======
-        
->>>>>>> origin/Brian's_Branch
         public Interactable AttachedToo { get; set; }
-        
-        public virtual void onHover()
-        {
-            state = (int)UIState.HOVERED;
-        }
-        
+
         public virtual void onClick(MouseState mouseState)
         {
             state = (int)UIState.CLICKED;
