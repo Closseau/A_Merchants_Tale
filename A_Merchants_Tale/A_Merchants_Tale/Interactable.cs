@@ -10,8 +10,6 @@ namespace A_Merchants_Tale
 {
     class Interactable : Entity
     {   
-        private int myState = (int)UIState.NEUTRAL;
-
         //Interactable AttachedToo;
         
         public Interactable(Rectangle rectangle) : base(rectangle)
@@ -26,7 +24,7 @@ namespace A_Merchants_Tale
 
         public virtual void onHover()
         {
-            myState = (int)UIState.HOVERED;
+            state = (int)UIState.HOVERED;
         }
 
         public Interactable AttachedToo { get; set; }
@@ -45,14 +43,14 @@ namespace A_Merchants_Tale
 
         public virtual void onClick(MouseState mouseState)
         {
-            myState = (int)UIState.CLICKED;
+            state = (int)UIState.CLICKED;
             active = true;
             // popups and stuff would go here
         }
 
         public virtual void clear()
         {
-            myState = (int)UIState.NEUTRAL;
+            state = (int)UIState.NEUTRAL;
         }
 
     }
