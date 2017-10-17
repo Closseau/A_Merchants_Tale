@@ -22,6 +22,7 @@ namespace A_Merchants_Tale
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            //16:9 Resolutions: 1024×576, 1152×648, 1280×720, 1366×768, 1600×900, 1920×1080
             graphics.PreferredBackBufferWidth = 1600;
             graphics.PreferredBackBufferHeight = 900;
             graphics.ApplyChanges();
@@ -81,7 +82,7 @@ namespace A_Merchants_Tale
 
             // TODO: Add your update logic here
 
-            MyAssets.update();
+            MyAssets.update(this);
 
             base.Update(gameTime);
         }
