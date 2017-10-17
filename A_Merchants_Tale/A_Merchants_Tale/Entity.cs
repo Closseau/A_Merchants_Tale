@@ -11,48 +11,76 @@ namespace A_Merchants_Tale
     public class Entity
     {
 
-        Rectangle MyRectangle;
+        private Rectangle MyRectangle;
 
         public Entity(Rectangle rectangle)
         {
             MyRectangle = rectangle;
-
         }
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, MyRectangle, Color.White);
-
+        }
+               
+        public Rectangle rectangle
+        {
+            get
+            {
+                return MyRectangle;
+            }
+            set
+            {
+                MyRectangle = value;
+            }
+        }
+        
+        public int xPos
+        {
+            get
+            {
+                return MyRectangle.X;
+            }
+            set
+            {
+                MyRectangle.X = value;
+            }
         }
 
-        public Rectangle getRectangle()
+        public int yPos
         {
-            return MyRectangle;         
+            get
+            {
+                return MyRectangle.Y;
+            }
+            set
+            {
+                MyRectangle.Y = value;
+            }
         }
 
-        public void setRectangle(Rectangle rectangle)
+        public int width
         {
-            MyRectangle = rectangle;
+            get
+            {
+                return MyRectangle.Width;
+            }
+            set
+            {
+                MyRectangle.Width = value;
+            }
         }
 
-        public int getXPos()
+        public int height
         {
-            return MyRectangle.X;
-        }
-
-        public int getYPos()
-        {
-            return MyRectangle.Y;
-        }
-
-        public int getWidth()
-        {
-            return MyRectangle.Width;
-        }
-
-        public int getHeight()
-        {
-            return MyRectangle.Height;
+            get
+            {
+                return MyRectangle.Height;
+            }
+            set
+            {
+                MyRectangle.Height = value;
+            }
         }
         
     }

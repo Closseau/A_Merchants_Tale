@@ -28,7 +28,8 @@ namespace A_Merchants_Tale
         {
             setState((int)Interactable.UIState.NEUTRAL);
             setActive(false);
-            setRectangle(new Rectangle(0,0,0,0));
+            //setRectangle(new Rectangle(0,0,0,0));
+            rectangle = new Rectangle(0, 0, 0, 0);
         }
 
         public void Display()
