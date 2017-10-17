@@ -9,54 +9,50 @@ using System.Threading.Tasks;
 namespace A_Merchants_Tale
 {
     class Interactable : Entity
-    {
-        private int myState = 0;
-        Interactable AttachedToo;
-        private Boolean Active;
+    {   
+        private int myState = (int)UIState.NEUTRAL;
 
+        //Interactable AttachedToo;
+        
         public Interactable(Rectangle rectangle) : base(rectangle)
         {
-            Active = false;
+            active = false;
             AttachedToo = null;
         }
-        public int getState()
-        {
-            return myState;
-        }
-        // make a array of all the 'active' hovers and clicks to undo them later 
-        public void setState(int state)
-        {
-            myState = state;
-        }
-        public Boolean getActive()
-        {
-            return Active;
-        }
-        public void setActive(Boolean active)
-        {
-            Active = active;
-        }
+
+        public int state { get; set; }
+
+        public Boolean active { get; set; }
+
         public virtual void onHover()
         {
-            myState = 1;
+            myState = (int)UIState.HOVERED;
         }
+
+        public Interactable AttachedToo { get; set; }
+
+        /*
         public Interactable getAttachedToo()
         {
             return AttachedToo;
         }
+       
         public void setAttachedToo(Interactable interactable)
         {
             AttachedToo = interactable;
         }
+        */
+
         public virtual void onClick(MouseState mouseState)
         {
-            myState = 2;
-            Active = true;
+            myState = (int)UIState.CLICKED;
+            active = true;
             // popups and stuff would go here
         }
+
         public virtual void clear()
         {
-            myState = 0;
+            myState = (int)UIState.NEUTRAL;
         }
 
     }

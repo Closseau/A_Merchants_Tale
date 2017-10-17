@@ -12,26 +12,26 @@ namespace A_Merchants_Tale
         //num of options
         public DynamicMenu(Rectangle rectangle) : base(rectangle)
         {
-
-            setActive(false);
+            active = false;
         }
+
         public DynamicMenu(Rectangle rectangle, Interactable interactable) : base(rectangle)
         {
-            this.setAttachedToo(interactable);
-            setActive(true);
-            setState(2);
-
+            this.AttachedToo = interactable;
+            active = true;
+            state = (int)UIState.CLICKED;
         }
+
         public override void clear()
         {
-            setState(0);
-            setActive(false);
+            state = (int)UIState.NEUTRAL;
+            active = false;
             //setRectangle(new Rectangle(0,0,0,0));
             rectangle = new Rectangle(0, 0, 0, 0);
         }
+
         public void Display()
         {
-
 
         }
     }

@@ -16,6 +16,7 @@ namespace A_Merchants_Tale
         {
             MyRectangle = rectangle;
         }
+
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, MyRectangle, Color.White);
@@ -24,8 +25,8 @@ namespace A_Merchants_Tale
         public Rectangle getRectangle()
         {
             return MyRectangle;
-
         }
+
         public void setRectangle(Rectangle rectangle)
         {
             MyRectangle = rectangle;

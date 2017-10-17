@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+public enum UIState { NEUTRAL = 0, HOVERED = 1, CLICKED = 2 };
+
 namespace A_Merchants_Tale
 {
     class Logic
@@ -15,6 +17,7 @@ namespace A_Merchants_Tale
         {
 
         }
+
         public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState)
         {
           //  Boolean hasFoundHover = false;
@@ -36,7 +39,7 @@ namespace A_Merchants_Tale
                 {
                     if (element != null && Logic.checkMouseCollison(element, mouseState))
                     {
-                        if (element.getState() != 2)
+                        if (element.state != (int)UIState.CLICKED)
                         {
                             element.onHover();
                         }
@@ -48,6 +51,7 @@ namespace A_Merchants_Tale
 
             return null;
         }
+
         public static Boolean checkMouseCollison(Interactable interactable, MouseState mouseState)
         {
             //return interactable.getRectangle().Contains(mouseState.Position);
@@ -63,23 +67,26 @@ namespace A_Merchants_Tale
             return false;
             */
         }
+
         public static void clearState(Interactable[] interactable)
         {
             //need to get array of all interactables besides background
             foreach (Interactable element in interactable)
             {
-                if (element != null && element.getState() != 2)
+                if (element != null && element.state != (int)UIState.CLICKED)
+                {
                     element.clear();
+                }
             }
-         }
+        }
+
         public static void clearClickedState(Interactable[] interactable)
         {
             foreach (Interactable element in interactable)
             {
-                if (element != null && element.getState() == 2)
+                if (element != null && element.state == (int)UIState.CLICKED)
                 {
                     element.clear();
-
                 }
             }
         }
