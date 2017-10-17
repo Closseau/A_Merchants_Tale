@@ -52,7 +52,7 @@ namespace A_Merchants_Tale
             screenWidth = width;
             screenHeight = height;
             
-            myBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
+            //shopBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
             myTiles = new ShopTile[amountOfTiles];
             myMenu = new DynamicMenu[amountOfTiles];
             myOptions = new MenuOption[4];
@@ -87,9 +87,7 @@ namespace A_Merchants_Tale
                 myStartMenuButtons[1].width, myStartMenuButtons[1].height));
             myStartMenuButtons[1].type = (int)UIType.EXIT;
 
-            myTiles = new ShopTile[10];
-
-            myMenu = new DynamicMenu[10];
+            
             myMenu[1] = new DynamicMenu(new Rectangle(0, 0, (int)(0.09375 * screenWidth), (int)(screenHeight/3)));
 
             previouslyClicked = new DynamicMenu(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
@@ -203,7 +201,7 @@ namespace A_Merchants_Tale
 
         public void draw(SpriteBatch spriteBatch)
         {
-            myBackground.Draw(background, spriteBatch);
+            //myBackground.Draw(background, spriteBatch);
 
             shopBackground.Draw(shop, spriteBatch);
 
