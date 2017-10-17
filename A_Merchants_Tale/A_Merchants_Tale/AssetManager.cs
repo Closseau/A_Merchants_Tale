@@ -49,11 +49,12 @@ namespace A_Merchants_Tale
             myMenu[1] = new DynamicMenu(new Rectangle(0, 0, 150, 300));                
 
 
-            //0.1875 and 1/3 are the coefficients needed to make the tiles 300x300 on a 1600x900 screen
+            //0.1875 and 1/3 are the coefficients needed to start making the tiles at (300,300) on a 1600x900 screen
+            //0.09375 and 1/6 are the coefficients needed to separate the tiles by 150 pixels on a 1600x900 screen
             for (int i = 0; i < 10; i++)
             {
-                myTiles[i] = new ShopTile(new Rectangle((int)(0.1875 * screenWidth) + (150 * (i % 5)), 
-                    (int)(screenHeight/3) + (150 * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
+                myTiles[i] = new ShopTile(new Rectangle((int)(0.1875 * screenWidth) + (int)(0.09375 * screenWidth * (i % 5)), 
+                    (int)(screenHeight/3) + ((int)(screenHeight / 6) * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
             }
         }
 

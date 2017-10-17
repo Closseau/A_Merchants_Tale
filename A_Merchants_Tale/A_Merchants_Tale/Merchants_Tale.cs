@@ -22,8 +22,9 @@ namespace A_Merchants_Tale
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 1600;
-            graphics.PreferredBackBufferHeight = 900;
+            //16:9 Resolutions: 1024×576, 1152×648, 1280×720, 1366×768, 1600×900, 1920×1080
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 576;
             graphics.ApplyChanges();
         }
 
