@@ -46,6 +46,7 @@
     <Compile Include="DynamicMenu.cs" />
     <Compile Include="Interactable.cs" />
     <Compile Include="Logic.cs" />
+    <Compile Include="MenuOption.cs" />
     <Compile Include="Merchants_Tale.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Program.cs" />
