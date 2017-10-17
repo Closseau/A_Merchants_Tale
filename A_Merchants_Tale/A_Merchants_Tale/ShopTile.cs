@@ -14,6 +14,7 @@ namespace A_Merchants_Tale
         {
 
         }
+
         public override void onClick(MouseState mouseState)
         {
 

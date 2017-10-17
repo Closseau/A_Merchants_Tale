@@ -50,10 +50,6 @@ namespace A_Merchants_Tale
         }
         public static Boolean checkMouseCollison(Interactable interactable, MouseState mouseState)
         {
-<<<<<<< HEAD
-            return interactable.getRectangle().Contains(mouseState.Position);
-=======
-
             //return interactable.getRectangle().Contains(mouseState.Position);
 
             return interactable.rectangle.Contains(mouseState.Position);
@@ -66,7 +62,6 @@ namespace A_Merchants_Tale
             }
             return false;
             */
->>>>>>> origin/Bobby's_Branch
         }
         public static void clearState(Interactable[] interactable)
         {

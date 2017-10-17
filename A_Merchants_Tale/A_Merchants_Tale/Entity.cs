@@ -10,13 +10,8 @@ namespace A_Merchants_Tale
 {
     public class Entity
     {
-
-<<<<<<< HEAD
-        Rectangle MyRectangle;
-=======
         private Rectangle MyRectangle;
 
->>>>>>> origin/Bobby's_Branch
         public Entity(Rectangle rectangle)
         {
             MyRectangle = rectangle;
@@ -25,7 +20,7 @@ namespace A_Merchants_Tale
         {
             spriteBatch.Draw(texture, MyRectangle, Color.White);
         }
-<<<<<<< HEAD
+
         public Rectangle getRectangle()
         {
             return MyRectangle;
@@ -35,10 +30,7 @@ namespace A_Merchants_Tale
         {
             MyRectangle = rectangle;
         }
-
-        public int getXPos()
-=======
-               
+      
         public Rectangle rectangle
         {
             get
@@ -52,7 +44,6 @@ namespace A_Merchants_Tale
         }
         
         public int xPos
->>>>>>> origin/Bobby's_Branch
         {
             get
             {
@@ -63,12 +54,8 @@ namespace A_Merchants_Tale
                 MyRectangle.X = value;
             }
         }
-<<<<<<< HEAD
-        public int getYPos()
-=======
 
         public int yPos
->>>>>>> origin/Bobby's_Branch
         {
             get
             {
@@ -79,12 +66,8 @@ namespace A_Merchants_Tale
                 MyRectangle.Y = value;
             }
         }
-<<<<<<< HEAD
-        public int getWidth()
-=======
-
+        
         public int width
->>>>>>> origin/Bobby's_Branch
         {
             get
             {
@@ -95,12 +78,8 @@ namespace A_Merchants_Tale
                 MyRectangle.Width = value;
             }
         }
-<<<<<<< HEAD
-        public int getHeight()
-=======
-
+        
         public int height
->>>>>>> origin/Bobby's_Branch
         {
             get
             {
