@@ -18,7 +18,8 @@ namespace A_Merchants_Tale
         }
 
         public int state { get; set; }
-
+        public int id { get; set; }
+        public int type { get; set; }
         public Boolean active { get; set; }
 
         public virtual void onHover()

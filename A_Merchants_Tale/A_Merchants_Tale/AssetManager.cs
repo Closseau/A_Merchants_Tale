@@ -18,6 +18,7 @@ namespace A_Merchants_Tale
 
         Texture2D shop;
         Texture2D startMenu;
+        Texture2D[] startMenuButtons = new Texture2D[2];
         Texture2D[] tile = new Texture2D[3];
         Texture2D[] menuOption = new Texture2D[3];
         Texture2D menu;
@@ -27,6 +28,7 @@ namespace A_Merchants_Tale
 
         static DynamicMenu[] myMenu;
         static ShopTile[] myTiles;
+        static Interactable[] myStartMenuButtons;
 
         MouseState myMouse;
 
@@ -49,7 +51,26 @@ namespace A_Merchants_Tale
 
             startMenuBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
             shopBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
+
+            myStartMenuButtons = new Interactable[2];
+
+            myStartMenuButtons[0] = new Interactable(new Rectangle(0, 0, 0, 0));
+            myStartMenuButtons[0].width = (int)(0.375 * screenWidth);
+            myStartMenuButtons[0].height = (int)(screenHeight / 6);
+            myStartMenuButtons[0] = new Interactable(new Rectangle((int)((screenWidth / 2) - (myStartMenuButtons[0].width / 2)),
+                (int)((screenHeight / 2) - (myStartMenuButtons[0].height / 2)), myStartMenuButtons[0].width, myStartMenuButtons[0].height));
+            myStartMenuButtons[0].type = (int)UIType.START;
+
+            myStartMenuButtons[1] = new Interactable(new Rectangle(0, 0, 0, 0));
+            myStartMenuButtons[1].width = (int)(0.375 * screenWidth);
+            myStartMenuButtons[1].height = (int)(screenHeight / 6);
+            myStartMenuButtons[1] = new Interactable(new Rectangle((int)((screenWidth / 2) - (myStartMenuButtons[1].width / 2)),
+                (int)((screenHeight / 2) + myStartMenuButtons[1].height), 
+                myStartMenuButtons[1].width, myStartMenuButtons[1].height));
+            myStartMenuButtons[1].type = (int)UIType.EXIT;
+
             myTiles = new ShopTile[10];
+
             myMenu = new DynamicMenu[10];
             myMenu[1] = new DynamicMenu(new Rectangle(0, 0, (int)(0.09375 * screenWidth), (int)(screenHeight/3)));
 
@@ -69,6 +90,10 @@ namespace A_Merchants_Tale
         {
 
             startMenu = game.Content.Load<Texture2D>("Textures/Static/Holo1");
+
+            startMenuButtons[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile0");
+            startMenuButtons[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile1");
+
             shop = game.Content.Load<Texture2D>("Textures/Static/Holo2");
 
             tile[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile0");
@@ -83,7 +108,7 @@ namespace A_Merchants_Tale
 
         }
 
-        public void update()
+        public void update(Game game)
         {
             myMouse = Mouse.GetState();
             //hover click logic ... need to move/change this
@@ -91,6 +116,24 @@ namespace A_Merchants_Tale
 
             Logic.clearState(myMenu);
             Logic.clearState(myTiles);
+
+            if(atStartMenu)
+            {
+                Logic.clearState(myStartMenuButtons);
+
+                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse);
+
+                if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
+                    && currentlyClicked.type == (int)UIType.START)
+                {
+                    atStartMenu = false;
+                } 
+                else if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
+                    && currentlyClicked.type == (int)UIType.EXIT)
+                {
+                    game.Exit();
+                }
+            }
 
             currentlyClicked = Logic.hasMouseClicked(myMenu,myMouse);
             if (currentlyClicked == null)
@@ -147,6 +190,10 @@ namespace A_Merchants_Tale
             if (atStartMenu)
             {
                 startMenuBackground.Draw(startMenu, spriteBatch);
+                for(int i = 0; i < myStartMenuButtons.Length; i++)
+                {
+                    myStartMenuButtons[i].Draw(startMenuButtons[myStartMenuButtons[i].state], spriteBatch);
+                }
             }
         }
         

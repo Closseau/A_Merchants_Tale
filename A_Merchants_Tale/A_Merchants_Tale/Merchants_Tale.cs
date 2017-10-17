@@ -82,7 +82,7 @@ namespace A_Merchants_Tale
 
             // TODO: Add your update logic here
 
-            MyAssets.update();
+            MyAssets.update(this);
 
             base.Update(gameTime);
         }
