@@ -131,7 +131,7 @@ namespace A_Merchants_Tale
                 else if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
                     && currentlyClicked.type == (int)UIType.EXIT)
                 {
-                    game.Exit();
+                    
                 }
             }
 
