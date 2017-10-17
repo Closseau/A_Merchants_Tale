@@ -10,12 +10,8 @@ namespace A_Merchants_Tale
 {
     class Interactable : Entity
     {
-        public enum UIState { NEUTRAL = 0, HOVERED = 1, CLICKED = 2 };
-
-        private int myState = (int)UIState.NEUTRAL;
-
+        private int myState = 0;
         Interactable AttachedToo;
-
         private Boolean Active;
 
         public Interactable(Rectangle rectangle) : base(rectangle)
@@ -23,53 +19,44 @@ namespace A_Merchants_Tale
             Active = false;
             AttachedToo = null;
         }
-
         public int getState()
         {
             return myState;
         }
-
         // make a array of all the 'active' hovers and clicks to undo them later 
         public void setState(int state)
         {
             myState = state;
         }
-
         public Boolean getActive()
         {
             return Active;
         }
-
         public void setActive(Boolean active)
         {
             Active = active;
         }
-
         public virtual void onHover()
         {
-            myState = (int)UIState.HOVERED;
+            myState = 1;
         }
-
         public Interactable getAttachedToo()
         {
             return AttachedToo;
         }
-
         public void setAttachedToo(Interactable interactable)
         {
             AttachedToo = interactable;
         }
-
         public virtual void onClick(MouseState mouseState)
         {
-            myState = (int)UIState.CLICKED;
+            myState = 2;
             Active = true;
             // popups and stuff would go here
         }
-
         public virtual void clear()
         {
-            myState = (int)UIState.NEUTRAL;
+            myState = 0;
         }
 
     }

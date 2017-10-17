@@ -13,13 +13,17 @@ namespace A_Merchants_Tale
         SpriteBatch spriteBatch;
 
         AssetManager MyAssets;
+
+        float screenWidth;
+        float screenHeight;
+
         public Merchants_Tale()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferredBackBufferHeight = 1080;  
+            graphics.PreferredBackBufferWidth = 1600;
+            graphics.PreferredBackBufferHeight = 900;
             graphics.ApplyChanges();
         }
 
@@ -32,8 +36,11 @@ namespace A_Merchants_Tale
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            screenWidth = this.GraphicsDevice.Viewport.Bounds.Width;
+            screenHeight = this.GraphicsDevice.Viewport.Bounds.Height;
+
             MyAssets = new AssetManager();
-            MyAssets.initialize();
+            MyAssets.initialize(screenWidth, screenHeight);
 
             base.Initialize();
             IsMouseVisible = true;

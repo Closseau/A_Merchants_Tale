@@ -15,7 +15,6 @@ namespace A_Merchants_Tale
         {
 
         }
-
         public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState)
         {
           //  Boolean hasFoundHover = false;
@@ -37,9 +36,8 @@ namespace A_Merchants_Tale
                 {
                     if (element != null && Logic.checkMouseCollison(element, mouseState))
                     {
-                        if (element.getState() != (int)Interactable.UIState.CLICKED)
+                        if (element.getState() != 2)
                         {
-                            clearState(interactable);
                             element.onHover();
                         }
                         return element; //idea!!! send back interactable then check sent back for state!!! 
@@ -47,45 +45,31 @@ namespace A_Merchants_Tale
                 }
             }
             clearState(interactable);
-            
+
             return null;
         }
-
         public static Boolean checkMouseCollison(Interactable interactable, MouseState mouseState)
         {
-
             return interactable.getRectangle().Contains(mouseState.Position);
-
-            /*
-            Rectangle myRectangle = interactable.getRectangle();
-            if (myRectangle.Contains(mouseState.Position))
-            {
-                return true;
-            }
-            return false;
-            */
         }
-
         public static void clearState(Interactable[] interactable)
         {
             //need to get array of all interactables besides background
             foreach (Interactable element in interactable)
             {
-                if (element != null && element.getState() != (int)Interactable.UIState.CLICKED)
-                {
+                if (element != null && element.getState() != 2)
                     element.clear();
-                }
             }
          }
-
         public static void clearClickedState(Interactable[] interactable)
         {
             foreach (Interactable element in interactable)
             {
-                if (element != null && element.getState() == (int)Interactable.UIState.CLICKED)
+                if (element != null && element.getState() == 2)
                 {
                     element.clear();
-                }           
+
+                }
             }
         }
     }

@@ -15,22 +15,19 @@ namespace A_Merchants_Tale
 
             setActive(false);
         }
-
         public DynamicMenu(Rectangle rectangle, Interactable interactable) : base(rectangle)
         {
             this.setAttachedToo(interactable);
             setActive(true);
-            setState((int)Interactable.UIState.CLICKED);
+            setState(2);
 
         }
-
         public override void clear()
         {
-            setState((int)Interactable.UIState.NEUTRAL);
+            setState(0);
             setActive(false);
             setRectangle(new Rectangle(0,0,0,0));
         }
-
         public void Display()
         {
 
