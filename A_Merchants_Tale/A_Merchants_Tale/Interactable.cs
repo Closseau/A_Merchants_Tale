@@ -9,11 +9,7 @@ using System.Threading.Tasks;
 namespace A_Merchants_Tale
 {
     class Interactable : Entity
-    {   
-        private int myState = (int)UIState.NEUTRAL;
-
-        //Interactable AttachedToo;
-        
+    {           
         public Interactable(Rectangle rectangle) : base(rectangle)
         {
             active = false;
@@ -24,35 +20,23 @@ namespace A_Merchants_Tale
 
         public Boolean active { get; set; }
 
-        public virtual void onHover()
-        {
-            myState = (int)UIState.HOVERED;
-        }
-
         public Interactable AttachedToo { get; set; }
 
-        /*
-        public Interactable getAttachedToo()
+        public virtual void onHover()
         {
-            return AttachedToo;
+            state = (int)UIState.HOVERED;
         }
-       
-        public void setAttachedToo(Interactable interactable)
-        {
-            AttachedToo = interactable;
-        }
-        */
-
+        
         public virtual void onClick(MouseState mouseState)
         {
-            myState = (int)UIState.CLICKED;
+            state = (int)UIState.CLICKED;
             active = true;
             // popups and stuff would go here
         }
 
         public virtual void clear()
         {
-            myState = (int)UIState.NEUTRAL;
+            state = (int)UIState.NEUTRAL;
         }
 
     }
