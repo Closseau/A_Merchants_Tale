@@ -41,7 +41,7 @@ namespace A_Merchants_Tale
 
         bool atStartMenu;
 
-        int amountOfTiles = 11;
+        int amountOfTiles = 10;
 
         public AssetManager()
         {
@@ -152,8 +152,6 @@ namespace A_Merchants_Tale
                 }
             }
 
-            
-
             currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse);
             if (currentlyClicked == null)
             {
@@ -232,12 +230,7 @@ namespace A_Merchants_Tale
                         myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].state], spriteBatch);
                 }
             }
-<<<<<<< HEAD
-        }
-=======
-          
+
         }     
-      
->>>>>>> refs/remotes/origin/master
     }
 }
