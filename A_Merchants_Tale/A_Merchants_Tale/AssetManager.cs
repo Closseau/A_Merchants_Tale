@@ -12,7 +12,6 @@ namespace A_Merchants_Tale
 {
     class AssetManager
     {
-
         float screenWidth;
         float screenHeight;
 
@@ -29,7 +28,11 @@ namespace A_Merchants_Tale
 
         static DynamicMenu[] myMenu;
         static ShopTile[] myTiles;
+
+        static MenuOption[] myOptions;
+
         static Interactable[] myStartMenuButtons;
+
 
         MouseState myMouse;
 
@@ -37,6 +40,8 @@ namespace A_Merchants_Tale
         Interactable currentlyClicked;
 
         bool atStartMenu;
+
+        int amountOfTiles = 11;
 
         public AssetManager()
         {
@@ -46,7 +51,18 @@ namespace A_Merchants_Tale
         public void initialize(float width, float height)
         {
             screenWidth = width;
-            screenHeight = height;
+            screenHeight = height;            
+            
+            myTiles = new ShopTile[amountOfTiles];
+            myMenu = new DynamicMenu[amountOfTiles];
+            myOptions = new MenuOption[4];
+            myMenu[1] = new DynamicMenu(new Rectangle(0, 0, 150, 300));                
+
+            for (int i = 0; i < amountOfTiles; i++)
+            {
+                myTiles[i] = new ShopTile(new Rectangle((int)(0.1875 * screenWidth) + (int)(0.09375 * screenWidth * (i % 5)), 
+                    (int)(screenHeight/3) + ((int)(screenHeight / 6) * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
+            }
 
             atStartMenu = true;
 
@@ -71,9 +87,7 @@ namespace A_Merchants_Tale
                 myStartMenuButtons[1].width, myStartMenuButtons[1].height));
             myStartMenuButtons[1].type = (int)UIType.EXIT;
 
-            myTiles = new ShopTile[10];
-
-            myMenu = new DynamicMenu[10];
+            
             myMenu[1] = new DynamicMenu(new Rectangle(0, 0, (int)(0.09375 * screenWidth), (int)(screenHeight/3)));
 
             previouslyClicked = new DynamicMenu(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
@@ -81,11 +95,7 @@ namespace A_Merchants_Tale
 
             //0.1875 and 1/3 are the coefficients needed to start making the tiles at (300,300) on a 1600x900 screen
             //0.09375 and 1/6 are the coefficients needed to separate the tiles by 150 pixels on a 1600x900 screen
-            for (int i = 0; i < 10; i++)
-            {
-                myTiles[i] = new ShopTile(new Rectangle((int)(0.1875 * screenWidth) + (int)(0.09375 * screenWidth * (i % 5)), 
-                    (int)(screenHeight/3) + ((int)(screenHeight / 6) * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
-            }
+
         }
 
         public void loadContent(Game game)
@@ -110,7 +120,7 @@ namespace A_Merchants_Tale
             menuOption[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Menu/MenuOption0");
             menuOption[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Menu/MenuOption1");
             menuOption[(int)UIState.CLICKED] = game.Content.Load<Texture2D>("Textures/Interactable/Menu/MenuOption2");
-
+            
         }
 
         public void update(Game game)
@@ -121,6 +131,8 @@ namespace A_Merchants_Tale
 
             Logic.clearState(myMenu);
             Logic.clearState(myTiles);
+            Logic.clearState(myOptions);
+
 
             if(atStartMenu)
             {
@@ -134,36 +146,45 @@ namespace A_Merchants_Tale
                     atStartMenu = false;
                 } 
                 else if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
-                    && currentlyClicked.type == (int)UIType.EXIT)
+                   && currentlyClicked.type == (int)UIType.EXIT)
                 {
                     game.Exit();
                 }
             }
 
-            currentlyClicked = Logic.hasMouseClicked(myMenu,myMouse);
+            
+
+            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse);
             if (currentlyClicked == null)
             {
-                currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse);
+                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse);
                 if (currentlyClicked == null)
                 {
-                    // repeat for other arrays
-
-                    // then on the last one clear clicked
-                    if (myMouse.LeftButton == ButtonState.Pressed)
+                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse);
+                    if (currentlyClicked == null)
                     {
-                        Logic.clearClickedState(myMenu);
-                        Logic.clearClickedState(myTiles);
+                        // then on the last one clear clicked
+                        if (myMouse.LeftButton == ButtonState.Pressed)
+                        {
+                            Logic.clearClickedState(myOptions);
+                            Logic.clearClickedState(myMenu);
+                            Logic.clearClickedState(myTiles);                            
+                        }
+                    }
+                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
+                    {
+                        previouslyClicked.state = (int)UIState.NEUTRAL;
+                        previouslyClicked = currentlyClicked;
                     }
                 }
                 else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
                 {
-                      previouslyClicked.state = (int)UIState.NEUTRAL;
-                      previouslyClicked = currentlyClicked;
+                    previouslyClicked.state = (int)UIState.NEUTRAL;
+                    previouslyClicked = currentlyClicked;
                 }
             }
             else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
-            {
-                
+            {                
                 previouslyClicked.state = (int)UIState.NEUTRAL;
                 previouslyClicked = currentlyClicked;
             }
@@ -175,14 +196,17 @@ namespace A_Merchants_Tale
         public static void setMenu(Rectangle rectangle, Interactable interactable)
         { 
             myMenu[1] = new DynamicMenu(rectangle, interactable);
+            for (int i = 0; i < myOptions.Length; i++)
+            {
+                myOptions[i] = new MenuOption(new Rectangle(rectangle.X + (rectangle.Width/2) - (65), rectangle.Y + ((rectangle.Height/(myOptions.Length * 2)) *(2*i+1)) - 25, 130, 50));
+            }
         }
 
         public void draw(SpriteBatch spriteBatch)
-        {
-
+        {            
             shopBackground.Draw(shop, spriteBatch);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < amountOfTiles; i++)
             {
                 myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
             }
@@ -190,6 +214,11 @@ namespace A_Merchants_Tale
             if (myMenu[1].active)
             {
                 myMenu[1].Draw(menu, spriteBatch);
+
+                for (int i = 0; i < myOptions.Length; i++)
+                {
+                    myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
+                }
             }
 
             if (atStartMenu)
@@ -203,6 +232,12 @@ namespace A_Merchants_Tale
                         myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].state], spriteBatch);
                 }
             }
+<<<<<<< HEAD
         }
+=======
+          
+        }     
+      
+>>>>>>> refs/remotes/origin/master
     }
 }
