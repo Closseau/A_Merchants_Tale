@@ -17,7 +17,8 @@ namespace A_Merchants_Tale
 
         Texture2D shop;
         Texture2D startMenu;
-        Texture2D[] startMenuButtons = new Texture2D[2];
+        Texture2D[] startMenuStart = new Texture2D[2];
+        Texture2D[] startMenuExit = new Texture2D[2];
         Texture2D[] tile = new Texture2D[3];
         Texture2D[] menuOption = new Texture2D[3];
         Texture2D menu;
@@ -40,7 +41,7 @@ namespace A_Merchants_Tale
 
         bool atStartMenu;
 
-        int amountOfTiles = 11;
+        int amountOfTiles = 10;
 
         public AssetManager()
         {
@@ -74,7 +75,8 @@ namespace A_Merchants_Tale
             myStartMenuButtons[0].width = (int)(0.375 * screenWidth);
             myStartMenuButtons[0].height = (int)(screenHeight / 6);
             myStartMenuButtons[0] = new Interactable(new Rectangle((int)((screenWidth / 2) - (myStartMenuButtons[0].width / 2)),
-                (int)((screenHeight / 2) - (myStartMenuButtons[0].height / 2)), myStartMenuButtons[0].width, myStartMenuButtons[0].height));
+                (int)((screenHeight / 2) - (myStartMenuButtons[0].height / 2)), 
+                myStartMenuButtons[0].width, myStartMenuButtons[0].height));
             myStartMenuButtons[0].type = (int)UIType.START;
 
             myStartMenuButtons[1] = new Interactable(new Rectangle(0, 0, 0, 0));
@@ -101,8 +103,11 @@ namespace A_Merchants_Tale
 
             startMenu = game.Content.Load<Texture2D>("Textures/Static/Holo1");
 
-            startMenuButtons[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile0");
-            startMenuButtons[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile1");
+            startMenuStart[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button");
+            startMenuStart[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button Hover");
+
+            startMenuExit[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button");
+            startMenuExit[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button Hover");
 
             shop = game.Content.Load<Texture2D>("Textures/Static/Holo2");
 
@@ -147,8 +152,6 @@ namespace A_Merchants_Tale
                 }
             }
 
-            
-
             currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse);
             if (currentlyClicked == null)
             {
@@ -189,7 +192,7 @@ namespace A_Merchants_Tale
         }
 
         public static void setMenu(Rectangle rectangle, Interactable interactable)
-        {
+        { 
             myMenu[1] = new DynamicMenu(rectangle, interactable);
             for (int i = 0; i < myOptions.Length; i++)
             {
@@ -221,11 +224,13 @@ namespace A_Merchants_Tale
                 startMenuBackground.Draw(startMenu, spriteBatch);
                 for(int i = 0; i < myStartMenuButtons.Length; i++)
                 {
-                    myStartMenuButtons[i].Draw(startMenuButtons[myStartMenuButtons[i].state], spriteBatch);
+                    if(myStartMenuButtons[i].type == (int)UIType.START)
+                        myStartMenuButtons[i].Draw(startMenuStart[myStartMenuButtons[i].state], spriteBatch);
+                    else if(myStartMenuButtons[i].type == (int)UIType.EXIT)
+                        myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].state], spriteBatch);
                 }
             }
-          
+
         }     
-      
     }
 }
