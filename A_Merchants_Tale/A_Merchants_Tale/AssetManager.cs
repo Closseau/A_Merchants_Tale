@@ -12,26 +12,36 @@ namespace A_Merchants_Tale
 {
     class AssetManager
     {
-
         float screenWidth;
         float screenHeight;
 
-        Texture2D background;
+        Texture2D shop;
+        Texture2D startMenu;
+        Texture2D[] startMenuStart = new Texture2D[2];
+        Texture2D[] startMenuExit = new Texture2D[2];
         Texture2D[] tile = new Texture2D[3];
         Texture2D[] menuOption = new Texture2D[3];
         Texture2D menu;
 
-        Background myBackground;
+        Background shopBackground;
+        Background startMenuBackground;
 
         static DynamicMenu[] myMenu;
         static ShopTile[] myTiles;
 
+        static MenuOption[] myOptions;
+
+        static Interactable[] myStartMenuButtons;
+
+
         MouseState myMouse;
 
-        Interactable previouslyClicked = new DynamicMenu(new Rectangle(0, 0, 150, 300));
+        Interactable previouslyClicked;
         Interactable currentlyClicked;
 
-        bool atMenu;
+        bool atStartMenu;
+
+        int amountOfTiles = 10;
 
         public AssetManager()
         {
@@ -41,23 +51,65 @@ namespace A_Merchants_Tale
         public void initialize(float width, float height)
         {
             screenWidth = width;
-            screenHeight = height;
-
-            myBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
-            myTiles = new ShopTile[10];
-            myMenu = new DynamicMenu[10];
+            screenHeight = height;            
+            
+            myTiles = new ShopTile[amountOfTiles];
+            myMenu = new DynamicMenu[amountOfTiles];
+            myOptions = new MenuOption[4];
             myMenu[1] = new DynamicMenu(new Rectangle(0, 0, 150, 300));                
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < amountOfTiles; i++)
             {
-                myTiles[i] = new ShopTile(new Rectangle(300 + (150 * (i % 5)), 300 + (150 * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
+                myTiles[i] = new ShopTile(new Rectangle((int)(0.1875 * screenWidth) + (int)(0.09375 * screenWidth * (i % 5)), 
+                    (int)(screenHeight/3) + ((int)(screenHeight / 6) * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
             }
+
+            atStartMenu = true;
+
+            startMenuBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
+            shopBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
+
+            myStartMenuButtons = new Interactable[2];
+
+            myStartMenuButtons[0] = new Interactable(new Rectangle(0, 0, 0, 0));
+            myStartMenuButtons[0].width = (int)(0.375 * screenWidth);
+            myStartMenuButtons[0].height = (int)(screenHeight / 6);
+            myStartMenuButtons[0] = new Interactable(new Rectangle((int)((screenWidth / 2) - (myStartMenuButtons[0].width / 2)),
+                (int)((screenHeight / 2) - (myStartMenuButtons[0].height / 2)), 
+                myStartMenuButtons[0].width, myStartMenuButtons[0].height));
+            myStartMenuButtons[0].type = (int)UIType.START;
+
+            myStartMenuButtons[1] = new Interactable(new Rectangle(0, 0, 0, 0));
+            myStartMenuButtons[1].width = (int)(0.375 * screenWidth);
+            myStartMenuButtons[1].height = (int)(screenHeight / 6);
+            myStartMenuButtons[1] = new Interactable(new Rectangle((int)((screenWidth / 2) - (myStartMenuButtons[1].width / 2)),
+                (int)((screenHeight / 2) + myStartMenuButtons[1].height), 
+                myStartMenuButtons[1].width, myStartMenuButtons[1].height));
+            myStartMenuButtons[1].type = (int)UIType.EXIT;
+
+            
+            myMenu[1] = new DynamicMenu(new Rectangle(0, 0, (int)(0.09375 * screenWidth), (int)(screenHeight/3)));
+
+            previouslyClicked = new DynamicMenu(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
+
+
+            //0.1875 and 1/3 are the coefficients needed to start making the tiles at (300,300) on a 1600x900 screen
+            //0.09375 and 1/6 are the coefficients needed to separate the tiles by 150 pixels on a 1600x900 screen
+
         }
 
         public void loadContent(Game game)
         {
 
-            background = game.Content.Load<Texture2D>("Textures/Static/BackGround");
+            startMenu = game.Content.Load<Texture2D>("Textures/Static/Holo1");
+
+            startMenuStart[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button");
+            startMenuStart[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button Hover");
+
+            startMenuExit[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button");
+            startMenuExit[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button Hover");
+
+            shop = game.Content.Load<Texture2D>("Textures/Static/Holo2");
 
             tile[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile0");
             tile[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Tiles/Tile1");
@@ -68,10 +120,10 @@ namespace A_Merchants_Tale
             menuOption[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Menu/MenuOption0");
             menuOption[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Menu/MenuOption1");
             menuOption[(int)UIState.CLICKED] = game.Content.Load<Texture2D>("Textures/Interactable/Menu/MenuOption2");
-
+            
         }
 
-        public void update()
+        public void update(Game game)
         {
             myMouse = Mouse.GetState();
             //hover click logic ... need to move/change this
@@ -79,31 +131,58 @@ namespace A_Merchants_Tale
 
             Logic.clearState(myMenu);
             Logic.clearState(myTiles);
+            Logic.clearState(myOptions);
 
-            currentlyClicked = Logic.hasMouseClicked(myMenu,myMouse);
+
+            if(atStartMenu)
+            {
+                Logic.clearState(myStartMenuButtons);
+
+                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse);
+
+                if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
+                    && currentlyClicked.type == (int)UIType.START)
+                {
+                    atStartMenu = false;
+                } 
+                else if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
+                   && currentlyClicked.type == (int)UIType.EXIT)
+                {
+                    game.Exit();
+                }
+            }
+
+            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse);
             if (currentlyClicked == null)
             {
-                currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse);
+                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse);
                 if (currentlyClicked == null)
                 {
-                    // repeat for other arrays
-
-                    // then on the last one clear clicked
-                    if (myMouse.LeftButton == ButtonState.Pressed)
+                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse);
+                    if (currentlyClicked == null)
                     {
-                        Logic.clearClickedState(myMenu);
-                        Logic.clearClickedState(myTiles);
+                        // then on the last one clear clicked
+                        if (myMouse.LeftButton == ButtonState.Pressed)
+                        {
+                            Logic.clearClickedState(myOptions);
+                            Logic.clearClickedState(myMenu);
+                            Logic.clearClickedState(myTiles);                            
+                        }
+                    }
+                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
+                    {
+                        previouslyClicked.state = (int)UIState.NEUTRAL;
+                        previouslyClicked = currentlyClicked;
                     }
                 }
                 else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
                 {
-                      previouslyClicked.state = (int)UIState.NEUTRAL;
-                      previouslyClicked = currentlyClicked;
+                    previouslyClicked.state = (int)UIState.NEUTRAL;
+                    previouslyClicked = currentlyClicked;
                 }
             }
             else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
-            {
-                
+            {                
                 previouslyClicked.state = (int)UIState.NEUTRAL;
                 previouslyClicked = currentlyClicked;
             }
@@ -113,15 +192,19 @@ namespace A_Merchants_Tale
         }
 
         public static void setMenu(Rectangle rectangle, Interactable interactable)
-        {
+        { 
             myMenu[1] = new DynamicMenu(rectangle, interactable);
+            for (int i = 0; i < myOptions.Length; i++)
+            {
+                myOptions[i] = new MenuOption(new Rectangle(rectangle.X + (rectangle.Width/2) - (65), rectangle.Y + ((rectangle.Height/(myOptions.Length * 2)) *(2*i+1)) - 25, 130, 50));
+            }
         }
 
         public void draw(SpriteBatch spriteBatch)
-        {
-            
-            myBackground.Draw(background, spriteBatch);
-            for (int i = 0; i < 10; i++)
+        {            
+            shopBackground.Draw(shop, spriteBatch);
+
+            for (int i = 0; i < amountOfTiles; i++)
             {
                 myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
             }
@@ -129,8 +212,25 @@ namespace A_Merchants_Tale
             if (myMenu[1].active)
             {
                 myMenu[1].Draw(menu, spriteBatch);
+
+                for (int i = 0; i < myOptions.Length; i++)
+                {
+                    myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
+                }
             }
-        }
-        
+
+            if (atStartMenu)
+            {
+                startMenuBackground.Draw(startMenu, spriteBatch);
+                for(int i = 0; i < myStartMenuButtons.Length; i++)
+                {
+                    if(myStartMenuButtons[i].type == (int)UIType.START)
+                        myStartMenuButtons[i].Draw(startMenuStart[myStartMenuButtons[i].state], spriteBatch);
+                    else if(myStartMenuButtons[i].type == (int)UIType.EXIT)
+                        myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].state], spriteBatch);
+                }
+            }
+
+        }     
     }
 }
