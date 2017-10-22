@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace A_Merchants_Tale
 {
-    public class Entity : Merchants_Tale
+    public class Entity
     {
-        graphics = new GraphicsDeviceManager(this);
-        float screenWidth = GraphicsDevice.Viewport.Bounds.Width;
-        float screenHeight = this.GraphicsDevice.Viewport.Bounds.Height;
-
         private Rectangle MyRectangle;
 
         public Entity(Rectangle rectangle)
