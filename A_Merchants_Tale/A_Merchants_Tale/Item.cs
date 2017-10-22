@@ -8,9 +8,13 @@ namespace A_Merchants_Tale
 {
     class Item
     {
+
+        public int ItemID { get; set; }
+        public long Value { get; set; }
         Item()
         {
 
         }
+
     }
 }
