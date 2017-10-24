@@ -55,8 +55,18 @@ namespace A_Merchants_Tale
 
         public static Boolean checkMouseCollison(Interactable interactable, MouseState mouseState)
         {
+            //return interactable.getRectangle().Contains(mouseState.Position);
 
             return interactable.rectangle.Contains(mouseState.Position);
+
+            /*
+            Rectangle myRectangle = interactable.getRectangle();
+            if (myRectangle.Contains(mouseState.Position))
+            {
+                return true;
+            }
+            return false;
+            */
         }
 
         public static void clearState(Interactable[] interactable)
@@ -80,17 +90,6 @@ namespace A_Merchants_Tale
                     element.clear();
                 }
             }
-        }
-
-        public static Boolean checkZoom(MouseState mouseState, int previousScrollValue)
-        {
-
-            if (mouseState.ScrollWheelValue < previousScrollValue)
-                return false;
-            else if (mouseState.ScrollWheelValue > previousScrollValue)
-                return true;
-            else
-                return false;
         }
     }
 }

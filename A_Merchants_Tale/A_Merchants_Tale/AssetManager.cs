@@ -35,9 +35,6 @@ namespace A_Merchants_Tale
 
 
         MouseState myMouse;
-        int previousScrollValue;
-        static bool zoomIn;
-        float zoomValue = 1 / 10;
 
         Interactable previouslyClicked;
         Interactable currentlyClicked;
@@ -53,8 +50,6 @@ namespace A_Merchants_Tale
 
         public void initialize(float screenWidth, float screenHeight)
         {
-            previousScrollValue = Mouse.GetState().ScrollWheelValue;
-
             xAdjust = screenWidth / 1920;
             yAdjust = screenHeight / 1080;
             
@@ -129,9 +124,6 @@ namespace A_Merchants_Tale
             myMouse = Mouse.GetState();
             //hover click logic ... need to move/change this
             //change idea.. condition too see if mouse is clicked if so run front to back on interactibles untill one is found activate Onclick() and "break out" and run the rest for hovers
-
-            zoomIn = Logic.checkZoom(myMouse, previousScrollValue);
-            previousScrollValue = myMouse.ScrollWheelValue;
 
             Logic.clearState(myMenu);
             Logic.clearState(myTiles);
@@ -216,10 +208,6 @@ namespace A_Merchants_Tale
 
             for (int i = 0; i < amountOfTiles; i++)
             {
-                if(zoomIn)
-                {
-                    myTiles[i].width = (int)(myTiles[i].width + myTiles[i].width * zoomValue);
-                }
                 myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
             }
 
@@ -245,6 +233,6 @@ namespace A_Merchants_Tale
                 }
             }
 
-        } 
+        }     
     }
 }
