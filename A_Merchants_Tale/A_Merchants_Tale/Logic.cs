@@ -82,12 +82,19 @@ namespace A_Merchants_Tale
             }
         }
 
-        public static Boolean checkZoom(MouseState mouseState, int previousScrollValue)
+        public static Boolean checkZoomIn(MouseState mouseState, int previousScrollValue)
+        {
+
+            if (mouseState.ScrollWheelValue > previousScrollValue)
+                return true;
+            else
+                return false;
+        }
+
+        public static Boolean checkZoomOut(MouseState mouseState, int previousScrollValue)
         {
 
             if (mouseState.ScrollWheelValue < previousScrollValue)
-                return false;
-            else if (mouseState.ScrollWheelValue > previousScrollValue)
                 return true;
             else
                 return false;
