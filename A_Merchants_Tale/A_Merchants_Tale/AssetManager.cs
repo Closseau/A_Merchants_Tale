@@ -240,10 +240,14 @@ namespace A_Merchants_Tale
                 {
                     if (zoomIn)
                     {
+                        myStartMenuButtons[i].xPos -= (int)(myStartMenuButtons[i].width * (zoomValue / 2));
+                        myStartMenuButtons[i].yPos += (int)(myStartMenuButtons[i].height * (zoomValue / 2));
                         myStartMenuButtons[i].width += (int)(myStartMenuButtons[i].width * zoomValue);
                         myStartMenuButtons[i].height += (int)(myStartMenuButtons[i].height * zoomValue);
                     } else if (zoomOut)
                     {
+                        myStartMenuButtons[i].xPos += (int)(myStartMenuButtons[i].width * (zoomValue / 2));
+                        myStartMenuButtons[i].yPos -= (int)(myStartMenuButtons[i].height * (zoomValue / 2));
                         myStartMenuButtons[i].width -= (int)(myStartMenuButtons[i].width * zoomValue);
                         myStartMenuButtons[i].height -= (int)(myStartMenuButtons[i].height * zoomValue);
                     }
