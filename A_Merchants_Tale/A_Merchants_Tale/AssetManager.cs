@@ -54,8 +54,6 @@ namespace A_Merchants_Tale
 
         public void initialize(float screenWidth, float screenHeight)
         {
-            zoomValue = 0.05f;
-
             myMouse = Mouse.GetState();
             previousScrollValue = myMouse.ScrollWheelValue;
 
@@ -131,8 +129,6 @@ namespace A_Merchants_Tale
         public void update(Game game)
         {
             myMouse = Mouse.GetState();
-            //hover click logic ... need to move/change this
-            //change idea.. condition too see if mouse is clicked if so run front to back on interactibles untill one is found activate Onclick() and "break out" and run the rest for hovers
 
             zoomIn = Logic.checkZoomIn(myMouse, previousScrollValue);
             zoomOut = Logic.checkZoomOut(myMouse, previousScrollValue);
@@ -236,9 +232,10 @@ namespace A_Merchants_Tale
             if (atStartMenu)
             {
                 startMenuBackground.Draw(startMenu, spriteBatch);
+
                 for(int i = 0; i < myStartMenuButtons.Length; i++)
                 {
-                    if(zoomIn)
+                    if (zoomIn)
                     {
                         myStartMenuButtons[i].xPos -= (int)(myStartMenuButtons[i].width * (zoomValue / 2));
                         myStartMenuButtons[i].yPos += (int)(myStartMenuButtons[i].height * (zoomValue / 2));
@@ -259,6 +256,6 @@ namespace A_Merchants_Tale
                 }
             }
 
-        } 
+        }     
     }
 }

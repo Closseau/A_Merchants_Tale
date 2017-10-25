@@ -21,7 +21,7 @@ namespace A_Merchants_Tale
 
         public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState)
         {
-          //  Boolean hasFoundHover = false;
+            //  Boolean hasFoundHover = false;
 
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
@@ -55,8 +55,18 @@ namespace A_Merchants_Tale
 
         public static Boolean checkMouseCollison(Interactable interactable, MouseState mouseState)
         {
+            //return interactable.getRectangle().Contains(mouseState.Position);
 
             return interactable.rectangle.Contains(mouseState.Position);
+
+            /*
+            Rectangle myRectangle = interactable.getRectangle();
+            if (myRectangle.Contains(mouseState.Position))
+            {
+                return true;
+            }
+            return false;
+            */
         }
 
         public static void clearState(Interactable[] interactable)
@@ -84,7 +94,6 @@ namespace A_Merchants_Tale
 
         public static Boolean checkZoomIn(MouseState mouseState, int previousScrollValue)
         {
-
             if (mouseState.ScrollWheelValue > previousScrollValue)
                 return true;
             else
@@ -93,7 +102,6 @@ namespace A_Merchants_Tale
 
         public static Boolean checkZoomOut(MouseState mouseState, int previousScrollValue)
         {
-
             if (mouseState.ScrollWheelValue < previousScrollValue)
                 return true;
             else
