@@ -35,6 +35,10 @@ namespace A_Merchants_Tale
 
 
         MouseState myMouse;
+        int previousScrollValue;
+        bool zoomIn;
+        bool zoomOut;
+        float zoomValue;
 
         Interactable previouslyClicked;
         Interactable currentlyClicked;
@@ -50,6 +54,11 @@ namespace A_Merchants_Tale
 
         public void initialize(float screenWidth, float screenHeight)
         {
+            myMouse = Mouse.GetState();
+            previousScrollValue = myMouse.ScrollWheelValue;
+
+            zoomValue = 0.05f;
+
             xAdjust = screenWidth / 1920;
             yAdjust = screenHeight / 1080;
             
@@ -122,8 +131,10 @@ namespace A_Merchants_Tale
         public void update(Game game)
         {
             myMouse = Mouse.GetState();
-            //hover click logic ... need to move/change this
-            //change idea.. condition too see if mouse is clicked if so run front to back on interactibles untill one is found activate Onclick() and "break out" and run the rest for hovers
+
+            zoomIn = Logic.checkZoomIn(myMouse, previousScrollValue);
+            zoomOut = Logic.checkZoomOut(myMouse, previousScrollValue);
+            previousScrollValue = myMouse.ScrollWheelValue;
 
             Logic.clearState(myMenu);
             Logic.clearState(myTiles);
@@ -224,9 +235,19 @@ namespace A_Merchants_Tale
             if (atStartMenu)
             {
                 startMenuBackground.Draw(startMenu, spriteBatch);
+
                 for(int i = 0; i < myStartMenuButtons.Length; i++)
                 {
-                    if(myStartMenuButtons[i].type == (int)UIType.START)
+                    if (zoomIn)
+                    {
+                        myStartMenuButtons[i].width += (int)(myStartMenuButtons[i].width * zoomValue);
+                        myStartMenuButtons[i].height += (int)(myStartMenuButtons[i].height * zoomValue);
+                    } else if (zoomOut)
+                    {
+                        myStartMenuButtons[i].width -= (int)(myStartMenuButtons[i].width * zoomValue);
+                        myStartMenuButtons[i].height -= (int)(myStartMenuButtons[i].height * zoomValue);
+                    }
+                    if (myStartMenuButtons[i].type == (int)UIType.START)
                         myStartMenuButtons[i].Draw(startMenuStart[myStartMenuButtons[i].state], spriteBatch);
                     else if(myStartMenuButtons[i].type == (int)UIType.EXIT)
                         myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].state], spriteBatch);

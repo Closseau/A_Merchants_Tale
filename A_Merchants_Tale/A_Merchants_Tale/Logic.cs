@@ -21,7 +21,7 @@ namespace A_Merchants_Tale
 
         public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState)
         {
-          //  Boolean hasFoundHover = false;
+            //  Boolean hasFoundHover = false;
 
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
@@ -90,6 +90,22 @@ namespace A_Merchants_Tale
                     element.clear();
                 }
             }
+        }
+
+        public static Boolean checkZoomIn(MouseState mouseState, int previousScrollValue)
+        {
+            if (mouseState.ScrollWheelValue > previousScrollValue)
+                return true;
+            else
+                return false;
+        }
+
+        public static Boolean checkZoomOut(MouseState mouseState, int previousScrollValue)
+        {
+            if (mouseState.ScrollWheelValue < previousScrollValue)
+                return true;
+            else
+                return false;
         }
     }
 }
