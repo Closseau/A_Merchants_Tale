@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace A_Merchants_Tale
 {
     class Interactable : Entity
-    {   
+    {
 
         public Interactable(Rectangle rectangle) : base(rectangle)
         {
@@ -17,11 +17,13 @@ namespace A_Merchants_Tale
             AttachedToo = null;
             lastAttachedIndex = 0;
             AttachedFrom = new Interactable[10];
+            screen = 0;
         }
 
         public int state { get; set; }
         public int id { get; set; }
         public int type { get; set; }
+        public int screen { get; set; }
         public Boolean active { get; set; }
 
         public virtual void onHover()
@@ -68,9 +70,43 @@ namespace A_Merchants_Tale
                 if (AttachedFrom[i] != null)
                 {
                     AttachedFrom[i].clearAttachedFrom();
+                    AttachedFrom[i] = null;
                 }
             }
             clear();
+        }
+        //moves everything above this object (including itself) to a new position based on the new mouse position
+        public void moveEntity(MouseState mouseState)
+        {
+            int xMovementAdjust = mouseState.X - this.xPos;
+            int yMovementAdjust = mouseState.Y - this.yPos;
+
+            int i;
+            for (i = 0; i < AttachedFrom.Length; i++)
+            {
+                if (AttachedFrom[i] != null)
+                {
+                    AttachedFrom[i].moveEntity(xMovementAdjust, yMovementAdjust);
+                }
+            }
+
+            this.xPos += xMovementAdjust;
+            this.yPos += yMovementAdjust;
+        }
+        public void moveEntity(int xMovementAdjust, int yMovementAdjust)
+        {
+
+            int i;
+            for (i = 0; i < AttachedFrom.Length; i++)
+            {
+                if (AttachedFrom[i] != null)
+                {
+                    AttachedFrom[i].moveEntity(xMovementAdjust, yMovementAdjust);
+                }
+            }
+
+            this.xPos += xMovementAdjust;
+            this.yPos += yMovementAdjust;
         }
     }
 }

@@ -17,8 +17,8 @@ namespace A_Merchants_Tale
 
         Texture2D shop;
         Texture2D startMenu;
-        Texture2D[] startMenuStart = new Texture2D[2];
-        Texture2D[] startMenuExit = new Texture2D[2];
+        Texture2D[] startMenuStart = new Texture2D[3];
+        Texture2D[] startMenuExit = new Texture2D[3];
         Texture2D[] tile = new Texture2D[3];
         Texture2D[] menuOption = new Texture2D[3];
         Texture2D menu;
@@ -29,6 +29,7 @@ namespace A_Merchants_Tale
         DynamicMenu[] myMenu;
         ShopTile[] myTiles;
 
+
         MenuOption[] myOptions;
 
         Interactable[] myStartMenuButtons;
@@ -38,9 +39,10 @@ namespace A_Merchants_Tale
 
         Interactable previouslyClicked;
         Interactable currentlyClicked;
+        Interactable mouseUpProspect;
 
         bool atStartMenu;
-
+        int currentScreen = 0;
         int amountOfTiles = 10;
 
         public AssetManager()
@@ -56,17 +58,20 @@ namespace A_Merchants_Tale
             myTiles = new ShopTile[amountOfTiles];
             myMenu = new DynamicMenu[amountOfTiles];
             myOptions = new MenuOption[4];
-            myMenu[1] = new DynamicMenu(new Rectangle(0, 0, 150, 300));                
+            myMenu[1] = new DynamicMenu(new Rectangle(0, 0, 150, 300));
+            myMenu[1].screen = 1;
 
             for (int i = 0; i < amountOfTiles; i++)
             {
                 myTiles[i] = new ShopTile(new Rectangle((int)(0.1875 * screenWidth) + (int)(0.09375 * screenWidth * (i % 5)), 
                     (int)(screenHeight/3) + ((int)(screenHeight / 6) * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
+                myTiles[i].screen = 1;
             }
 
             atStartMenu = true;
 
             startMenuBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
+            
             shopBackground = new Background(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
 
             myStartMenuButtons = new Interactable[2];
@@ -106,9 +111,11 @@ namespace A_Merchants_Tale
 
             startMenuStart[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button");
             startMenuStart[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button Hover");
+            startMenuStart[(int)UIState.CLICKED] = game.Content.Load<Texture2D>("Textures/Interactable/Menu/MenuOption2");
 
             startMenuExit[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button");
             startMenuExit[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button Hover");
+            startMenuExit[(int)UIState.CLICKED] = game.Content.Load<Texture2D>("Textures/Interactable/Menu/MenuOption2");
 
             shop = game.Content.Load<Texture2D>("Textures/Static/Holo2");
 
@@ -126,7 +133,19 @@ namespace A_Merchants_Tale
 
         public void update(Game game)
         {
+            Boolean mouseDown = false;
+            Boolean mouseUp = false;
+
+
+
             myMouse = Mouse.GetState();
+
+            if (myMouse.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
+                mouseDown = true;
+            if (myMouse.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
+                mouseUp = true;
+
+
             //hover click logic ... need to move/change this
             //change idea.. condition too see if mouse is clicked if so run front to back on interactibles untill one is found activate Onclick() and "break out" and run the rest for hovers
 
@@ -139,31 +158,33 @@ namespace A_Merchants_Tale
             {
                 Logic.clearState(myStartMenuButtons);
 
-                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse, previousMouseState);
+                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse, previousMouseState, currentScreen);
 
                 if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
-                    && currentlyClicked.type == (int)UIType.START)
+                    && currentlyClicked.type == (int)UIType.START && mouseUp)
                 {
                     atStartMenu = false;
+                    currentScreen++;
                 } 
                 else if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
-                   && currentlyClicked.type == (int)UIType.EXIT)
+                   && currentlyClicked.type == (int)UIType.EXIT && mouseUp)
                 {
                     game.Exit();
                 }
             }
 
-            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse, previousMouseState);
+            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse, previousMouseState, currentScreen);
             if (currentlyClicked == null)
             {
-                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse, previousMouseState);
+                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse, previousMouseState, currentScreen);
                 if (currentlyClicked == null)
                 {
-                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse, previousMouseState);
+                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse, previousMouseState, currentScreen);
                     if (currentlyClicked == null)
                     {
-                        // then on the last one clear clicked
-                        if (myMouse.LeftButton == ButtonState.Pressed)
+                        // then on the last one clear clicked iuwefjnliuJNEWLIOFUNAELIRSUNGLIREUTNGOISRENJTGOIJREGIOJMREAOG <---- LITTERALLY THE CAUSE OF MOST OF MY PROBLEMS
+                       // if (myMouse.LeftButton == ButtonState.Pressed)
+                       if (mouseDown)
                         {
                             previouslyClicked.clearAttachedToo();
                             /* Trying new clear code
@@ -173,30 +194,51 @@ namespace A_Merchants_Tale
                             */
                         }
                     }
-                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
+                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked == previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
+                    {
+                        currentlyClicked.AttachedFrom[0].moveEntity(myMouse);
+                        mouseUpProspect = null;
+                    }
+                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
                     {
                         //New ShopTile clicked
                         previouslyClicked.clearAttachedToo();
                         //previouslyClicked.state = (int)UIState.NEUTRAL;
                         previouslyClicked = currentlyClicked;
                         addAttached(currentlyClicked);
+                        mouseUpProspect = null;
                     }
                 }
-                else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
+                else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
                 {
                     //New Menu clicked
                     //previouslyClicked.state = (int)UIState.NEUTRAL;
                     previouslyClicked.clearAttachedToo();
                     previouslyClicked = currentlyClicked;
+                    mouseUpProspect = null;
                 }
             }
-            else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
+            else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
             {
                 //New MenuOption clicked               
                 //previouslyClicked.state = (int)UIState.NEUTRAL;
                 previouslyClicked.clearAttachedToo();
                 previouslyClicked = currentlyClicked;
+                mouseUpProspect = null;
+
             }
+
+            if (mouseUp && mouseUpProspect != null)
+            {
+                mouseUpProspect.clearAttachedFrom();
+                if (currentlyClicked != null)
+                    currentlyClicked.clearAttachedFrom();
+                mouseUpProspect = null;
+
+            }
+            //oop this needs to be below code directly above or you might waste hours trying to figure out why menus aren't generating.. rip
+            if (currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED)
+                mouseUpProspect = currentlyClicked;
 
             currentlyClicked = null;
 
@@ -225,7 +267,7 @@ namespace A_Merchants_Tale
             else if (interactable.AttachedFrom[interactable.lastAttachedIndex - 1].GetType() == typeof(MenuOption))
             {
                 i = 0;
-                while (done)
+                while (done == false)
                 {
 
                     if (myOptions[i] == null)
@@ -254,12 +296,13 @@ namespace A_Merchants_Tale
 
             for (int i = 0; i < amountOfTiles; i++)
             {
-                myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
+                if (myTiles[i].screen == currentScreen)
+                    myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
             }
             
             for (int i = 0; i < myMenu.Length; i++)
             {
-                if (myMenu[i] != null && myMenu[i].state == (int)UIState.CLICKED)
+                if (myMenu[i] != null && myMenu[i].state == (int)UIState.CLICKED && myMenu[i].screen == currentScreen)
                 {
                     myMenu[i].Draw(menu, spriteBatch);
                     /*
@@ -273,14 +316,15 @@ namespace A_Merchants_Tale
             if (atStartMenu)
             {
                 startMenuBackground.Draw(startMenu, spriteBatch);
+            }
                 for(int i = 0; i < myStartMenuButtons.Length; i++)
                 {
-                    if(myStartMenuButtons[i].type == (int)UIType.START)
+                    if(myStartMenuButtons[i] != null && myStartMenuButtons[i].type == (int)UIType.START && myStartMenuButtons[i].screen == currentScreen)
                         myStartMenuButtons[i].Draw(startMenuStart[myStartMenuButtons[i].state], spriteBatch);
-                    else if(myStartMenuButtons[i].type == (int)UIType.EXIT)
+                    else if(myStartMenuButtons[i] != null && myStartMenuButtons[i].type == (int)UIType.EXIT && myStartMenuButtons[i].screen == currentScreen)
                         myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].state], spriteBatch);
                 }
-            }
+            
 
         }     
     }

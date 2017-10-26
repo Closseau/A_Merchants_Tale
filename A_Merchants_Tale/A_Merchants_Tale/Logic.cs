@@ -19,17 +19,19 @@ namespace A_Merchants_Tale
 
         }
 
-        public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState, MouseState previousMouseState)
+        public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState, MouseState previousMouseState, int currentScreen)
         {
           //  Boolean hasFoundHover = false;
 
-            if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
+            if ((mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released) || ((mouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)))
             {
                 foreach (Interactable element in interactable)
                 {
-                    if (element != null && Logic.checkMouseCollison(element, mouseState))
+                    if (element != null && element.screen == currentScreen && Logic.checkMouseCollison(element, mouseState))
                     {
-                        element.onClick(mouseState);
+                        element.state = (int)UIState.CLICKED;
+                        if (mouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
+                            element.onClick(mouseState);
                         return element;
                     }
                 }
@@ -38,13 +40,15 @@ namespace A_Merchants_Tale
             {
                 foreach (Interactable element in interactable)
                 {
-                    if (element != null && Logic.checkMouseCollison(element, mouseState))
+                    if (element != null && element.screen == currentScreen && Logic.checkMouseCollison(element, mouseState))
                     {
                         if (element.state != (int)UIState.CLICKED)
                         {
-                            element.onHover();
-                        }
-                        return element; //idea!!! send back interactable then check sent back for state!!! 
+
+                            //element.state = (int)UIState.HOVERED;
+                            element.onHover(); 
+                        } //idea!!! send back interactable then check sent back for state!!! 
+                            return element;
                     }
                 }
             }
