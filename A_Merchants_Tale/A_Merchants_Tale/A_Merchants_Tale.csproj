@@ -44,6 +44,7 @@
     <Compile Include="Background.cs" />
     <Compile Include="AssetManager.cs" />
     <Compile Include="DynamicMenu.cs" />
+    <Compile Include="ExitButton.cs" />
     <Compile Include="Interactable.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="MenuOption.cs" />

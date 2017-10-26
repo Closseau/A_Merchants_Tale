@@ -13,14 +13,15 @@ namespace A_Merchants_Tale
         public DynamicMenu(Rectangle rectangle) : base(rectangle)
         {
             active = false;
+            //addExitButton();
         }
 
         public DynamicMenu(Rectangle rectangle, Interactable interactable) : base(rectangle)
         {
             this.AttachedToo = interactable;
             //active = true;
-            state = (int)UIState.CLICKED;   
-            
+            state = (int)UIState.CLICKED;
+            addExitButton();
         }
 
         public override void clear()
@@ -29,6 +30,11 @@ namespace A_Merchants_Tale
            // active = false;
             //setRectangle(new Rectangle(0,0,0,0));
             rectangle = new Rectangle(0, 0, 0, 0);
+        }
+
+        public void addExitButton()
+        {
+            //this.AttachedFrom[0] = new ExitButton(new Rectangle(this.xPos + this.width - 35, this.yPos + 5, 30, 30), this);
         }
 
         public void Display()

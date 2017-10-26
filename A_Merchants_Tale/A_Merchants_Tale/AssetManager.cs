@@ -199,42 +199,52 @@ namespace A_Merchants_Tale
                         currentlyClicked.AttachedFrom[0].moveEntity(myMouse);
                         mouseUpProspect = null;
                     }
-                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
+                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
                     {
                         //New ShopTile clicked
-                        previouslyClicked.clearAttachedToo();
-                        //previouslyClicked.state = (int)UIState.NEUTRAL;
-                        previouslyClicked = currentlyClicked;
+                        if (previouslyClicked != null)
+                        {
+                            previouslyClicked.clearAttachedToo();
+                            //previouslyClicked.state = (int)UIState.NEUTRAL;
+                        }
+                            previouslyClicked = currentlyClicked;
                         addAttached(currentlyClicked);
                         mouseUpProspect = null;
                     }
                 }
-                else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
+                else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
                 {
                     //New Menu clicked
-                    //previouslyClicked.state = (int)UIState.NEUTRAL;
-                    previouslyClicked.clearAttachedToo();
-                    previouslyClicked = currentlyClicked;
+                    if (previouslyClicked != null)
+                    {
+                        previouslyClicked.clearAttachedToo();
+                        //previouslyClicked.state = (int)UIState.NEUTRAL;
+                    }
+                        previouslyClicked = currentlyClicked;
                     mouseUpProspect = null;
                 }
             }
-            else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
+            else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
             {
                 //New MenuOption clicked               
-                //previouslyClicked.state = (int)UIState.NEUTRAL;
-                previouslyClicked.clearAttachedToo();
-                previouslyClicked = currentlyClicked;
+                if (previouslyClicked != null)
+                {
+                    previouslyClicked.clearAttachedToo();
+                    //previouslyClicked.state = (int)UIState.NEUTRAL;
+                }
+                    previouslyClicked = currentlyClicked;
                 mouseUpProspect = null;
 
             }
 
-            if (mouseUp && mouseUpProspect != null)
+            if (mouseUp && mouseUpProspect != null && mouseUpProspect.extendedClickCheck(myMouse) == false)
             {
-                mouseUpProspect.clearAttachedFrom();
+                mouseUpProspect.clearAttachedToo();
                 if (currentlyClicked != null)
-                    currentlyClicked.clearAttachedFrom();
+                    currentlyClicked.clearAttachedToo();
                 mouseUpProspect = null;
-
+                previouslyClicked.clearAttachedToo();
+                previouslyClicked = null; // test for disappearign menu problem
             }
             //oop this needs to be below code directly above or you might waste hours trying to figure out why menus aren't generating.. rip
             if (currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED)
@@ -264,7 +274,7 @@ namespace A_Merchants_Tale
                     i++;
                 }
             }
-            else if (interactable.AttachedFrom[interactable.lastAttachedIndex - 1].GetType() == typeof(MenuOption))
+            else if (interactable.GetType() == typeof(DynamicMenu))
             {
                 i = 0;
                 while (done == false)
@@ -313,6 +323,13 @@ namespace A_Merchants_Tale
                     */
                 }
             }
+            for (int i = 0; i < myOptions.Length; i++)
+            {
+                if (myOptions[i] != null)
+                    myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
+            }
+
+
             if (atStartMenu)
             {
                 startMenuBackground.Draw(startMenu, spriteBatch);

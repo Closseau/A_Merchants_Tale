@@ -93,6 +93,7 @@ namespace A_Merchants_Tale
             this.xPos += xMovementAdjust;
             this.yPos += yMovementAdjust;
         }
+        //less cumbersome this way 
         public void moveEntity(int xMovementAdjust, int yMovementAdjust)
         {
 
@@ -107,6 +108,20 @@ namespace A_Merchants_Tale
 
             this.xPos += xMovementAdjust;
             this.yPos += yMovementAdjust;
+        }
+        // checks if the mouse is colliding with any element attached to the element sent.
+        public Boolean extendedClickCheck(MouseState mouseState)
+        {
+            int i;
+            for (i = 0; i < AttachedFrom.Length; i++)
+            {
+                if (AttachedFrom[i] != null)
+                {
+                    if (AttachedFrom[i].extendedClickCheck(mouseState))
+                        return true;
+                }
+            }
+            return Logic.checkMouseCollison(this, mouseState);
         }
     }
 }
