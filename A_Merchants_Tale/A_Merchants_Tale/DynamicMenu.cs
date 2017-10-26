@@ -18,7 +18,7 @@ namespace A_Merchants_Tale
         public DynamicMenu(Rectangle rectangle, Interactable interactable) : base(rectangle)
         {
             this.AttachedToo = interactable;
-            active = true;
+            //active = true;
             state = (int)UIState.CLICKED;   
             
         }
@@ -26,7 +26,7 @@ namespace A_Merchants_Tale
         public override void clear()
         {
             state = (int)UIState.NEUTRAL;
-            active = false;
+           // active = false;
             //setRectangle(new Rectangle(0,0,0,0));
             rectangle = new Rectangle(0, 0, 0, 0);
         }

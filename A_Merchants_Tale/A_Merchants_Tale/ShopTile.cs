@@ -18,7 +18,9 @@ namespace A_Merchants_Tale
         public override void onClick(MouseState mouseState)
         {
             state = (int)UIState.CLICKED;
-            AssetManager.setMenu(new Rectangle(mouseState.X, mouseState.Y, 150, 300), this);
+            //AssetManager.setMenu(new Rectangle(mouseState.X, mouseState.Y, 150, 300), this);
+            this.AttachedFrom[0] = new DynamicMenu(new Rectangle(mouseState.X, mouseState.Y, 150, 300), this);
+            //this.lastAttachedIndex++;
         }
     }
 }

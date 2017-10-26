@@ -19,11 +19,11 @@ namespace A_Merchants_Tale
 
         }
 
-        public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState)
+        public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState, MouseState previousMouseState)
         {
           //  Boolean hasFoundHover = false;
 
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
             {
                 foreach (Interactable element in interactable)
                 {

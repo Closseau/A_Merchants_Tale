@@ -26,14 +26,14 @@ namespace A_Merchants_Tale
         Background shopBackground;
         Background startMenuBackground;
 
-        static DynamicMenu[] myMenu;
-        static ShopTile[] myTiles;
+        DynamicMenu[] myMenu;
+        ShopTile[] myTiles;
 
-        static MenuOption[] myOptions;
+        MenuOption[] myOptions;
 
-        static Interactable[] myStartMenuButtons;
+        Interactable[] myStartMenuButtons;
 
-
+        MouseState previousMouseState;
         MouseState myMouse;
 
         Interactable previouslyClicked;
@@ -51,7 +51,7 @@ namespace A_Merchants_Tale
         public void initialize(float width, float height)
         {
             screenWidth = width;
-            screenHeight = height;            
+            screenHeight = height;
             
             myTiles = new ShopTile[amountOfTiles];
             myMenu = new DynamicMenu[amountOfTiles];
@@ -92,7 +92,8 @@ namespace A_Merchants_Tale
 
             previouslyClicked = new DynamicMenu(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
 
-
+            // getting an initial previous state
+            previousMouseState = Mouse.GetState();
             //0.1875 and 1/3 are the coefficients needed to start making the tiles at (300,300) on a 1600x900 screen
             //0.09375 and 1/6 are the coefficients needed to separate the tiles by 150 pixels on a 1600x900 screen
 
@@ -138,7 +139,7 @@ namespace A_Merchants_Tale
             {
                 Logic.clearState(myStartMenuButtons);
 
-                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse);
+                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse, previousMouseState);
 
                 if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
                     && currentlyClicked.type == (int)UIType.START)
@@ -152,45 +153,92 @@ namespace A_Merchants_Tale
                 }
             }
 
-            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse);
+            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse, previousMouseState);
             if (currentlyClicked == null)
             {
-                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse);
+                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse, previousMouseState);
                 if (currentlyClicked == null)
                 {
-                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse);
+                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse, previousMouseState);
                     if (currentlyClicked == null)
                     {
                         // then on the last one clear clicked
                         if (myMouse.LeftButton == ButtonState.Pressed)
                         {
+                            previouslyClicked.clearAttachedToo();
+                            /* Trying new clear code
                             Logic.clearClickedState(myOptions);
                             Logic.clearClickedState(myMenu);
-                            Logic.clearClickedState(myTiles);                            
+                            Logic.clearClickedState(myTiles);      
+                            */
                         }
                     }
                     else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
                     {
-                        previouslyClicked.state = (int)UIState.NEUTRAL;
+                        //New ShopTile clicked
+                        previouslyClicked.clearAttachedToo();
+                        //previouslyClicked.state = (int)UIState.NEUTRAL;
                         previouslyClicked = currentlyClicked;
+                        addAttached(currentlyClicked);
                     }
                 }
                 else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
                 {
-                    previouslyClicked.state = (int)UIState.NEUTRAL;
+                    //New Menu clicked
+                    //previouslyClicked.state = (int)UIState.NEUTRAL;
+                    previouslyClicked.clearAttachedToo();
                     previouslyClicked = currentlyClicked;
                 }
             }
             else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.AttachedToo != previouslyClicked)
-            {                
-                previouslyClicked.state = (int)UIState.NEUTRAL;
+            {
+                //New MenuOption clicked               
+                //previouslyClicked.state = (int)UIState.NEUTRAL;
+                previouslyClicked.clearAttachedToo();
                 previouslyClicked = currentlyClicked;
             }
 
             currentlyClicked = null;
 
+            previousMouseState = myMouse;
         }
+        public void addAttached(Interactable interactable)
+        {
+            Boolean done = false;
+            Interactable attachedFrom = interactable.AttachedFrom[interactable.lastAttachedIndex];
+            int i = 0;
+            if (interactable.GetType() == typeof(ShopTile))
+            {
+                
+                i = 0;
+                while (done == false)
+                {
 
+                    if (myMenu[i] == null || myMenu[i].state != (int) UIState.CLICKED)
+                    {
+                        myMenu[i] = (DynamicMenu) attachedFrom;
+                        done = true;
+                    }
+                    i++;
+                }
+            }
+            else if (interactable.AttachedFrom[interactable.lastAttachedIndex - 1].GetType() == typeof(MenuOption))
+            {
+                i = 0;
+                while (done)
+                {
+
+                    if (myOptions[i] == null)
+                    {
+                        myOptions[i] = (MenuOption)attachedFrom;
+                        done = true;
+                    }
+                    i++;
+                }
+            }
+        }
+        // trying to remove/make this obsolete
+        /*
         public static void setMenu(Rectangle rectangle, Interactable interactable)
         { 
             myMenu[1] = new DynamicMenu(rectangle, interactable);
@@ -199,7 +247,7 @@ namespace A_Merchants_Tale
                 myOptions[i] = new MenuOption(new Rectangle(rectangle.X + (rectangle.Width/2) - (65), rectangle.Y + ((rectangle.Height/(myOptions.Length * 2)) *(2*i+1)) - 25, 130, 50));
             }
         }
-
+        */
         public void draw(SpriteBatch spriteBatch)
         {            
             shopBackground.Draw(shop, spriteBatch);
@@ -208,17 +256,20 @@ namespace A_Merchants_Tale
             {
                 myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
             }
-
-            if (myMenu[1].active)
+            
+            for (int i = 0; i < myMenu.Length; i++)
             {
-                myMenu[1].Draw(menu, spriteBatch);
-
-                for (int i = 0; i < myOptions.Length; i++)
+                if (myMenu[i] != null && myMenu[i].state == (int)UIState.CLICKED)
                 {
-                    myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
+                    myMenu[i].Draw(menu, spriteBatch);
+                    /*
+                    for (int i = 0; i < myOptions.Length; i++)
+                    {
+                        myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
+                    }
+                    */
                 }
             }
-
             if (atStartMenu)
             {
                 startMenuBackground.Draw(startMenu, spriteBatch);

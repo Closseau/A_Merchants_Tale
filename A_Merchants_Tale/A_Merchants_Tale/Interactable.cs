@@ -15,6 +15,8 @@ namespace A_Merchants_Tale
         {
             active = false;
             AttachedToo = null;
+            lastAttachedIndex = 0;
+            AttachedFrom = new Interactable[10];
         }
 
         public int state { get; set; }
@@ -28,6 +30,10 @@ namespace A_Merchants_Tale
         }
 
         public Interactable AttachedToo { get; set; }
+        // this is an array of interactables that are attached to this interactable.
+        public Interactable[] AttachedFrom { get; set; }
+        // control varible to know what the next 'open' slot in the array
+        public int lastAttachedIndex { get; set; }
 
         public virtual void onClick(MouseState mouseState)
         {
@@ -40,6 +46,31 @@ namespace A_Merchants_Tale
         {
             state = (int)UIState.NEUTRAL;
         }
-
+        // Here we go 
+        // goes 'down' the attached hierarchy until it reaches the base
+        public void clearAttachedToo()
+        {
+            if (this.AttachedToo == null)
+            {
+                this.clearAttachedFrom();
+            }
+            else
+            {
+                this.AttachedToo.clearAttachedToo();
+            }
+        }
+        // clears everthing from the base up the hierarchy
+        public void clearAttachedFrom()
+        {
+            int i;
+            for (i = 0; i < AttachedFrom.Length; i++)
+            {
+                if (AttachedFrom[i] != null)
+                {
+                    AttachedFrom[i].clearAttachedFrom();
+                }
+            }
+            clear();
+        }
     }
 }
