@@ -117,11 +117,26 @@ namespace A_Merchants_Tale
             {
                 if (AttachedFrom[i] != null)
                 {
-                    if (AttachedFrom[i].extendedClickCheck(mouseState))
+                    if (AttachedFrom[i].climbingClickCheck(mouseState))
+                        return true;
+                }
+            }
+            return false;
+        }
+        //so it doesn't check the origin
+        public Boolean climbingClickCheck(MouseState mouseState)
+        {
+            int i;
+            for (i = 0; i < AttachedFrom.Length; i++)
+            {
+                if (AttachedFrom[i] != null)
+                {
+                    if (AttachedFrom[i].climbingClickCheck(mouseState))
                         return true;
                 }
             }
             return Logic.checkMouseCollison(this, mouseState);
         }
+
     }
 }

@@ -199,7 +199,7 @@ namespace A_Merchants_Tale
                         currentlyClicked.AttachedFrom[0].moveEntity(myMouse);
                         mouseUpProspect = null;
                     }
-                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
+                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.extendedClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
                     {
                         //New ShopTile clicked
                         if (previouslyClicked != null)
@@ -212,7 +212,7 @@ namespace A_Merchants_Tale
                         mouseUpProspect = null;
                     }
                 }
-                else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
+                else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.extendedClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
                 {
                     //New Menu clicked
                     if (previouslyClicked != null)
@@ -224,7 +224,7 @@ namespace A_Merchants_Tale
                     mouseUpProspect = null;
                 }
             }
-            else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
+            else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.extendedClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
             {
                 //New MenuOption clicked               
                 if (previouslyClicked != null)
@@ -243,8 +243,10 @@ namespace A_Merchants_Tale
                 if (currentlyClicked != null)
                     currentlyClicked.clearAttachedToo();
                 mouseUpProspect = null;
-                previouslyClicked.clearAttachedToo();
-                previouslyClicked = null; // test for disappearign menu problem
+                if (previouslyClicked != null)
+                    previouslyClicked.clearAttachedToo();
+                else
+                    previouslyClicked = null; // test for disappearign menu problem
             }
             //oop this needs to be below code directly above or you might waste hours trying to figure out why menus aren't generating.. rip
             if (currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED)
