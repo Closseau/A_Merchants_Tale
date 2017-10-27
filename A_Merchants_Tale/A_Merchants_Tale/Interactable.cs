@@ -131,8 +131,7 @@ namespace A_Merchants_Tale
             {
                 if (AttachedFrom[i] != null)
                 {
-                    if (AttachedFrom[i].climbingClickCheck(mouseState))
-                        return true;
+                      return AttachedFrom[i].climbingClickCheck(mouseState);
                 }
             }
             return Logic.checkMouseCollison(this, mouseState);

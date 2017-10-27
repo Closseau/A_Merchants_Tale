@@ -29,9 +29,13 @@ namespace A_Merchants_Tale
                 {
                     if (element != null && element.screen == currentScreen && Logic.checkMouseCollison(element, mouseState))
                     {
-                        element.state = (int)UIState.CLICKED;
+                        if (previousMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
+                            element.state = (int)UIState.CLICKED;
+                        /* moving this out 
                         if (mouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
                             element.onClick(mouseState);
+
+                        */
                         return element;
                     }
                 }

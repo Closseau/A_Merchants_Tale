@@ -154,24 +154,6 @@ namespace A_Merchants_Tale
             Logic.clearState(myOptions);
 
 
-            if(atStartMenu)
-            {
-                Logic.clearState(myStartMenuButtons);
-
-                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse, previousMouseState, currentScreen);
-
-                if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
-                    && currentlyClicked.type == (int)UIType.START && mouseUp)
-                {
-                    atStartMenu = false;
-                    currentScreen++;
-                } 
-                else if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
-                   && currentlyClicked.type == (int)UIType.EXIT && mouseUp)
-                {
-                    game.Exit();
-                }
-            }
 
             currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse, previousMouseState, currentScreen);
             if (currentlyClicked == null)
@@ -184,9 +166,10 @@ namespace A_Merchants_Tale
                     {
                         // then on the last one clear clicked iuwefjnliuJNEWLIOFUNAELIRSUNGLIREUTNGOISRENJTGOIJREGIOJMREAOG <---- LITTERALLY THE CAUSE OF MOST OF MY PROBLEMS
                        // if (myMouse.LeftButton == ButtonState.Pressed)
-                       if (mouseDown)
+                       if (mouseDown && previouslyClicked != null)
                         {
                             previouslyClicked.clearAttachedToo();
+                            previouslyClicked = null;
                             /* Trying new clear code
                             Logic.clearClickedState(myOptions);
                             Logic.clearClickedState(myMenu);
@@ -207,12 +190,14 @@ namespace A_Merchants_Tale
                             previouslyClicked.clearAttachedToo();
                             //previouslyClicked.state = (int)UIState.NEUTRAL;
                         }
-                            previouslyClicked = currentlyClicked;
+                        currentlyClicked.onClick(myMouse);
+                        previouslyClicked = currentlyClicked;
                         addAttached(currentlyClicked);
                         mouseUpProspect = null;
+
                     }
                 }
-                else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.extendedClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
+                else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.climbingClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
                 {
                     //New Menu clicked
                     if (previouslyClicked != null)
@@ -224,7 +209,7 @@ namespace A_Merchants_Tale
                     mouseUpProspect = null;
                 }
             }
-            else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.extendedClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
+            else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.climbingClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
             {
                 //New MenuOption clicked               
                 if (previouslyClicked != null)
@@ -237,19 +222,47 @@ namespace A_Merchants_Tale
 
             }
 
-            if (mouseUp && mouseUpProspect != null && mouseUpProspect.extendedClickCheck(myMouse) == false)
+
+
+            if (atStartMenu)
+            {
+                Logic.clearState(myStartMenuButtons);
+
+                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse, previousMouseState, currentScreen);
+
+                if (currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED
+                    && currentlyClicked.type == (int)UIType.START && mouseUp)
+                {
+                    atStartMenu = false;
+                    currentScreen++;
+                }
+                else if (currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED
+                   && currentlyClicked.type == (int)UIType.EXIT && mouseUp)
+                {
+                    game.Exit();
+                }
+            }
+
+
+
+            if (mouseUp && mouseUpProspect != null && mouseUpProspect.climbingClickCheck(myMouse) == false && mouseUpProspect != previouslyClicked)
             {
                 mouseUpProspect.clearAttachedToo();
                 if (currentlyClicked != null)
                     currentlyClicked.clearAttachedToo();
                 mouseUpProspect = null;
+                /*
                 if (previouslyClicked != null)
+                {
                     previouslyClicked.clearAttachedToo();
+                    previouslyClicked = null;
+                }
                 else
                     previouslyClicked = null; // test for disappearign menu problem
+                    */
             }
             //oop this needs to be below code directly above or you might waste hours trying to figure out why menus aren't generating.. rip
-            if (currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED)
+            if (currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED && mouseDown)
                 mouseUpProspect = currentlyClicked;
 
             currentlyClicked = null;
