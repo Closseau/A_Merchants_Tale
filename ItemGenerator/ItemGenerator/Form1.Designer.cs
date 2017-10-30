@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lstItems = new System.Windows.Forms.ListView();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
@@ -50,28 +49,9 @@
             this.nud = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.txtNextItemID = new System.Windows.Forms.TextBox();
-            this.ItemID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ItemType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.BaseValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Rarity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ValueMod = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lstItems = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.nud)).BeginInit();
             this.SuspendLayout();
-            // 
-            // lstItems
-            // 
-            this.lstItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.ItemID,
-            this.ItemType,
-            this.BaseValue,
-            this.Rarity,
-            this.ValueMod});
-            this.lstItems.Location = new System.Drawing.Point(300, 34);
-            this.lstItems.Name = "lstItems";
-            this.lstItems.Size = new System.Drawing.Size(337, 265);
-            this.lstItems.TabIndex = 0;
-            this.lstItems.UseCompatibleStateImageBehavior = false;
-            this.lstItems.View = System.Windows.Forms.View.List;
             // 
             // btnLoad
             // 
@@ -81,6 +61,7 @@
             this.btnLoad.TabIndex = 1;
             this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // btnSave
             // 
@@ -100,6 +81,7 @@
             this.btnClear.TabIndex = 3;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // btnExit
             // 
@@ -116,9 +98,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(299, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 13);
+            this.label1.Size = new System.Drawing.Size(54, 13);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Items";
+            this.label1.Text = "Items.json";
             // 
             // cbxItemType
             // 
@@ -224,6 +206,7 @@
             this.btnRemove.TabIndex = 17;
             this.btnRemove.Text = "Remove Item";
             this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // btnAddRandom
             // 
@@ -268,25 +251,14 @@
             this.txtNextItemID.Size = new System.Drawing.Size(54, 20);
             this.txtNextItemID.TabIndex = 21;
             // 
-            // ItemID
+            // lstItems
             // 
-            this.ItemID.Text = "Item ID";
-            // 
-            // ItemType
-            // 
-            this.ItemType.Text = "ItemType";
-            // 
-            // BaseValue
-            // 
-            this.BaseValue.Text = "Base Value";
-            // 
-            // Rarity
-            // 
-            this.Rarity.Text = "Rarity";
-            // 
-            // ValueMod
-            // 
-            this.ValueMod.Text = "Value Modifier";
+            this.lstItems.FormattingEnabled = true;
+            this.lstItems.HorizontalScrollbar = true;
+            this.lstItems.Location = new System.Drawing.Point(302, 34);
+            this.lstItems.Name = "lstItems";
+            this.lstItems.Size = new System.Drawing.Size(328, 264);
+            this.lstItems.TabIndex = 22;
             // 
             // frmMain
             // 
@@ -294,6 +266,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(663, 360);
+            this.Controls.Add(this.lstItems);
             this.Controls.Add(this.txtNextItemID);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.nud);
@@ -315,7 +288,6 @@
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnLoad);
-            this.Controls.Add(this.lstItems);
             this.Name = "frmMain";
             this.Text = "Item Generator";
             this.Load += new System.EventHandler(this.frmMain_Load);
@@ -326,8 +298,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ListView lstItems;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnClear;
@@ -349,11 +319,7 @@
         private System.Windows.Forms.NumericUpDown nud;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtNextItemID;
-        private System.Windows.Forms.ColumnHeader ItemID;
-        private System.Windows.Forms.ColumnHeader ItemType;
-        private System.Windows.Forms.ColumnHeader BaseValue;
-        private System.Windows.Forms.ColumnHeader Rarity;
-        private System.Windows.Forms.ColumnHeader ValueMod;
+        private System.Windows.Forms.ListBox lstItems;
     }
 }
 

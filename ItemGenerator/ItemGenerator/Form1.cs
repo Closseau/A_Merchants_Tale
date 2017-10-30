@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace ItemGenerator
 {
@@ -19,7 +20,8 @@ namespace ItemGenerator
         }
 
 
-        HashSet<Item> Inventory = new HashSet<Item>();
+        List<Item> inventory = new List<Item>();
+
         int nextItemID = 0;
         Random rand = new Random();
 
@@ -45,46 +47,64 @@ namespace ItemGenerator
         
         private void btnSave_Click(object sender, EventArgs e)
         {
-            
+            File.WriteAllText(".\\Items.json", JsonConvert.SerializeObject(inventory));
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            inventory = JsonConvert.DeserializeObject<List<Item>>(File.ReadAllText(".\\Items.json"));
+            lstItems.Items.Clear();
+            foreach (var item in inventory)
+            {
+                lstItems.Items.Add(JsonConvert.SerializeObject(item));
+            }
+
+            nextItemID = inventory[inventory.Count - 1].ItemID + 1;
+            txtNextItemID.Text = nextItemID.ToString();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            Item tempItem = new Item();
-
-            validate(txtNextItemID, tempItem.ItemID);
+            Item tempItem = new Item()
+            {
+                ItemID = nextItemID,
+                ItemType = cbxItemType.SelectedIndex,
+                Rarity = cbxRarity.SelectedIndex,
+                ValueModifier = cbxValueMod.SelectedIndex
+            };
 
             if (txtMinValue.Text.Trim() != "" && txtMaxValue.Text.Trim() != "")
             {
                 tempItem.BaseValue = rand.Next(Convert.ToInt32(txtMinValue.Text.Trim()), Convert.ToInt32(txtMaxValue.Text.Trim()));
-            }
+            }            
 
-            tempItem.ItemType = cbxItemType.SelectedIndex;
-            tempItem.Rarity = cbxRarity.SelectedIndex;
-            tempItem.ValueModifier = cbxValueMod.SelectedIndex;
+            inventory.Add(tempItem);
+            lstItems.Items.Add(tempItem.ToString());
 
-            string[] itemProps = {
-                tempItem.ItemID.ToString(),
-                tempItem.ItemType.ToString(),
-                tempItem.BaseValue.ToString(),
-                tempItem.Rarity.ToString(),
-                tempItem.ValueModifier.ToString()
-            };
-
-            ListViewItem itm = new ListViewItem(itemProps);
-            lstItems.Items.Add(itm);
-
-            Inventory.Add(tempItem);
+            nextItemID++;
+            txtNextItemID.Text = nextItemID.ToString();
         }
 
-        void validate(TextBox txt, int property)
+        private void btnClear_Click(object sender, EventArgs e)
         {
-            if (txt.Text != "")
+            foreach (Control myControl in Controls)
             {
-                property = Convert.ToInt32(txt.Text);
+                if (myControl is TextBox)
+                {
+                    myControl.Text = "";
+                }
+                else if (myControl is ComboBox)
+                {
+                    myControl.ResetText();
+                }                
             }
         }
 
-        
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            inventory.Remove(JsonConvert.DeserializeObject<Item>(lstItems.SelectedItem.ToString()));
+            lstItems.Items.RemoveAt(lstItems.SelectedIndex);            
+        }
+
     }    
 }
