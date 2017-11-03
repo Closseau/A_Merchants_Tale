@@ -19,7 +19,7 @@ namespace A_Merchants_Tale
 
         }
 
-        public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState)
+        public static Interactable hasMouseClicked(Interactable[] interactable, MouseState mouseState, Vector2 mouse)
         {
             //  Boolean hasFoundHover = false;
 
@@ -27,9 +27,9 @@ namespace A_Merchants_Tale
             {
                 foreach (Interactable element in interactable)
                 {
-                    if (element != null && Logic.checkMouseCollison(element, mouseState))
+                    if (element != null && Logic.checkMouseCollison(element, mouse))
                     {
-                        element.onClick(mouseState);
+                        element.onClick(mouseState, mouse);
                         return element;
                     }
                 }
@@ -38,7 +38,7 @@ namespace A_Merchants_Tale
             {
                 foreach (Interactable element in interactable)
                 {
-                    if (element != null && Logic.checkMouseCollison(element, mouseState))
+                    if (element != null && Logic.checkMouseCollison(element, mouse))
                     {
                         if (element.state != (int)UIState.CLICKED)
                         {
@@ -53,11 +53,11 @@ namespace A_Merchants_Tale
             return null;
         }
 
-        public static Boolean checkMouseCollison(Interactable interactable, MouseState mouseState)
+        public static Boolean checkMouseCollison(Interactable interactable, Vector2 mouse)
         {
             //return interactable.getRectangle().Contains(mouseState.Position);
 
-            return interactable.rectangle.Contains(mouseState.Position);
+            return interactable.rectangle.Contains(mouse);
 
             /*
             Rectangle myRectangle = interactable.getRectangle();

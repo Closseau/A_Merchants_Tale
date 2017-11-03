@@ -17,8 +17,8 @@ namespace A_Merchants_Tale
 
         Texture2D shop;
         Texture2D startMenu;
-        Texture2D[] startMenuStart = new Texture2D[2];
-        Texture2D[] startMenuExit = new Texture2D[2];
+        Texture2D[] startMenuStart = new Texture2D[3];
+        Texture2D[] startMenuExit = new Texture2D[3];
         Texture2D[] tile = new Texture2D[3];
         Texture2D[] menuOption = new Texture2D[3];
         Texture2D menu;
@@ -33,12 +33,9 @@ namespace A_Merchants_Tale
 
         static Interactable[] myStartMenuButtons;
 
-
+        KeyboardState myKeys;
         MouseState myMouse;
-        int previousScrollValue;
-        bool zoomIn;
-        bool zoomOut;
-        float zoomValue;
+        Vector2 mousePosition;
 
         Interactable previouslyClicked;
         Interactable currentlyClicked;
@@ -54,9 +51,6 @@ namespace A_Merchants_Tale
 
         public void initialize(float screenWidth, float screenHeight)
         {
-            myMouse = Mouse.GetState();
-            previousScrollValue = myMouse.ScrollWheelValue;
-
             xAdjust = screenWidth / 1920;
             yAdjust = screenHeight / 1080;
             
@@ -108,9 +102,11 @@ namespace A_Merchants_Tale
 
             startMenuStart[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button");
             startMenuStart[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button Hover");
+            startMenuStart[(int)UIState.CLICKED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button Click");
 
             startMenuExit[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button");
             startMenuExit[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button Hover");
+            startMenuExit[(int)UIState.CLICKED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button Click");
 
             shop = game.Content.Load<Texture2D>("Textures/Static/Holo2");
 
@@ -126,13 +122,20 @@ namespace A_Merchants_Tale
             
         }
 
-        public void update(Game game)
+        public void update(Game game, Camera camera)
         {
             myMouse = Mouse.GetState();
+            myKeys = Keyboard.GetState();
 
-            zoomIn = Logic.checkZoomIn(myMouse, previousScrollValue);
-            zoomOut = Logic.checkZoomOut(myMouse, previousScrollValue);
-            previousScrollValue = myMouse.ScrollWheelValue;
+            if(!atStartMenu)
+            {
+                camera.Update(myMouse, myKeys);
+
+                mousePosition = new Vector2(myMouse.X, myMouse.Y);
+                mousePosition = Vector2.Transform(mousePosition, camera.InverseTransform);
+            }
+            if (atStartMenu)
+                mousePosition = new Vector2(myMouse.X, myMouse.Y);
 
             Logic.clearState(myMenu);
             Logic.clearState(myTiles);
@@ -142,7 +145,7 @@ namespace A_Merchants_Tale
             {
                 Logic.clearState(myStartMenuButtons);
 
-                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse);
+                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse, mousePosition);
 
                 if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
                     && currentlyClicked.type == (int)UIType.START)
@@ -156,13 +159,13 @@ namespace A_Merchants_Tale
                 }
             }
 
-            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse);
+            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse, mousePosition);
             if (currentlyClicked == null)
             {
-                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse);
+                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse, mousePosition);
                 if (currentlyClicked == null)
                 {
-                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse);
+                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse, mousePosition);
                     if (currentlyClicked == null)
                     {
                         // then on the last one clear clicked
@@ -210,52 +213,46 @@ namespace A_Merchants_Tale
             }
         }
 
-        public void draw(SpriteBatch spriteBatch)
-        {            
-            shopBackground.Draw(shop, spriteBatch);
-
-            for (int i = 0; i < amountOfTiles; i++)
+        public void drawFixed(SpriteBatch spriteBatch)
+        {
+            if(!atStartMenu)
             {
-                myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
+                shopBackground.Draw(shop, spriteBatch);
             }
 
-            if (myMenu[1].active)
-            {
-                myMenu[1].Draw(menu, spriteBatch);
-
-                for (int i = 0; i < myOptions.Length; i++)
-                {
-                    myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
-                }
-            }
-
-            if (atStartMenu)
+            if(atStartMenu)
             {
                 startMenuBackground.Draw(startMenu, spriteBatch);
 
-                for(int i = 0; i < myStartMenuButtons.Length; i++)
+                for (int i = 0; i < myStartMenuButtons.Length; i++)
                 {
-                    if (zoomIn)
-                    {
-                        myStartMenuButtons[i].xPos -= (int)(myStartMenuButtons[i].width * (zoomValue / 2));
-                        myStartMenuButtons[i].yPos += (int)(myStartMenuButtons[i].height * (zoomValue / 2));
-                        myStartMenuButtons[i].width += (int)(myStartMenuButtons[i].width * zoomValue);
-                        myStartMenuButtons[i].height += (int)(myStartMenuButtons[i].height * zoomValue);
-                    } else if (zoomOut)
-                    {
-                        myStartMenuButtons[i].xPos += (int)(myStartMenuButtons[i].width * (zoomValue / 2));
-                        myStartMenuButtons[i].yPos -= (int)(myStartMenuButtons[i].height * (zoomValue / 2));
-                        myStartMenuButtons[i].width -= (int)(myStartMenuButtons[i].width * zoomValue);
-                        myStartMenuButtons[i].height -= (int)(myStartMenuButtons[i].height * zoomValue);
-                    }
-
                     if (myStartMenuButtons[i].type == (int)UIType.START)
                         myStartMenuButtons[i].Draw(startMenuStart[myStartMenuButtons[i].state], spriteBatch);
-                    else if(myStartMenuButtons[i].type == (int)UIType.EXIT)
+                    else if (myStartMenuButtons[i].type == (int)UIType.EXIT)
                         myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].state], spriteBatch);
                 }
             }
+        }
 
-        }     
+        public void drawScaled(SpriteBatch spriteBatch)
+        {
+            if (!atStartMenu)
+            {
+                for (int i = 0; i < amountOfTiles; i++)
+                {
+                    myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
+                }
+
+                if (myMenu[1].active)
+                {
+                    myMenu[1].Draw(menu, spriteBatch);
+
+                    for (int i = 0; i < myOptions.Length; i++)
+                    {
+                        myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
+                    }
+                } 
+            }
+        }
     }
 }
