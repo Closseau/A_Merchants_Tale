@@ -29,7 +29,7 @@ namespace A_Merchants_Tale
 
         public Interactable AttachedToo { get; set; }
 
-        public virtual void onClick(MouseState mouseState)
+        public virtual void onClick(MouseState mouseState, Vector2 mouse)
         {
             state = (int)UIState.CLICKED;
             active = true;

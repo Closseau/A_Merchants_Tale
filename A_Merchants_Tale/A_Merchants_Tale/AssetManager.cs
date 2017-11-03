@@ -12,13 +12,13 @@ namespace A_Merchants_Tale
 {
     class AssetManager
     {
-        float screenWidth;
-        float screenHeight;
+        static float xAdjust;
+        static float yAdjust;
 
         Texture2D shop;
         Texture2D startMenu;
-        Texture2D[] startMenuStart = new Texture2D[2];
-        Texture2D[] startMenuExit = new Texture2D[2];
+        Texture2D[] startMenuStart = new Texture2D[3];
+        Texture2D[] startMenuExit = new Texture2D[3];
         Texture2D[] tile = new Texture2D[3];
         Texture2D[] menuOption = new Texture2D[3];
         Texture2D menu;
@@ -33,8 +33,9 @@ namespace A_Merchants_Tale
 
         static Interactable[] myStartMenuButtons;
 
-
+        KeyboardState myKeys;
         MouseState myMouse;
+        Vector2 mousePosition;
 
         Interactable previouslyClicked;
         Interactable currentlyClicked;
@@ -48,10 +49,10 @@ namespace A_Merchants_Tale
             
         }
 
-        public void initialize(float width, float height)
+        public void initialize(float screenWidth, float screenHeight)
         {
-            screenWidth = width;
-            screenHeight = height;            
+            xAdjust = screenWidth / 1920;
+            yAdjust = screenHeight / 1080;
             
             myTiles = new ShopTile[amountOfTiles];
             myMenu = new DynamicMenu[amountOfTiles];
@@ -60,8 +61,8 @@ namespace A_Merchants_Tale
 
             for (int i = 0; i < amountOfTiles; i++)
             {
-                myTiles[i] = new ShopTile(new Rectangle((int)(0.1875 * screenWidth) + (int)(0.09375 * screenWidth * (i % 5)), 
-                    (int)(screenHeight/3) + ((int)(screenHeight / 6) * (int)(i / 5)), (int)screenWidth/16, (int)screenHeight/9));
+                myTiles[i] = new ShopTile(new Rectangle((int)(300 * xAdjust) + (int)(150 * xAdjust * (i % 5)), 
+                    (int)(300 * yAdjust) + ((int)(150 * yAdjust) * (int)(i / 5)), (int)(100 * xAdjust), (int)(100 * yAdjust)));
             }
 
             atStartMenu = true;
@@ -72,29 +73,25 @@ namespace A_Merchants_Tale
             myStartMenuButtons = new Interactable[2];
 
             myStartMenuButtons[0] = new Interactable(new Rectangle(0, 0, 0, 0));
-            myStartMenuButtons[0].width = (int)(0.375 * screenWidth);
-            myStartMenuButtons[0].height = (int)(screenHeight / 6);
+            myStartMenuButtons[0].width = (int)(600 * xAdjust);
+            myStartMenuButtons[0].height = (int)(150 * yAdjust);
             myStartMenuButtons[0] = new Interactable(new Rectangle((int)((screenWidth / 2) - (myStartMenuButtons[0].width / 2)),
                 (int)((screenHeight / 2) - (myStartMenuButtons[0].height / 2)), 
                 myStartMenuButtons[0].width, myStartMenuButtons[0].height));
             myStartMenuButtons[0].type = (int)UIType.START;
 
             myStartMenuButtons[1] = new Interactable(new Rectangle(0, 0, 0, 0));
-            myStartMenuButtons[1].width = (int)(0.375 * screenWidth);
-            myStartMenuButtons[1].height = (int)(screenHeight / 6);
+            myStartMenuButtons[1].width = (int)(600 * xAdjust);
+            myStartMenuButtons[1].height = (int)(150 * yAdjust);
             myStartMenuButtons[1] = new Interactable(new Rectangle((int)((screenWidth / 2) - (myStartMenuButtons[1].width / 2)),
                 (int)((screenHeight / 2) + myStartMenuButtons[1].height), 
                 myStartMenuButtons[1].width, myStartMenuButtons[1].height));
             myStartMenuButtons[1].type = (int)UIType.EXIT;
 
             
-            myMenu[1] = new DynamicMenu(new Rectangle(0, 0, (int)(0.09375 * screenWidth), (int)(screenHeight/3)));
+            myMenu[1] = new DynamicMenu(new Rectangle(0, 0, (int)(150 * xAdjust), (int)(300 * yAdjust)));
 
             previouslyClicked = new DynamicMenu(new Rectangle(0, 0, (int)screenWidth, (int)screenHeight));
-
-
-            //0.1875 and 1/3 are the coefficients needed to start making the tiles at (300,300) on a 1600x900 screen
-            //0.09375 and 1/6 are the coefficients needed to separate the tiles by 150 pixels on a 1600x900 screen
 
         }
 
@@ -105,9 +102,11 @@ namespace A_Merchants_Tale
 
             startMenuStart[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button");
             startMenuStart[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button Hover");
+            startMenuStart[(int)UIState.CLICKED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Start Button Click");
 
             startMenuExit[(int)UIState.NEUTRAL] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button");
             startMenuExit[(int)UIState.HOVERED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button Hover");
+            startMenuExit[(int)UIState.CLICKED] = game.Content.Load<Texture2D>("Textures/Interactable/Buttons/Start Menu/Exit Button Click");
 
             shop = game.Content.Load<Texture2D>("Textures/Static/Holo2");
 
@@ -123,22 +122,30 @@ namespace A_Merchants_Tale
             
         }
 
-        public void update(Game game)
+        public void update(Game game, Camera camera)
         {
             myMouse = Mouse.GetState();
-            //hover click logic ... need to move/change this
-            //change idea.. condition too see if mouse is clicked if so run front to back on interactibles untill one is found activate Onclick() and "break out" and run the rest for hovers
+            myKeys = Keyboard.GetState();
+
+            if(!atStartMenu)
+            {
+                camera.Update(myMouse, myKeys);
+
+                mousePosition = new Vector2(myMouse.X, myMouse.Y);
+                mousePosition = Vector2.Transform(mousePosition, camera.InverseTransform);
+            }
+            if (atStartMenu)
+                mousePosition = new Vector2(myMouse.X, myMouse.Y);
 
             Logic.clearState(myMenu);
             Logic.clearState(myTiles);
             Logic.clearState(myOptions);
 
-
             if(atStartMenu)
             {
                 Logic.clearState(myStartMenuButtons);
 
-                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse);
+                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse, mousePosition);
 
                 if(currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED 
                     && currentlyClicked.type == (int)UIType.START)
@@ -152,13 +159,13 @@ namespace A_Merchants_Tale
                 }
             }
 
-            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse);
+            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse, mousePosition);
             if (currentlyClicked == null)
             {
-                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse);
+                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse, mousePosition);
                 if (currentlyClicked == null)
                 {
-                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse);
+                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse, mousePosition);
                     if (currentlyClicked == null)
                     {
                         // then on the last one clear clicked
@@ -192,45 +199,60 @@ namespace A_Merchants_Tale
         }
 
         public static void setMenu(Rectangle rectangle, Interactable interactable)
-        { 
+        {
+            rectangle.Width = (int)(150 * xAdjust);
+            rectangle.Height = (int)(300 * yAdjust);
+
             myMenu[1] = new DynamicMenu(rectangle, interactable);
+
             for (int i = 0; i < myOptions.Length; i++)
             {
-                myOptions[i] = new MenuOption(new Rectangle(rectangle.X + (rectangle.Width/2) - (65), rectangle.Y + ((rectangle.Height/(myOptions.Length * 2)) *(2*i+1)) - 25, 130, 50));
+                myOptions[i] = new MenuOption(new Rectangle(rectangle.X + (rectangle.Width/2) - (int)(65 * xAdjust), 
+                    rectangle.Y + ((rectangle.Height/(myOptions.Length * 2)) *(2*i+1)) - (int)(25 * yAdjust), 
+                    (int)(130 * xAdjust), (int)(50 * yAdjust)));
             }
         }
 
-        public void draw(SpriteBatch spriteBatch)
-        {            
-            shopBackground.Draw(shop, spriteBatch);
-
-            for (int i = 0; i < amountOfTiles; i++)
+        public void drawFixed(SpriteBatch spriteBatch)
+        {
+            if(!atStartMenu)
             {
-                myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
+                shopBackground.Draw(shop, spriteBatch);
             }
 
-            if (myMenu[1].active)
-            {
-                myMenu[1].Draw(menu, spriteBatch);
-
-                for (int i = 0; i < myOptions.Length; i++)
-                {
-                    myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
-                }
-            }
-
-            if (atStartMenu)
+            if(atStartMenu)
             {
                 startMenuBackground.Draw(startMenu, spriteBatch);
-                for(int i = 0; i < myStartMenuButtons.Length; i++)
+
+                for (int i = 0; i < myStartMenuButtons.Length; i++)
                 {
-                    if(myStartMenuButtons[i].type == (int)UIType.START)
+                    if (myStartMenuButtons[i].type == (int)UIType.START)
                         myStartMenuButtons[i].Draw(startMenuStart[myStartMenuButtons[i].state], spriteBatch);
-                    else if(myStartMenuButtons[i].type == (int)UIType.EXIT)
+                    else if (myStartMenuButtons[i].type == (int)UIType.EXIT)
                         myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].state], spriteBatch);
                 }
             }
+        }
 
-        }     
+        public void drawScaled(SpriteBatch spriteBatch)
+        {
+            if (!atStartMenu)
+            {
+                for (int i = 0; i < amountOfTiles; i++)
+                {
+                    myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
+                }
+
+                if (myMenu[1].active)
+                {
+                    myMenu[1].Draw(menu, spriteBatch);
+
+                    for (int i = 0; i < myOptions.Length; i++)
+                    {
+                        myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
+                    }
+                } 
+            }
+        }
     }
 }

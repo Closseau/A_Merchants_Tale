@@ -11,8 +11,10 @@ namespace A_Merchants_Tale
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        
         AssetManager MyAssets;
+
+        Camera camera;
 
         float screenWidth;
         float screenHeight;
@@ -20,6 +22,7 @@ namespace A_Merchants_Tale
         public Merchants_Tale()
         {
             graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
 
             //16:9 Resolutions: 1024×576, 1152×648, 1280×720, 1366×768, 1600×900, 1920×1080
@@ -39,6 +42,8 @@ namespace A_Merchants_Tale
             // TODO: Add your initialization logic here
             screenWidth = this.GraphicsDevice.Viewport.Bounds.Width;
             screenHeight = this.GraphicsDevice.Viewport.Bounds.Height;
+
+            camera = new Camera(this.GraphicsDevice.Viewport);
 
             MyAssets = new AssetManager();
             MyAssets.initialize(screenWidth, screenHeight);
@@ -82,7 +87,7 @@ namespace A_Merchants_Tale
 
             // TODO: Add your update logic here
 
-            MyAssets.update(this);
+            MyAssets.update(this, camera);
 
             base.Update(gameTime);
         }
@@ -94,12 +99,18 @@ namespace A_Merchants_Tale
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            //Put everything you don't want zoomed, shifted, or rotated in HERE
             spriteBatch.Begin();
-
-            MyAssets.draw(spriteBatch);
-
+            MyAssets.drawFixed(spriteBatch);
             spriteBatch.End();
-            // TODO: Add your drawing code here
+
+            //Refer to MonoGame's spriteBatch.Begin() documentation for information about its parameters
+            //Anything within this spriteBatch.Begin() and the next spriteBatch.End() will be affected by the camera class
+            //In other words, don't put anything in here that you don't want zoomed, shifted, or rotated
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, camera.Transform);
+            MyAssets.drawScaled(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
