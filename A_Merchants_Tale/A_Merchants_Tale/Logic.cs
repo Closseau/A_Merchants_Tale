@@ -30,7 +30,7 @@ namespace A_Merchants_Tale
                     if (element != null && element.screen == currentScreen && Logic.checkMouseCollison(element, mouseState))
                     {
                         if (previousMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
-                            element.state = (int)UIState.CLICKED;
+                            element.visualState = (int)UIState.CLICKED;
                         /* moving this out 
                         if (mouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
                             element.onClick(mouseState);
@@ -46,10 +46,10 @@ namespace A_Merchants_Tale
                 {
                     if (element != null && element.screen == currentScreen && Logic.checkMouseCollison(element, mouseState))
                     {
-                        if (element.state != (int)UIState.CLICKED)
+                        if (element.visualState != (int)UIState.CLICKED)
                         {
 
-                            //element.state = (int)UIState.HOVERED;
+                            //element.visualState = (int)UIState.HOVERED;
                             element.onHover(); 
                         } //idea!!! send back interactable then check sent back for state!!! 
                             return element;
@@ -82,7 +82,7 @@ namespace A_Merchants_Tale
             //need to get array of all interactables besides background
             foreach (Interactable element in interactable)
             {
-                if (element != null && element.state != (int)UIState.CLICKED)
+                if (element != null && element.visualState != (int)UIState.CLICKED)
                 {
                     element.clear();
                 }
@@ -93,7 +93,7 @@ namespace A_Merchants_Tale
         {
             foreach (Interactable element in interactable)
             {
-                if (element != null && element.state == (int)UIState.CLICKED)
+                if (element != null && element.visualState == (int)UIState.CLICKED)
                 {
                     element.clear();
                 }

@@ -17,18 +17,17 @@ namespace A_Merchants_Tale
             AttachedToo = null;
             lastAttachedIndex = 0;
             AttachedFrom = new Interactable[10];
-            screen = 0;
         }
 
-        public int state { get; set; }
+        public int visualState { get; set; }
+        public int uiState { get; set; }
         public int id { get; set; }
         public int type { get; set; }
-        public int screen { get; set; }
         public Boolean active { get; set; }
 
         public virtual void onHover()
         {
-            state = (int)UIState.HOVERED;
+            visualState = (int)UIState.HOVERED;
         }
 
         public Interactable AttachedToo { get; set; }
@@ -39,14 +38,15 @@ namespace A_Merchants_Tale
 
         public virtual void onClick(MouseState mouseState)
         {
-            state = (int)UIState.CLICKED;
+            uiState = (int)UIState.CLICKED;
             active = true;
             // popups and stuff would go here
         }
 
         public virtual void clear()
         {
-            state = (int)UIState.NEUTRAL;
+            uiState = (int)UIState.NEUTRAL;
+            visualState = (int)UIState.NEUTRAL;
         }
         // Here we go 
         // goes 'down' the attached hierarchy until it reaches the base

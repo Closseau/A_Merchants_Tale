@@ -18,7 +18,7 @@ namespace A_Merchants_Tale
         {
             this.AttachedToo = interactable;
             //active = true;
-            state = (int)UIState.CLICKED;
+            visualState = (int)UIState.NEUTRAL;
             this.screen = 1;
 
         }

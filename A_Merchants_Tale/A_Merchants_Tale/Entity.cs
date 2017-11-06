@@ -11,10 +11,12 @@ namespace A_Merchants_Tale
     public class Entity
     {
         private Rectangle MyRectangle;
+        public int screen { get; set; }
 
         public Entity(Rectangle rectangle)
         {
             MyRectangle = rectangle;
+            screen = 0;
         }
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)

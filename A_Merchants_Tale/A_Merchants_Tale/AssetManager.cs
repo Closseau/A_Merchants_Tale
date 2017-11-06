@@ -136,14 +136,16 @@ namespace A_Merchants_Tale
             Boolean mouseDown = false;
             Boolean mouseUp = false;
 
-
-
             myMouse = Mouse.GetState();
 
             if (myMouse.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
                 mouseDown = true;
             if (myMouse.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
                 mouseUp = true;
+
+
+
+
 
 
             //hover click logic ... need to move/change this
@@ -156,17 +158,28 @@ namespace A_Merchants_Tale
 
 
             currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse, previousMouseState, currentScreen);
-            if (currentlyClicked == null)
+
+            //nonsense Conditional booleans!!
+            bool mouseVisualIsClicked;
+            //these relie on the currently clicked
+            bool currentlyClickedDoesntExist = (currentlyClicked == null);
+
+            if (currentlyClickedDoesntExist)
             {
                 currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse, previousMouseState, currentScreen);
-                if (currentlyClicked == null)
+                //these relie on the currently clicked
+                currentlyClickedDoesntExist = (currentlyClicked == null);
+                
+                if (currentlyClickedDoesntExist)
                 {
                     currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse, previousMouseState, currentScreen);
-                    if (currentlyClicked == null)
+                    //these relie on the currently clicked
+                    currentlyClickedDoesntExist = (currentlyClicked == null);
+                    if (currentlyClickedDoesntExist)
                     {
                         // then on the last one clear clicked iuwefjnliuJNEWLIOFUNAELIRSUNGLIREUTNGOISRENJTGOIJREGIOJMREAOG <---- LITTERALLY THE CAUSE OF MOST OF MY PROBLEMS
-                       // if (myMouse.LeftButton == ButtonState.Pressed)
-                       if (mouseDown && previouslyClicked != null)
+                        // if (myMouse.LeftButton == ButtonState.Pressed)
+                        if (mouseDown && previouslyClicked != null)
                         {
                             previouslyClicked.clearAttachedToo();
                             previouslyClicked = null;
@@ -177,66 +190,87 @@ namespace A_Merchants_Tale
                             */
                         }
                     }
-                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked == previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
+                    else
                     {
-                        currentlyClicked.AttachedFrom[0].moveEntity(myMouse);
-                        mouseUpProspect = null;
+
+                        //these relie on the currently clicked
+                        mouseVisualIsClicked = (currentlyClicked.visualState == (int)UIState.CLICKED);
+
+                        if (mouseVisualIsClicked && currentlyClicked == previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
+                        {
+                            currentlyClicked.AttachedFrom[0].moveEntity(myMouse);
+                            mouseUpProspect = null;
+                        }
+                        else if (mouseVisualIsClicked && currentlyClicked != previouslyClicked && currentlyClicked.extendedClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
+                        {
+                            //New ShopTile clicked
+                            if (previouslyClicked != null)
+                            {
+                                previouslyClicked.clearAttachedToo();
+                                //previouslyClicked.visualState = (int)UIState.NEUTRAL;
+                            }
+                            currentlyClicked.onClick(myMouse);
+                            previouslyClicked = currentlyClicked;
+                            addAttached(currentlyClicked);
+                            addAttached(currentlyClicked.AttachedFrom[0]);
+                            mouseUpProspect = null;
+
+                        }
                     }
-                    else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.extendedClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
+                }
+                else
+                {
+                    //these relie on the currently clicked
+                    mouseVisualIsClicked = (currentlyClicked.visualState == (int)UIState.CLICKED);
+
+                    if (mouseVisualIsClicked && currentlyClicked != previouslyClicked && currentlyClicked.climbingClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
                     {
-                        //New ShopTile clicked
+                        //New Menu clicked
                         if (previouslyClicked != null)
                         {
                             previouslyClicked.clearAttachedToo();
                             //previouslyClicked.state = (int)UIState.NEUTRAL;
                         }
-                        currentlyClicked.onClick(myMouse);
                         previouslyClicked = currentlyClicked;
-                        addAttached(currentlyClicked);
                         mouseUpProspect = null;
-
                     }
                 }
-                else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.climbingClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
+            }
+            else 
+            {
+
+                //these relie on the currently clicked
+                mouseVisualIsClicked = (currentlyClicked.visualState == (int)UIState.CLICKED);
+
+
+                if (mouseVisualIsClicked && currentlyClicked != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
                 {
-                    //New Menu clicked
+                        //New MenuOption clicked               
                     if (previouslyClicked != null)
                     {
                         previouslyClicked.clearAttachedToo();
                         //previouslyClicked.state = (int)UIState.NEUTRAL;
                     }
+                    currentlyClicked.onClick(myMouse);
                         previouslyClicked = currentlyClicked;
                     mouseUpProspect = null;
                 }
             }
-            else if (currentlyClicked.state == (int)UIState.CLICKED && currentlyClicked != previouslyClicked && currentlyClicked.climbingClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
-            {
-                //New MenuOption clicked               
-                if (previouslyClicked != null)
-                {
-                    previouslyClicked.clearAttachedToo();
-                    //previouslyClicked.state = (int)UIState.NEUTRAL;
-                }
-                    previouslyClicked = currentlyClicked;
-                mouseUpProspect = null;
-
-            }
 
 
 
-            if (atStartMenu)
+            if (currentScreen == 0)
             {
                 Logic.clearState(myStartMenuButtons);
 
                 currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse, previousMouseState, currentScreen);
 
-                if (currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED
+                if (currentlyClicked != null && currentlyClicked.visualState == (int)UIState.CLICKED
                     && currentlyClicked.type == (int)UIType.START && mouseUp)
                 {
-                    atStartMenu = false;
                     currentScreen++;
                 }
-                else if (currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED
+                else if (currentlyClicked != null && currentlyClicked.visualState == (int)UIState.CLICKED
                    && currentlyClicked.type == (int)UIType.EXIT && mouseUp)
                 {
                     game.Exit();
@@ -262,7 +296,7 @@ namespace A_Merchants_Tale
                     */
             }
             //oop this needs to be below code directly above or you might waste hours trying to figure out why menus aren't generating.. rip
-            if (currentlyClicked != null && currentlyClicked.state == (int)UIState.CLICKED && mouseDown)
+            if (currentlyClicked != null && currentlyClicked.visualState == (int)UIState.CLICKED && mouseDown)
                 mouseUpProspect = currentlyClicked;
 
             currentlyClicked = null;
@@ -281,7 +315,7 @@ namespace A_Merchants_Tale
                 while (done == false)
                 {
 
-                    if (myMenu[i] == null || myMenu[i].state != (int) UIState.CLICKED)
+                    if (myMenu[i] == null || myMenu[i].visualState != (int) UIState.CLICKED)
                     {
                         myMenu[i] = (DynamicMenu) attachedFrom;
                         done = true;
@@ -322,18 +356,18 @@ namespace A_Merchants_Tale
             for (int i = 0; i < amountOfTiles; i++)
             {
                 if (myTiles[i].screen == currentScreen)
-                    myTiles[i].Draw(tile[myTiles[i].state], spriteBatch);
+                    myTiles[i].Draw(tile[myTiles[i].visualState], spriteBatch);
             }
             
             for (int i = 0; i < myMenu.Length; i++)
             {
-                if (myMenu[i] != null && myMenu[i].state == (int)UIState.CLICKED && myMenu[i].screen == currentScreen)
+                if (myMenu[i] != null && myMenu[i].visualState == (int)UIState.CLICKED && myMenu[i].screen == currentScreen)
                 {
                     myMenu[i].Draw(menu, spriteBatch);
                     /*
                     for (int i = 0; i < myOptions.Length; i++)
                     {
-                        myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
+                        myOptions[i].Draw(menuOption[myOptions[i].visualState], spriteBatch);
                     }
                     */
                 }
@@ -341,20 +375,20 @@ namespace A_Merchants_Tale
             for (int i = 0; i < myOptions.Length; i++)
             {
                 if (myOptions[i] != null)
-                    myOptions[i].Draw(menuOption[myOptions[i].state], spriteBatch);
+                    myOptions[i].Draw(menuOption[myOptions[i].visualState], spriteBatch);
             }
 
 
-            if (atStartMenu)
+            if (currentScreen == 0)
             {
                 startMenuBackground.Draw(startMenu, spriteBatch);
             }
                 for(int i = 0; i < myStartMenuButtons.Length; i++)
                 {
                     if(myStartMenuButtons[i] != null && myStartMenuButtons[i].type == (int)UIType.START && myStartMenuButtons[i].screen == currentScreen)
-                        myStartMenuButtons[i].Draw(startMenuStart[myStartMenuButtons[i].state], spriteBatch);
+                        myStartMenuButtons[i].Draw(startMenuStart[myStartMenuButtons[i].visualState], spriteBatch);
                     else if(myStartMenuButtons[i] != null && myStartMenuButtons[i].type == (int)UIType.EXIT && myStartMenuButtons[i].screen == currentScreen)
-                        myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].state], spriteBatch);
+                        myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].visualState], spriteBatch);
                 }
             
 

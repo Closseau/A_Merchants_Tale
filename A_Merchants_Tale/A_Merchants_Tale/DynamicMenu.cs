@@ -20,13 +20,13 @@ namespace A_Merchants_Tale
         {
             this.AttachedToo = interactable;
             //active = true;
-            state = (int)UIState.CLICKED;
+            visualState = (int)UIState.CLICKED;
             addExitButton();
         }
 
         public override void clear()
         {
-            state = (int)UIState.NEUTRAL;
+            visualState = (int)UIState.NEUTRAL;
            // active = false;
             //setRectangle(new Rectangle(0,0,0,0));
             rectangle = new Rectangle(0, 0, 0, 0);
@@ -34,7 +34,7 @@ namespace A_Merchants_Tale
 
         public void addExitButton()
         {
-            //this.AttachedFrom[0] = new ExitButton(new Rectangle(this.xPos + this.width - 35, this.yPos + 5, 30, 30), this);
+            this.AttachedFrom[0] = new ExitButton(new Rectangle(this.xPos + this.width - 35, this.yPos + 5, 30, 30), this);
         }
 
         public void Display()

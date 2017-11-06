@@ -12,13 +12,16 @@ namespace A_Merchants_Tale
     {
         public MenuOption(Rectangle rectangle) : base(rectangle)
         {
-            
+            screen = 1;
         }
 
         public override void clear()
         {
-            state = (int)UIState.NEUTRAL;
+            visualState = (int)UIState.NEUTRAL;
             active = false;
+            // active = false;
+            //setRectangle(new Rectangle(0,0,0,0));
+            rectangle = new Rectangle(0, 0, 0, 0);
         }
     }
 }
