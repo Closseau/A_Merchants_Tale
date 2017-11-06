@@ -14,97 +14,262 @@ namespace ItemGenerator
 {
     public partial class frmMain : Form
     {
+        SettingsForm settingsForm = new SettingsForm();
+
         public frmMain()
         {
             InitializeComponent();
+            
+            settingsFilePath = Path.GetFullPath("./") + "Settings.json";
+            itemFilePath = Path.GetFullPath("./") + "Items.json";
         }
 
+        public static string settingsFilePath { get; set; }
+        public static string itemFilePath { get; set; }
 
-        List<Item> inventory = new List<Item>();
-
-        int nextItemID = 0;
-        Random rand = new Random();
-
-        private void frmMain_Load(object sender, EventArgs e)
-        {
-            cbxItemType.Items.Add("WEAPON");
-            cbxItemType.Items.Add("ARMOR");
-            cbxItemType.Items.Add("VALUABLE");
-            cbxRarity.Items.Add("BROKEN");
-            cbxRarity.Items.Add("DULL");
-            cbxRarity.Items.Add("WEAK");
-            cbxRarity.Items.Add("SHARPENED");
-            cbxRarity.Items.Add("POPULAR");
-            cbxRarity.Items.Add("PRISTINE");
-            cbxValueMod.Items.Add("COMMON");
-            cbxValueMod.Items.Add("UNCOMMON");
-            cbxValueMod.Items.Add("RARE");
-            cbxValueMod.Items.Add("EPIC");
-            cbxValueMod.Items.Add("LEGENDARY");
-
-            txtNextItemID.Text = nextItemID.ToString();
-        }
         
-        private void btnSave_Click(object sender, EventArgs e)
+        private void UpButton_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(".\\Items.json", JsonConvert.SerializeObject(inventory));
-        }
-
-        private void btnLoad_Click(object sender, EventArgs e)
-        {
-            inventory = JsonConvert.DeserializeObject<List<Item>>(File.ReadAllText(".\\Items.json"));
-            lstItems.Items.Clear();
-            foreach (var item in inventory)
+            foreach (Control item in Controls)
             {
-                lstItems.Items.Add(JsonConvert.SerializeObject(item));
-            }
-
-            nextItemID = inventory[inventory.Count - 1].ItemID + 1;
-            txtNextItemID.Text = nextItemID.ToString();
-        }
-
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            Item tempItem = new Item()
-            {
-                ItemID = nextItemID,
-                ItemType = cbxItemType.SelectedIndex,
-                Rarity = cbxRarity.SelectedIndex,
-                ValueModifier = cbxValueMod.SelectedIndex
-            };
-
-            if (txtMinValue.Text.Trim() != "" && txtMaxValue.Text.Trim() != "")
-            {
-                tempItem.BaseValue = rand.Next(Convert.ToInt32(txtMinValue.Text.Trim()), Convert.ToInt32(txtMaxValue.Text.Trim()));
-            }            
-
-            inventory.Add(tempItem);
-            lstItems.Items.Add(tempItem.ToString());
-
-            nextItemID++;
-            txtNextItemID.Text = nextItemID.ToString();
-        }
-
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            foreach (Control myControl in Controls)
-            {
-                if (myControl is TextBox)
+                if (item is GroupBox && item.Contains((Control)sender))
                 {
-                    myControl.Text = "";
+                    foreach (Control lstBox in item.Controls)
+                    {
+                        if (lstBox is ListBox && ((ListBox)lstBox).SelectedIndex != -1)
+                        {
+                            String currItem = ((ListBox)lstBox).SelectedItem.ToString();
+                            int currIndex = ((ListBox)lstBox).SelectedIndex;
+
+                            if (currIndex != 0)
+                            {
+                                ((ListBox)lstBox).Items.RemoveAt(currIndex);
+                                ((ListBox)lstBox).Items.Insert(currIndex -= 1, currItem);
+                                ((ListBox)lstBox).SelectedIndex = currIndex;
+                            }
+
+                        }
+                    }
+                    break;
                 }
-                else if (myControl is ComboBox)
-                {
-                    myControl.ResetText();
-                }                
             }
         }
 
-        private void btnRemove_Click(object sender, EventArgs e)
+        private void DownButton_Click(object sender, EventArgs e)
         {
-            inventory.Remove(JsonConvert.DeserializeObject<Item>(lstItems.SelectedItem.ToString()));
-            lstItems.Items.RemoveAt(lstItems.SelectedIndex);            
+            foreach (Control item in Controls)
+            {
+                if (item is GroupBox && item.Contains((Control)sender))
+                {
+                    foreach (Control lstBox in item.Controls)
+                    {
+                        if (lstBox is ListBox && ((ListBox)lstBox).SelectedIndex != -1)
+                        {
+                            String currItem = ((ListBox)lstBox).SelectedItem.ToString();
+                            int currIndex = ((ListBox)lstBox).SelectedIndex;
+
+                            if (currIndex != ((ListBox)lstBox).Items.Count - 1)
+                            {
+                                ((ListBox)lstBox).Items.RemoveAt(currIndex);
+                                ((ListBox)lstBox).Items.Insert(currIndex += 1, currItem);
+                                ((ListBox)lstBox).SelectedIndex = currIndex;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+       
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            foreach (Control item in Controls)
+            {
+                if (item is GroupBox && item.Contains((Control)sender))
+                {
+                    String itemToAdd = "";
+
+                    foreach (Control myControl in item.Controls)
+                    {                   
+                        if (myControl is TextBox)
+                        {
+                            itemToAdd = (myControl.Text.Trim() != "")? myControl.Text : "";
+                            myControl.Text = "";
+                            myControl.Focus();
+                        }
+
+                        if (myControl is ListBox && itemToAdd != "")
+                        {
+                            ((ListBox)myControl).Items.Add(itemToAdd);
+                            ((ListBox)myControl).SelectedItem = itemToAdd;
+                            break;
+                        }
+                    }                    
+                    break;
+                }
+            }
         }
 
+        private void RemoveButton_Click(object sender, EventArgs e)
+        {
+            foreach (Control item in Controls)
+            {
+                if (item is GroupBox && item.Contains((Control)sender))
+                {
+                    foreach (Control lstBox in item.Controls)
+                    {
+                        if (lstBox is ListBox && ((ListBox)lstBox).SelectedIndex != -1)
+                        {
+                            int currIndex = ((ListBox)lstBox).SelectedIndex;                            
+
+                            if (currIndex == ((ListBox)lstBox).Items.Count - 1)
+                            {
+                                ((ListBox)lstBox).SelectedIndex = currIndex - 1;
+                                ((ListBox)lstBox).Items.RemoveAt(currIndex);
+                            }
+                            else
+                            {
+                                ((ListBox)lstBox).Items.RemoveAt(currIndex);
+                                ((ListBox)lstBox).SelectedIndex = currIndex;
+                            }
+                        }
+
+                        if (lstBox is TextBox)
+                        {
+                            lstBox.Text = "";
+                            lstBox.Focus();
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void TextBox_Focused(object sender, EventArgs e)
+        {
+            foreach (Control item in Controls)
+            {
+                if (item is GroupBox && ((GroupBox)item).Contains((Control)sender))
+                {
+                    foreach (Control button in ((GroupBox)item).Controls)
+                    {
+                        if (button is Button && button.Text == "Add")
+                        {
+                            this.AcceptButton = (Button)button;
+                        }
+                        else if (button is Button && button.Text == "Remove")
+                        {
+                            this.CancelButton = (Button)button;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            settingsForm.ShowDialog();
+        }
+
+        private void saveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (settingsFilePath != "" && File.Exists(settingsFilePath))
+            {
+                try
+                {
+                    using (StreamWriter file = File.CreateText(settingsFilePath))
+                    {
+                        file.WriteLine(JsonConvert.SerializeObject(lstQuality.Items));
+                        file.WriteLine(JsonConvert.SerializeObject(lstEnchant.Items));
+                        file.WriteLine(JsonConvert.SerializeObject(lstMaterial.Items));
+                        file.WriteLine(JsonConvert.SerializeObject(lstType.Items));
+
+                        string enums = Item.generateEnum("Quality", lstQuality.Items);
+                        enums += Item.generateEnum("Enchantment", lstEnchant.Items);
+                        enums += Item.generateEnum("Material", lstMaterial.Items);
+                        enums += Item.generateEnum("Type", lstType.Items);
+
+                        file.Write(enums);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was an error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }                
+
+                MessageBox.Show("Saved file succesfully to " + settingsFilePath, "Complete", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show("Cannot find settings file. \nPlease set a valid path in the settings menu.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void generateItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (itemFilePath != "" && File.Exists(itemFilePath))
+            {
+                List<Item> itemList = new List<Item>();
+
+                foreach (var quality in lstQuality.Items)
+                {
+                    foreach (var enchant in lstEnchant.Items)
+                    {
+                        foreach (var material in lstMaterial.Items)
+                        {
+                            foreach (var type in lstType.Items)
+                            {
+                                itemList.Add(new Item
+                                {
+                                    Quality = lstQuality.Items.IndexOf(quality),
+                                    Enchantment = lstEnchant.Items.IndexOf(enchant),
+                                    Material = lstMaterial.Items.IndexOf(material),
+                                    ItemType = lstType.Items.IndexOf(type)
+                                });
+                            }
+                        }
+                    }
+                }
+
+                File.WriteAllText(itemFilePath, JsonConvert.SerializeObject(itemList, Formatting.Indented));
+
+                MessageBox.Show("Saved file succesfully to " + itemFilePath, "Complete", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show("Cannot find item file. \nPlease set a valid path in the settings menu.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void loadSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(settingsFilePath != "" && File.Exists(settingsFilePath))
+            {
+                try
+                {
+                    using (StreamReader file = File.OpenText(settingsFilePath))
+                    {
+                        lstQuality.Items.AddRange(JsonConvert.DeserializeObject<object[]>(file.ReadLine()));
+                        lstEnchant.Items.AddRange(JsonConvert.DeserializeObject<object[]>(file.ReadLine()));
+                        lstMaterial.Items.AddRange(JsonConvert.DeserializeObject<object[]>(file.ReadLine()));
+                        lstType.Items.AddRange(JsonConvert.DeserializeObject<object[]>(file.ReadLine()));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was an error " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("Cannot find settings file. \nPlease set a valid path in the settings menu.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }    
 }

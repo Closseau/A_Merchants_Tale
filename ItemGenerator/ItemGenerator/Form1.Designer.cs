@@ -28,298 +28,470 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnLoad = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnClear = new System.Windows.Forms.Button();
-            this.btnExit = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cbxItemType = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtMinValue = new System.Windows.Forms.TextBox();
-            this.txtMaxValue = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cbxRarity = new System.Windows.Forms.ComboBox();
-            this.cbxValueMod = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.btnRemove = new System.Windows.Forms.Button();
-            this.btnAddRandom = new System.Windows.Forms.Button();
-            this.nud = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtNextItemID = new System.Windows.Forms.TextBox();
-            this.lstItems = new System.Windows.Forms.ListBox();
-            ((System.ComponentModel.ISupportInitialize)(this.nud)).BeginInit();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grpQuality = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.lstQuality = new System.Windows.Forms.ListBox();
+            this.grpEnchant = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.lstEnchant = new System.Windows.Forms.ListBox();
+            this.grpMaterial = new System.Windows.Forms.GroupBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
+            this.lstMaterial = new System.Windows.Forms.ListBox();
+            this.grpType = new System.Windows.Forms.GroupBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.button13 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.lstType = new System.Windows.Forms.ListBox();
+            this.menuStrip1.SuspendLayout();
+            this.grpQuality.SuspendLayout();
+            this.grpEnchant.SuspendLayout();
+            this.grpMaterial.SuspendLayout();
+            this.grpType.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnLoad
+            // menuStrip1
             // 
-            this.btnLoad.Location = new System.Drawing.Point(309, 308);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(75, 23);
-            this.btnLoad.TabIndex = 1;
-            this.btnLoad.Text = "Load";
-            this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.settingsToolStripMenuItem,
+            this.loadSettingsToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(770, 24);
+            this.menuStrip1.TabIndex = 4;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // btnSave
+            // fileToolStripMenuItem
             // 
-            this.btnSave.Location = new System.Drawing.Point(391, 308);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 2;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.generateItemsToolStripMenuItem,
+            this.saveSettingsToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
-            // btnClear
+            // generateItemsToolStripMenuItem
             // 
-            this.btnClear.Location = new System.Drawing.Point(473, 308);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(75, 23);
-            this.btnClear.TabIndex = 3;
-            this.btnClear.Text = "Clear";
-            this.btnClear.UseVisualStyleBackColor = true;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            this.generateItemsToolStripMenuItem.Name = "generateItemsToolStripMenuItem";
+            this.generateItemsToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.generateItemsToolStripMenuItem.Text = "Generate Items";
+            this.generateItemsToolStripMenuItem.Click += new System.EventHandler(this.generateItemsToolStripMenuItem_Click);
             // 
-            // btnExit
+            // saveSettingsToolStripMenuItem
             // 
-            this.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnExit.Location = new System.Drawing.Point(555, 308);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(75, 23);
-            this.btnExit.TabIndex = 4;
-            this.btnExit.Text = "Exit";
-            this.btnExit.UseVisualStyleBackColor = true;
+            this.saveSettingsToolStripMenuItem.Name = "saveSettingsToolStripMenuItem";
+            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.saveSettingsToolStripMenuItem.Text = "Save Settings";
+            this.saveSettingsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsToolStripMenuItem_Click);
             // 
-            // label1
+            // exitToolStripMenuItem
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(299, 17);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Items.json";
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // cbxItemType
+            // settingsToolStripMenuItem
             // 
-            this.cbxItemType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxItemType.FormattingEnabled = true;
-            this.cbxItemType.Location = new System.Drawing.Point(109, 63);
-            this.cbxItemType.Name = "cbxItemType";
-            this.cbxItemType.Size = new System.Drawing.Size(121, 21);
-            this.cbxItemType.TabIndex = 6;
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
-            // label2
+            // loadSettingsToolStripMenuItem
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(31, 66);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Item Type";
+            this.loadSettingsToolStripMenuItem.Name = "loadSettingsToolStripMenuItem";
+            this.loadSettingsToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
+            this.loadSettingsToolStripMenuItem.Text = "Load Settings";
+            this.loadSettingsToolStripMenuItem.Click += new System.EventHandler(this.loadSettingsToolStripMenuItem_Click);
             // 
-            // label3
+            // grpQuality
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(31, 103);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(61, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Base Value";
+            this.grpQuality.Controls.Add(this.textBox1);
+            this.grpQuality.Controls.Add(this.button4);
+            this.grpQuality.Controls.Add(this.button3);
+            this.grpQuality.Controls.Add(this.button2);
+            this.grpQuality.Controls.Add(this.button1);
+            this.grpQuality.Controls.Add(this.lstQuality);
+            this.grpQuality.Location = new System.Drawing.Point(12, 38);
+            this.grpQuality.Name = "grpQuality";
+            this.grpQuality.Size = new System.Drawing.Size(182, 359);
+            this.grpQuality.TabIndex = 0;
+            this.grpQuality.TabStop = false;
+            this.grpQuality.Text = "Quality";
             // 
-            // txtMinValue
+            // textBox1
             // 
-            this.txtMinValue.Location = new System.Drawing.Point(109, 101);
-            this.txtMinValue.Name = "txtMinValue";
-            this.txtMinValue.Size = new System.Drawing.Size(62, 20);
-            this.txtMinValue.TabIndex = 9;
+            this.textBox1.Location = new System.Drawing.Point(42, 288);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(116, 20);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Enter += new System.EventHandler(this.TextBox_Focused);
             // 
-            // txtMaxValue
+            // button4
             // 
-            this.txtMaxValue.Location = new System.Drawing.Point(198, 101);
-            this.txtMaxValue.Name = "txtMaxValue";
-            this.txtMaxValue.Size = new System.Drawing.Size(62, 20);
-            this.txtMaxValue.TabIndex = 10;
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(17, 160);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(19, 29);
+            this.button4.TabIndex = 4;
+            this.button4.Text = "↓";
+            this.button4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.DownButton_Click);
             // 
-            // label4
+            // button3
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(177, 104);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(16, 13);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "to";
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Location = new System.Drawing.Point(17, 112);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(19, 29);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "↑";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.UpButton_Click);
             // 
-            // cbxRarity
+            // button2
             // 
-            this.cbxRarity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxRarity.FormattingEnabled = true;
-            this.cbxRarity.Location = new System.Drawing.Point(109, 138);
-            this.cbxRarity.Name = "cbxRarity";
-            this.cbxRarity.Size = new System.Drawing.Size(121, 21);
-            this.cbxRarity.TabIndex = 12;
+            this.button2.Location = new System.Drawing.Point(98, 311);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(60, 23);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Remove";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
-            // cbxValueMod
+            // button1
             // 
-            this.cbxValueMod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxValueMod.FormattingEnabled = true;
-            this.cbxValueMod.Location = new System.Drawing.Point(109, 176);
-            this.cbxValueMod.Name = "cbxValueMod";
-            this.cbxValueMod.Size = new System.Drawing.Size(121, 21);
-            this.cbxValueMod.TabIndex = 13;
+            this.button1.Location = new System.Drawing.Point(42, 311);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(57, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Add";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.AddButton_Click);
             // 
-            // label5
+            // lstQuality
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(31, 141);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(34, 13);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "Rarity";
+            this.lstQuality.FormattingEnabled = true;
+            this.lstQuality.Location = new System.Drawing.Point(42, 33);
+            this.lstQuality.Name = "lstQuality";
+            this.lstQuality.Size = new System.Drawing.Size(116, 251);
+            this.lstQuality.TabIndex = 5;
             // 
-            // label6
+            // grpEnchant
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(31, 179);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(74, 13);
-            this.label6.TabIndex = 15;
-            this.label6.Text = "Value Modifier";
+            this.grpEnchant.Controls.Add(this.textBox2);
+            this.grpEnchant.Controls.Add(this.button5);
+            this.grpEnchant.Controls.Add(this.button6);
+            this.grpEnchant.Controls.Add(this.button7);
+            this.grpEnchant.Controls.Add(this.button8);
+            this.grpEnchant.Controls.Add(this.lstEnchant);
+            this.grpEnchant.Location = new System.Drawing.Point(200, 38);
+            this.grpEnchant.Name = "grpEnchant";
+            this.grpEnchant.Size = new System.Drawing.Size(182, 359);
+            this.grpEnchant.TabIndex = 1;
+            this.grpEnchant.TabStop = false;
+            this.grpEnchant.Text = "Enchantment";
             // 
-            // btnAdd
+            // textBox2
             // 
-            this.btnAdd.Location = new System.Drawing.Point(43, 219);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 16;
-            this.btnAdd.Text = "Add Item";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.textBox2.Location = new System.Drawing.Point(42, 288);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(116, 20);
+            this.textBox2.TabIndex = 0;
+            this.textBox2.Enter += new System.EventHandler(this.TextBox_Focused);
             // 
-            // btnRemove
+            // button5
             // 
-            this.btnRemove.Location = new System.Drawing.Point(124, 219);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(82, 23);
-            this.btnRemove.TabIndex = 17;
-            this.btnRemove.Text = "Remove Item";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.Location = new System.Drawing.Point(17, 160);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(19, 29);
+            this.button5.TabIndex = 4;
+            this.button5.Text = "↓";
+            this.button5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.DownButton_Click);
             // 
-            // btnAddRandom
+            // button6
             // 
-            this.btnAddRandom.Location = new System.Drawing.Point(34, 281);
-            this.btnAddRandom.Name = "btnAddRandom";
-            this.btnAddRandom.Size = new System.Drawing.Size(109, 23);
-            this.btnAddRandom.TabIndex = 18;
-            this.btnAddRandom.Text = "Add Random Item";
-            this.btnAddRandom.UseVisualStyleBackColor = true;
+            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button6.Location = new System.Drawing.Point(17, 112);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(19, 29);
+            this.button6.TabIndex = 3;
+            this.button6.Text = "↑";
+            this.button6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.UpButton_Click);
             // 
-            // nud
+            // button7
             // 
-            this.nud.Location = new System.Drawing.Point(156, 282);
-            this.nud.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nud.Name = "nud";
-            this.nud.Size = new System.Drawing.Size(49, 20);
-            this.nud.TabIndex = 19;
-            this.nud.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.button7.Location = new System.Drawing.Point(98, 311);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(60, 23);
+            this.button7.TabIndex = 2;
+            this.button7.Text = "Remove";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
-            // label7
+            // button8
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(31, 29);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(66, 13);
-            this.label7.TabIndex = 20;
-            this.label7.Text = "Next Item ID";
+            this.button8.Location = new System.Drawing.Point(42, 311);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(57, 23);
+            this.button8.TabIndex = 1;
+            this.button8.Text = "Add";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.AddButton_Click);
             // 
-            // txtNextItemID
+            // lstEnchant
             // 
-            this.txtNextItemID.Location = new System.Drawing.Point(109, 26);
-            this.txtNextItemID.Name = "txtNextItemID";
-            this.txtNextItemID.ReadOnly = true;
-            this.txtNextItemID.Size = new System.Drawing.Size(54, 20);
-            this.txtNextItemID.TabIndex = 21;
+            this.lstEnchant.FormattingEnabled = true;
+            this.lstEnchant.Location = new System.Drawing.Point(42, 33);
+            this.lstEnchant.Name = "lstEnchant";
+            this.lstEnchant.Size = new System.Drawing.Size(116, 251);
+            this.lstEnchant.TabIndex = 5;
             // 
-            // lstItems
+            // grpMaterial
             // 
-            this.lstItems.FormattingEnabled = true;
-            this.lstItems.HorizontalScrollbar = true;
-            this.lstItems.Location = new System.Drawing.Point(302, 34);
-            this.lstItems.Name = "lstItems";
-            this.lstItems.Size = new System.Drawing.Size(328, 264);
-            this.lstItems.TabIndex = 22;
+            this.grpMaterial.Controls.Add(this.textBox3);
+            this.grpMaterial.Controls.Add(this.button9);
+            this.grpMaterial.Controls.Add(this.button10);
+            this.grpMaterial.Controls.Add(this.button11);
+            this.grpMaterial.Controls.Add(this.button12);
+            this.grpMaterial.Controls.Add(this.lstMaterial);
+            this.grpMaterial.Location = new System.Drawing.Point(388, 38);
+            this.grpMaterial.Name = "grpMaterial";
+            this.grpMaterial.Size = new System.Drawing.Size(182, 359);
+            this.grpMaterial.TabIndex = 2;
+            this.grpMaterial.TabStop = false;
+            this.grpMaterial.Text = "Material";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(42, 288);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(116, 20);
+            this.textBox3.TabIndex = 0;
+            this.textBox3.Enter += new System.EventHandler(this.TextBox_Focused);
+            // 
+            // button9
+            // 
+            this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button9.Location = new System.Drawing.Point(17, 160);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(19, 29);
+            this.button9.TabIndex = 4;
+            this.button9.Text = "↓";
+            this.button9.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.DownButton_Click);
+            // 
+            // button10
+            // 
+            this.button10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button10.Location = new System.Drawing.Point(17, 112);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(19, 29);
+            this.button10.TabIndex = 3;
+            this.button10.Text = "↑";
+            this.button10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.UpButton_Click);
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(98, 311);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(60, 23);
+            this.button11.TabIndex = 2;
+            this.button11.Text = "Remove";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.RemoveButton_Click);
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(42, 311);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(57, 23);
+            this.button12.TabIndex = 1;
+            this.button12.Text = "Add";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.AddButton_Click);
+            // 
+            // lstMaterial
+            // 
+            this.lstMaterial.FormattingEnabled = true;
+            this.lstMaterial.Location = new System.Drawing.Point(42, 33);
+            this.lstMaterial.Name = "lstMaterial";
+            this.lstMaterial.Size = new System.Drawing.Size(116, 251);
+            this.lstMaterial.TabIndex = 5;
+            // 
+            // grpType
+            // 
+            this.grpType.Controls.Add(this.textBox4);
+            this.grpType.Controls.Add(this.button13);
+            this.grpType.Controls.Add(this.button14);
+            this.grpType.Controls.Add(this.button15);
+            this.grpType.Controls.Add(this.button16);
+            this.grpType.Controls.Add(this.lstType);
+            this.grpType.Location = new System.Drawing.Point(576, 38);
+            this.grpType.Name = "grpType";
+            this.grpType.Size = new System.Drawing.Size(182, 359);
+            this.grpType.TabIndex = 3;
+            this.grpType.TabStop = false;
+            this.grpType.Text = "Item Type";
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(42, 288);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(116, 20);
+            this.textBox4.TabIndex = 0;
+            this.textBox4.Enter += new System.EventHandler(this.TextBox_Focused);
+            // 
+            // button13
+            // 
+            this.button13.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button13.Location = new System.Drawing.Point(17, 160);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(19, 29);
+            this.button13.TabIndex = 4;
+            this.button13.Text = "↓";
+            this.button13.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.DownButton_Click);
+            // 
+            // button14
+            // 
+            this.button14.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button14.Location = new System.Drawing.Point(17, 112);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(19, 29);
+            this.button14.TabIndex = 3;
+            this.button14.Text = "↑";
+            this.button14.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.UpButton_Click);
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(98, 311);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(60, 23);
+            this.button15.TabIndex = 2;
+            this.button15.Text = "Remove";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.RemoveButton_Click);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(42, 311);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(57, 23);
+            this.button16.TabIndex = 1;
+            this.button16.Text = "Add";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.AddButton_Click);
+            // 
+            // lstType
+            // 
+            this.lstType.FormattingEnabled = true;
+            this.lstType.Location = new System.Drawing.Point(42, 33);
+            this.lstType.Name = "lstType";
+            this.lstType.Size = new System.Drawing.Size(116, 251);
+            this.lstType.TabIndex = 5;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnExit;
-            this.ClientSize = new System.Drawing.Size(663, 360);
-            this.Controls.Add(this.lstItems);
-            this.Controls.Add(this.txtNextItemID);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.nud);
-            this.Controls.Add(this.btnAddRandom);
-            this.Controls.Add(this.btnRemove);
-            this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.cbxValueMod);
-            this.Controls.Add(this.cbxRarity);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtMaxValue);
-            this.Controls.Add(this.txtMinValue);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.cbxItemType);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnExit);
-            this.Controls.Add(this.btnClear);
-            this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnLoad);
+            this.ClientSize = new System.Drawing.Size(770, 410);
+            this.Controls.Add(this.grpType);
+            this.Controls.Add(this.grpMaterial);
+            this.Controls.Add(this.grpEnchant);
+            this.Controls.Add(this.grpQuality);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
             this.Text = "Item Generator";
-            this.Load += new System.EventHandler(this.frmMain_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.nud)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.grpQuality.ResumeLayout(false);
+            this.grpQuality.PerformLayout();
+            this.grpEnchant.ResumeLayout(false);
+            this.grpEnchant.PerformLayout();
+            this.grpMaterial.ResumeLayout(false);
+            this.grpMaterial.PerformLayout();
+            this.grpType.ResumeLayout(false);
+            this.grpType.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Button btnLoad;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.Button btnExit;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cbxItemType;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtMinValue;
-        private System.Windows.Forms.TextBox txtMaxValue;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cbxRarity;
-        private System.Windows.Forms.ComboBox cbxValueMod;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnRemove;
-        private System.Windows.Forms.Button btnAddRandom;
-        private System.Windows.Forms.NumericUpDown nud;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox txtNextItemID;
-        private System.Windows.Forms.ListBox lstItems;
+
+        public System.Windows.Forms.MenuStrip menuStrip1;
+        public System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        public System.Windows.Forms.GroupBox grpQuality;
+        public System.Windows.Forms.Button button4;
+        public System.Windows.Forms.Button button3;
+        public System.Windows.Forms.Button button2;
+        public System.Windows.Forms.Button button1;
+        public System.Windows.Forms.ListBox lstQuality;
+        public System.Windows.Forms.TextBox textBox1;
+        public System.Windows.Forms.GroupBox grpEnchant;
+        public System.Windows.Forms.TextBox textBox2;
+        public System.Windows.Forms.Button button5;
+        public System.Windows.Forms.Button button6;
+        public System.Windows.Forms.Button button7;
+        public System.Windows.Forms.Button button8;
+        public System.Windows.Forms.ListBox lstEnchant;
+        public System.Windows.Forms.GroupBox grpMaterial;
+        public System.Windows.Forms.TextBox textBox3;
+        public System.Windows.Forms.Button button9;
+        public System.Windows.Forms.Button button10;
+        public System.Windows.Forms.Button button11;
+        public System.Windows.Forms.Button button12;
+        public System.Windows.Forms.ListBox lstMaterial;
+        public System.Windows.Forms.GroupBox grpType;
+        public System.Windows.Forms.TextBox textBox4;
+        public System.Windows.Forms.Button button13;
+        public System.Windows.Forms.Button button14;
+        public System.Windows.Forms.Button button15;
+        public System.Windows.Forms.Button button16;
+        public System.Windows.Forms.ListBox lstType;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateItemsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadSettingsToolStripMenuItem;
     }
 }
 
