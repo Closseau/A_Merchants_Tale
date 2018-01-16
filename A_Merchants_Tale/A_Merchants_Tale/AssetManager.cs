@@ -38,7 +38,8 @@ namespace A_Merchants_Tale
         MouseState myMouse;
 
         Interactable previouslyClicked;
-        Interactable currentlyClicked;
+        Interactable previouslyHovered;
+        Interactable currentMouseLogicResult;
         Interactable mouseUpProspect;
 
         bool atStartMenu;
@@ -151,129 +152,232 @@ namespace A_Merchants_Tale
             //hover click logic ... need to move/change this
             //change idea.. condition too see if mouse is clicked if so run front to back on interactibles untill one is found activate Onclick() and "break out" and run the rest for hovers
 
-            Logic.clearState(myMenu);
-            Logic.clearState(myTiles);
-            Logic.clearState(myOptions);
-
-
-
-            currentlyClicked = Logic.hasMouseClicked(myOptions, myMouse, previousMouseState, currentScreen);
+            //Logic.clearState(myMenu);
+            //Logic.clearState(myTiles);
+            //Logic.clearState(myOptions);
 
             //nonsense Conditional booleans!!
-            bool mouseVisualIsClicked;
-            //these relie on the currently clicked
-            bool currentlyClickedDoesntExist = (currentlyClicked == null);
+            bool IntereactableIsClicked;
 
-            if (currentlyClickedDoesntExist)
-            {
-                currentlyClicked = Logic.hasMouseClicked(myMenu, myMouse, previousMouseState, currentScreen);
-                //these relie on the currently clicked
-                currentlyClickedDoesntExist = (currentlyClicked == null);
+            bool currentMouseLogicResultDoesntExist;
+
+            currentMouseLogicResult = Logic.hasMouseClicked(myMenu, myMouse, previousMouseState, currentScreen);
+
+            currentMouseLogicResultDoesntExist = (currentMouseLogicResult == null);
                 
-                if (currentlyClickedDoesntExist)
+            if (currentMouseLogicResultDoesntExist)
+            {
+                currentMouseLogicResult = Logic.hasMouseClicked(myTiles, myMouse, previousMouseState, currentScreen);
+
+                currentMouseLogicResultDoesntExist = (currentMouseLogicResult == null);
+
+                if (currentMouseLogicResultDoesntExist)
                 {
-                    currentlyClicked = Logic.hasMouseClicked(myTiles, myMouse, previousMouseState, currentScreen);
-                    //these relie on the currently clicked
-                    currentlyClickedDoesntExist = (currentlyClicked == null);
-                    if (currentlyClickedDoesntExist)
+                    // to clear hover when not hoving over something
+                    if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
                     {
-                        // then on the last one clear clicked iuwefjnliuJNEWLIOFUNAELIRSUNGLIREUTNGOISRENJTGOIJREGIOJMREAOG <---- LITTERALLY THE CAUSE OF MOST OF MY PROBLEMS
-                        // if (myMouse.LeftButton == ButtonState.Pressed)
+
+                        //clear previous
+                        previouslyHovered.uiState = (int)UIState.NEUTRAL;
+                        previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                    }
+                        /*
                         if (mouseDown && previouslyClicked != null)
                         {
                             previouslyClicked.clearAttachedToo();
+
                             previouslyClicked = null;
-                            /* Trying new clear code
-                            Logic.clearClickedState(myOptions);
-                            Logic.clearClickedState(myMenu);
-                            Logic.clearClickedState(myTiles);      
-                            */
                         }
+                        */
                     }
-                    else
-                    {
-
-                        //these relie on the currently clicked
-                        mouseVisualIsClicked = (currentlyClicked.visualState == (int)UIState.CLICKED);
-
-                        if (mouseVisualIsClicked && currentlyClicked == previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
-                        {
-                            currentlyClicked.AttachedFrom[0].moveEntity(myMouse);
-                            mouseUpProspect = null;
-                        }
-                        else if (mouseVisualIsClicked && currentlyClicked != previouslyClicked && currentlyClicked.extendedClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
-                        {
-                            //New ShopTile clicked
-                            if (previouslyClicked != null)
-                            {
-                                previouslyClicked.clearAttachedToo();
-                                //previouslyClicked.visualState = (int)UIState.NEUTRAL;
-                            }
-                            currentlyClicked.onClick(myMouse);
-                            previouslyClicked = currentlyClicked;
-                            addAttached(currentlyClicked);
-                            addAttached(currentlyClicked.AttachedFrom[0]);
-                            mouseUpProspect = null;
-
-                        }
-                    }
-                }
                 else
                 {
-                    //these relie on the currently clicked
-                    mouseVisualIsClicked = (currentlyClicked.visualState == (int)UIState.CLICKED);
 
-                    if (mouseVisualIsClicked && currentlyClicked != previouslyClicked && currentlyClicked.climbingClickCheck(myMouse) == false && mouseUp && mouseUpProspect == currentlyClicked)
+                    
+                    IntereactableIsClicked = (currentMouseLogicResult.visualState == (int)UIState.CLICKED);
+
+                    if (IntereactableIsClicked && currentMouseLogicResult == previouslyClicked && mouseUp && mouseUpProspect == currentMouseLogicResult)
                     {
-                        //New Menu clicked
+                        // same shop tile clicked again
+                        currentMouseLogicResult.AttachedFrom[0].moveEntity(myMouse);
+                    }
+                    else if (currentMouseLogicResult.uiState == (int)UIState.CLICKED && currentMouseLogicResult.active)
+                    {
+                        //New ShopTile clicked
+
+                        // reseting active state
+                        currentMouseLogicResult.active = false;
+                        // does previous exist?
                         if (previouslyClicked != null)
                         {
-                            previouslyClicked.clearAttachedToo();
-                            //previouslyClicked.state = (int)UIState.NEUTRAL;
+                            //clear previous
+                            previouslyClicked.uiState = (int)UIState.NEUTRAL;
+                            previouslyClicked.visualState = (int)UIState.NEUTRAL;
+                            //this is where a clear method in future would be called
+
                         }
-                        previouslyClicked = currentlyClicked;
-                        mouseUpProspect = null;
+                        //set previous for clearing later
+                        previouslyClicked = currentMouseLogicResult;
+                        // do click event -> conditional for multiple possiblilities would go here
+                        // make new menu[1]
+                        myMenu[1] = new DynamicMenu(new Rectangle(myMouse.X + 1, myMouse.Y + 1, 150, 300), currentMouseLogicResult, 1);
+                        //set visual state
+                        currentMouseLogicResult.visualState = (int)UIState.CLICKED;
+                        //currentMouseLogicResult.onClick(myMouse);
+
+
                     }
-                }
-            }
-            else 
-            {
-
-                //these relie on the currently clicked
-                mouseVisualIsClicked = (currentlyClicked.visualState == (int)UIState.CLICKED);
-
-
-                if (mouseVisualIsClicked && currentlyClicked != previouslyClicked && mouseUp && mouseUpProspect == currentlyClicked)
-                {
-                        //New MenuOption clicked               
-                    if (previouslyClicked != null)
+                    else if (currentMouseLogicResult.uiState == (int)UIState.HOVERED && currentMouseLogicResult.active)
                     {
-                        previouslyClicked.clearAttachedToo();
-                        //previouslyClicked.state = (int)UIState.NEUTRAL;
+                        // shoptile hovered
+
+                        // reseting active state
+                        currentMouseLogicResult.active = false;
+                        // does previous exist?
+                        if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
+                        {
+                        //clear previous
+                            previouslyHovered.uiState = (int)UIState.NEUTRAL;
+                            previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                        }
+                        //set previous for clearing later
+                        previouslyHovered = currentMouseLogicResult;
+                        //set visual state
+                        currentMouseLogicResult.visualState = (int)UIState.HOVERED;
                     }
-                    currentlyClicked.onClick(myMouse);
-                        previouslyClicked = currentlyClicked;
-                    mouseUpProspect = null;
+                    else if (currentMouseLogicResult.uiState == (int)UIState.HARDHOVER && currentMouseLogicResult.active)
+                    {
+                        //shoptile hard hover
+
+                        // reseting active state
+                        currentMouseLogicResult.active = false;
+                        // does previous exist?
+                        if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
+                        {
+                            //clear previous
+                            previouslyHovered.uiState = (int)UIState.NEUTRAL;
+                            previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                        }
+                        //set previous for clearing later
+                        previouslyHovered = currentMouseLogicResult;
+                        //set visual state
+                        currentMouseLogicResult.visualState = (int)UIState.CLICKED;
+                    }
                 }
             }
+            else
+            {
+                //these relie on the currently clicked
+                IntereactableIsClicked = (currentMouseLogicResult.visualState == (int)UIState.CLICKED);
 
+                if (currentMouseLogicResult.uiState == (int)UIState.CLICKED && currentMouseLogicResult.active)
+                {
+                    currentMouseLogicResult.active = false;
+                    //New Menu clicked
+                }
+                else if (currentMouseLogicResult.uiState == (int)UIState.HOVERED && currentMouseLogicResult.active)
+                {
+                    currentMouseLogicResult.active = false;
+                    // menu hovered
+                }
+                else if (currentMouseLogicResult.uiState == (int)UIState.HARDHOVER && currentMouseLogicResult.active)
+                {
+                    currentMouseLogicResult.active = false;
+                    //menu hard hover
+                }
+            }
 
 
             if (currentScreen == 0)
             {
                 Logic.clearState(myStartMenuButtons);
 
-                currentlyClicked = Logic.hasMouseClicked(myStartMenuButtons, myMouse, previousMouseState, currentScreen);
+                currentMouseLogicResult = Logic.hasMouseClicked(myStartMenuButtons, myMouse, previousMouseState, currentScreen);
 
-                if (currentlyClicked != null && currentlyClicked.visualState == (int)UIState.CLICKED
-                    && currentlyClicked.type == (int)UIType.START && mouseUp)
+                if (currentMouseLogicResult != null &&  currentMouseLogicResult.type == (int)UIType.START)
                 {
-                    currentScreen++;
+                    if (currentMouseLogicResult.uiState == (int)UIState.CLICKED && currentMouseLogicResult.active)
+                    {
+                        currentScreen++;
+                    }
+                    else if (currentMouseLogicResult.uiState == (int)UIState.HOVERED && currentMouseLogicResult.active)
+                    {
+
+                        // reseting active state
+                        currentMouseLogicResult.active = false;
+                        // does previous exist?
+                        if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
+                        {
+                            //clear previous
+                            previouslyHovered.uiState = (int)UIState.NEUTRAL;
+                            previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                        }
+                        //set previous for clearing later
+                        previouslyHovered = currentMouseLogicResult;
+                        //set visual state
+                        currentMouseLogicResult.visualState = (int)UIState.HOVERED;
+                    }
+                    else if (currentMouseLogicResult.uiState == (int)UIState.HARDHOVER && currentMouseLogicResult.active)
+                    {
+
+                        // reseting active state
+                        currentMouseLogicResult.active = false;
+                        // does previous exist?
+                        if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
+                        {
+                            //clear previous
+                            previouslyHovered.uiState = (int)UIState.NEUTRAL;
+                            previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                        }
+                        //set previous for clearing later
+                        previouslyHovered = currentMouseLogicResult;
+                        //set visual state
+                        currentMouseLogicResult.visualState = (int)UIState.CLICKED;
+                    }
+
+
                 }
-                else if (currentlyClicked != null && currentlyClicked.visualState == (int)UIState.CLICKED
-                   && currentlyClicked.type == (int)UIType.EXIT && mouseUp)
+                else if (currentMouseLogicResult != null && currentMouseLogicResult.type == (int)UIType.EXIT)
                 {
-                    game.Exit();
+                    if (currentMouseLogicResult.uiState == (int)UIState.CLICKED && currentMouseLogicResult.active)
+                    {
+                        game.Exit();
+                    }
+                    else if (currentMouseLogicResult.uiState == (int)UIState.HOVERED && currentMouseLogicResult.active)
+                    {
+
+                        // reseting active state
+                        currentMouseLogicResult.active = false;
+                        // does previous exist?
+                        if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
+                        {
+                            //clear previous
+                            previouslyHovered.uiState = (int)UIState.NEUTRAL;
+                            previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                        }
+                        //set previous for clearing later
+                        previouslyHovered = currentMouseLogicResult;
+                        //set visual state
+                        currentMouseLogicResult.visualState = (int)UIState.HOVERED;
+                    }
+                    else if (currentMouseLogicResult.uiState == (int)UIState.HARDHOVER && currentMouseLogicResult.active)
+                    {
+
+                        // reseting active state
+                        currentMouseLogicResult.active = false;
+                        // does previous exist?
+                        if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
+                        {
+                            //clear previous
+                            previouslyHovered.uiState = (int)UIState.NEUTRAL;
+                            previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                        }
+                        //set previous for clearing later
+                        previouslyHovered = currentMouseLogicResult;
+                        //set visual state
+                        currentMouseLogicResult.visualState = (int)UIState.CLICKED;
+                    }
+
                 }
             }
 
@@ -281,74 +385,22 @@ namespace A_Merchants_Tale
 
             if (mouseUp && mouseUpProspect != null && mouseUpProspect.climbingClickCheck(myMouse) == false && mouseUpProspect != previouslyClicked)
             {
-                mouseUpProspect.clearAttachedToo();
-                if (currentlyClicked != null)
-                    currentlyClicked.clearAttachedToo();
-                mouseUpProspect = null;
                 /*
-                if (previouslyClicked != null)
-                {
-                    previouslyClicked.clearAttachedToo();
-                    previouslyClicked = null;
-                }
-                else
-                    previouslyClicked = null; // test for disappearign menu problem
-                    */
+                mouseUpProspect.clearAttachedToo();
+                if (currentMouseLogicResult != null)
+                    currentMouseLogicResult.clearAttachedToo();
+                mouseUpProspect = null;
+                */
+
+
+
             }
             //oop this needs to be below code directly above or you might waste hours trying to figure out why menus aren't generating.. rip
-            if (currentlyClicked != null && currentlyClicked.visualState == (int)UIState.CLICKED && mouseDown)
-                mouseUpProspect = currentlyClicked;
 
-            currentlyClicked = null;
+            currentMouseLogicResult = null;
 
             previousMouseState = myMouse;
         }
-        public void addAttached(Interactable interactable)
-        {
-            Boolean done = false;
-            Interactable attachedFrom = interactable.AttachedFrom[interactable.lastAttachedIndex];
-            int i = 0;
-            if (interactable.GetType() == typeof(ShopTile))
-            {
-                
-                i = 0;
-                while (done == false)
-                {
-
-                    if (myMenu[i] == null || myMenu[i].visualState != (int) UIState.CLICKED)
-                    {
-                        myMenu[i] = (DynamicMenu) attachedFrom;
-                        done = true;
-                    }
-                    i++;
-                }
-            }
-            else if (interactable.GetType() == typeof(DynamicMenu))
-            {
-                i = 0;
-                while (done == false)
-                {
-
-                    if (myOptions[i] == null)
-                    {
-                        myOptions[i] = (MenuOption)attachedFrom;
-                        done = true;
-                    }
-                    i++;
-                }
-            }
-        }
-        // trying to remove/make this obsolete
-        /*
-        public static void setMenu(Rectangle rectangle, Interactable interactable)
-        { 
-            myMenu[1] = new DynamicMenu(rectangle, interactable);
-            for (int i = 0; i < myOptions.Length; i++)
-            {
-                myOptions[i] = new MenuOption(new Rectangle(rectangle.X + (rectangle.Width/2) - (65), rectangle.Y + ((rectangle.Height/(myOptions.Length * 2)) *(2*i+1)) - 25, 130, 50));
-            }
-        }
-        */
         public void draw(SpriteBatch spriteBatch)
         {            
             shopBackground.Draw(shop, spriteBatch);
@@ -359,6 +411,8 @@ namespace A_Merchants_Tale
                     myTiles[i].Draw(tile[myTiles[i].visualState], spriteBatch);
             }
             
+
+
             for (int i = 0; i < myMenu.Length; i++)
             {
                 if (myMenu[i] != null && myMenu[i].visualState == (int)UIState.CLICKED && myMenu[i].screen == currentScreen)
@@ -372,6 +426,8 @@ namespace A_Merchants_Tale
                     */
                 }
             }
+
+
             for (int i = 0; i < myOptions.Length; i++)
             {
                 if (myOptions[i] != null)

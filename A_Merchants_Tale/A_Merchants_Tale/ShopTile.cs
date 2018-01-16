@@ -19,11 +19,13 @@ namespace A_Merchants_Tale
         {
             visualState = (int)UIState.CLICKED;
             //AssetManager.setMenu(new Rectangle(mouseState.X, mouseState.Y, 150, 300), this);
+            /*
             if (this.AttachedFrom[0] == null)
             {
                 this.AttachedFrom[0] = new DynamicMenu(new Rectangle(mouseState.X + 1, mouseState.Y + 1, 150, 300), this);
                 this.AttachedFrom[0].screen = 1;
             }
+            */
             //this.lastAttachedIndex++;
         }
     }

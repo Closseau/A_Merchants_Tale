@@ -12,13 +12,16 @@ namespace A_Merchants_Tale
         //num of options
         public DynamicMenu(Rectangle rectangle) : base(rectangle)
         {
+            id = 0;
             active = false;
             //addExitButton();
         }
 
-        public DynamicMenu(Rectangle rectangle, Interactable interactable) : base(rectangle)
+        public DynamicMenu(Rectangle rectangle, Interactable interactable, int myID) : base(rectangle)
         {
+            id = myID;
             this.AttachedToo = interactable;
+            interactable.AttachedFrom[0] = this;
             //active = true;
             visualState = (int)UIState.CLICKED;
             addExitButton();

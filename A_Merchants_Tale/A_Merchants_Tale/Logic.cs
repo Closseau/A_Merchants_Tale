@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-public enum UIState { NEUTRAL = 0, HOVERED = 1, CLICKED = 2 };
+public enum UIState { NEUTRAL = 0, HOVERED = 1, CLICKED = 2, HARDHOVER = 3 };
 public enum UIType { START = 1000, EXIT = 1001, };
 
 namespace A_Merchants_Tale
@@ -23,19 +23,16 @@ namespace A_Merchants_Tale
         {
           //  Boolean hasFoundHover = false;
 
-            if ((mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released) || ((mouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)))
+            if ( mouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
             {
                 foreach (Interactable element in interactable)
                 {
                     if (element != null && element.screen == currentScreen && Logic.checkMouseCollison(element, mouseState))
                     {
-                        if (previousMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
-                            element.visualState = (int)UIState.CLICKED;
-                        /* moving this out 
-                        if (mouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
-                            element.onClick(mouseState);
+                        element.uiState = (int)UIState.CLICKED;
+                        element.active = true;
 
-                        */
+                        // make sure to run click code outside set visual states to know if they have been activated yet?
                         return element;
                     }
                 }
@@ -46,17 +43,30 @@ namespace A_Merchants_Tale
                 {
                     if (element != null && element.screen == currentScreen && Logic.checkMouseCollison(element, mouseState))
                     {
-                        if (element.visualState != (int)UIState.CLICKED)
+                        if (element.uiState != (int)UIState.CLICKED)
                         {
+                            if (mouseState.LeftButton == ButtonState.Pressed)
+                            {
+                                element.uiState = (int)UIState.HARDHOVER;
+                                element.active = true;
+                                //element.visualState = (int)UIState.CLICKED; set visual states to know if they have been activated yet?
+                            }
+                            else
+                            {
 
-                            //element.visualState = (int)UIState.HOVERED;
-                            element.onHover(); 
-                        } //idea!!! send back interactable then check sent back for state!!! 
+                                element.uiState = (int)UIState.HOVERED;
+                                element.active = true;
+                                //element.visualState = (int)UIState.HOVERED; set visual states to know if they have been activated yet?
+                            }
+
+
+                            /// element.onHover(); 
+                        } 
                             return element;
                     }
                 }
             }
-            clearState(interactable);
+            //clearState(interactable);
 
             return null;
         }

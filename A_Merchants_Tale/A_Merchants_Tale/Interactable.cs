@@ -39,7 +39,7 @@ namespace A_Merchants_Tale
         public virtual void onClick(MouseState mouseState)
         {
             uiState = (int)UIState.CLICKED;
-            active = true;
+            //active = true;
             // popups and stuff would go here
         }
 
