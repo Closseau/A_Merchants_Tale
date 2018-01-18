@@ -196,10 +196,12 @@ namespace A_Merchants_Tale
                     
                     IntereactableIsClicked = (currentMouseLogicResult.visualState == (int)UIState.CLICKED);
 
-                    if (IntereactableIsClicked && currentMouseLogicResult == previouslyClicked && mouseUp && mouseUpProspect == currentMouseLogicResult)
+                    if (currentMouseLogicResult == previouslyClicked && currentMouseLogicResult.uiState == (int)UIState.CLICKED && currentMouseLogicResult.active)
                     {
                         // same shop tile clicked again
                         currentMouseLogicResult.AttachedFrom[0].moveEntity(myMouse);
+                        // reseting active state
+                        currentMouseLogicResult.active = false;
                     }
                     else if (currentMouseLogicResult.uiState == (int)UIState.CLICKED && currentMouseLogicResult.active)
                     {
@@ -220,7 +222,7 @@ namespace A_Merchants_Tale
                         previouslyClicked = currentMouseLogicResult;
                         // do click event -> conditional for multiple possiblilities would go here
                         // make new menu[1]
-                        myMenu[1] = new DynamicMenu(new Rectangle(myMouse.X + 1, myMouse.Y + 1, 150, 300), currentMouseLogicResult, 1);
+                        shopTileMenuCreation(currentMouseLogicResult);
                         //set visual state
                         currentMouseLogicResult.visualState = (int)UIState.CLICKED;
                         //currentMouseLogicResult.onClick(myMouse);
@@ -273,17 +275,63 @@ namespace A_Merchants_Tale
                 if (currentMouseLogicResult.uiState == (int)UIState.CLICKED && currentMouseLogicResult.active)
                 {
                     currentMouseLogicResult.active = false;
-                    //New Menu clicked
+                    //New Menu clicked (idea: no need to reset anything if menu is clicked)
+
+                    //make switch statement to determine which menu it is via ID
+
+                    //call corisponding method to deal with that menu (type?)
                 }
                 else if (currentMouseLogicResult.uiState == (int)UIState.HOVERED && currentMouseLogicResult.active)
                 {
                     currentMouseLogicResult.active = false;
-                    // menu hovered
+                    // menu hovered (menus should be checked for hover props event though they dont had an effect do to there menu opts)
+
+
+                    //deal with previously hovered element
+
+                    if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
+                    {
+                        //clear previous
+                        previouslyHovered.uiState = (int)UIState.NEUTRAL;
+                        previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                    }
+
+                    //make switch statement to determine which menu it is via ID
+
+                    //call corisponding method to deal with that menu (type?)
+
+                    //set previous for clearing later
+                    //previouslyHovered = currentMouseLogicResult;
+                    //set visual state, rewrite when a above is finished
+                    //currentMouseLogicResult.visualState = (int)UIState.HOVERED;
                 }
                 else if (currentMouseLogicResult.uiState == (int)UIState.HARDHOVER && currentMouseLogicResult.active)
                 {
                     currentMouseLogicResult.active = false;
                     //menu hard hover
+
+
+                    //deal with previously hardhovered element
+
+                    if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
+                    {
+                        //clear previous
+                        previouslyHovered.uiState = (int)UIState.NEUTRAL;
+                        previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                    }
+
+
+                    //make switch statement to determine which menu it is via ID
+
+                    //call corisponding method to deal with that menu (type?)
+
+
+                    //set previous for clearing later
+                    //previouslyHovered = currentMouseLogicResult;
+                    //set visual state, rewrite when a above is finished
+                    //currentMouseLogicResult.visualState = (int)UIState.HARDHOVER;
+
+
                 }
             }
 
@@ -383,20 +431,7 @@ namespace A_Merchants_Tale
 
 
 
-            if (mouseUp && mouseUpProspect != null && mouseUpProspect.climbingClickCheck(myMouse) == false && mouseUpProspect != previouslyClicked)
-            {
-                /*
-                mouseUpProspect.clearAttachedToo();
-                if (currentMouseLogicResult != null)
-                    currentMouseLogicResult.clearAttachedToo();
-                mouseUpProspect = null;
-                */
-
-
-
-            }
-            //oop this needs to be below code directly above or you might waste hours trying to figure out why menus aren't generating.. rip
-
+            
             currentMouseLogicResult = null;
 
             previousMouseState = myMouse;
@@ -419,9 +454,10 @@ namespace A_Merchants_Tale
                 {
                     myMenu[i].Draw(menu, spriteBatch);
                     /*
-                    for (int i = 0; i < myOptions.Length; i++)
+                    for (i = 0; i < myOptions.Length; i++)
                     {
-                        myOptions[i].Draw(menuOption[myOptions[i].visualState], spriteBatch);
+                        if (myOptions[i] != null)
+                            myOptions[i].Draw(menuOption[myOptions[i].visualState], spriteBatch);
                     }
                     */
                 }
@@ -448,6 +484,32 @@ namespace A_Merchants_Tale
                 }
             
 
-        }     
+        }
+        public void shopTileMenuCreation(Interactable interactable)
+        {
+            //not excatly sure where to put this so for now its here
+            //so like we can make menu options and putthem here and know that like menuoptions[1-5] are for menu[1] and stuff
+            myMenu[1] = new DynamicMenu(new Rectangle(myMouse.X + 1, myMouse.Y + 1, 150, 300), interactable, 1);
+            myMenu[1].screen = 1;
+            //myMenu[1].uiState = (int)UIState.CLICKED;
+        }
+        public void shopTileMenuClick(Interactable interactable)
+        {
+            //not excatly sure where to put this so for now its here
+
+
+        }
+        public void shopTileMenuHover(Interactable interactable)
+        {
+            //not excatly sure where to put this so for now its here
+
+
+        }
+        public void shopTileMenuHHover(Interactable interactable)
+        {
+            //not excatly sure where to put this so for now its here
+
+
+        }
     }
 }
