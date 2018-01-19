@@ -41,28 +41,27 @@ namespace A_Merchants_Tale
             {
                 foreach (Interactable element in interactable)
                 {
-                    if (element != null && element.screen == currentScreen && Logic.checkMouseCollison(element, mouseState))
+                    if (element != null && element.screen == currentScreen && Logic.checkMouseCollison(element, mouseState) 
+                        && element.uiState != (int)UIState.CLICKED)
                     {
-                        if (element.uiState != (int)UIState.CLICKED)
+
+                        if (mouseState.LeftButton == ButtonState.Pressed)
                         {
-                            if (mouseState.LeftButton == ButtonState.Pressed)
-                            {
-                                element.uiState = (int)UIState.HARDHOVER;
-                                element.active = true;
-                                //element.visualState = (int)UIState.CLICKED; set visual states to know if they have been activated yet?
-                            }
-                            else
-                            {
+                            element.uiState = (int)UIState.HARDHOVER;
+                            element.active = true;
+                            //element.visualState = (int)UIState.CLICKED; set visual states to know if they have been activated yet?
+                        }
+                        else
+                        {
 
-                                element.uiState = (int)UIState.HOVERED;
-                                element.active = true;
-                                //element.visualState = (int)UIState.HOVERED; set visual states to know if they have been activated yet?
-                            }
+                            element.uiState = (int)UIState.HOVERED;
+                            element.active = true;
+                            //element.visualState = (int)UIState.HOVERED; set visual states to know if they have been activated yet?
+                        }
 
 
-                            /// element.onHover(); 
-                        } 
-                            return element;
+                        /// element.onHover();  
+                        return element;
                     }
                 }
             }
