@@ -265,6 +265,13 @@ namespace A_Merchants_Tale
                     //currentMouseLogicResult.active = false;
                     //conditional/switch to determine which menu this is 
                     // catch-all for shopmenu related actions
+                    if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
+                    {
+                        //clear previous
+                        previouslyHovered.uiState = (int)UIState.NEUTRAL;
+                        previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                    }
+                    previouslyHovered = null;
                     shopTileMenuClick();
                 }
             }
