@@ -205,3 +205,27 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Interactable/Buttons/Start Menu/Wide Button Basic.png
 
+#begin Textures/Interactable/Buttons/Start Menu/Exit Button Click.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Interactable/Buttons/Start Menu/Exit Button Click.png
+
+#begin Textures/Interactable/Buttons/Start Menu/Start Button Click.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Interactable/Buttons/Start Menu/Start Button Click.png
+
