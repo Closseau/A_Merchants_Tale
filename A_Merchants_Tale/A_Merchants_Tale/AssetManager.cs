@@ -422,6 +422,7 @@ namespace A_Merchants_Tale
         }
         public void shopTileMenuCreation(Interactable interactable)
         {
+            myMenu[1].clearAttachedToo();
             //not excatly sure where to put this so for now its here
             //so like we can make menu options and putthem here and know that like menuoptions[1-5] are for menu[1] and stuff
             myMenu[1] = new DynamicMenu(new Rectangle(myMouse.X + 1, myMouse.Y + 1, 150, 300), interactable, 1);

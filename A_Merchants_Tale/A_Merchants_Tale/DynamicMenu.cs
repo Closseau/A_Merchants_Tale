@@ -30,8 +30,9 @@ namespace A_Merchants_Tale
         public override void clear()
         {
             visualState = (int)UIState.NEUTRAL;
-           // active = false;
+            // active = false;
             //setRectangle(new Rectangle(0,0,0,0));
+            screen = -1;
             rectangle = new Rectangle(0, 0, 0, 0);
         }
 
