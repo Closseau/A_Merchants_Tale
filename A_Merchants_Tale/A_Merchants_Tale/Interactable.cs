@@ -36,9 +36,9 @@ namespace A_Merchants_Tale
         // control varible to know what the next 'open' slot in the array
         public int lastAttachedIndex { get; set; }
 
-        public virtual void onClick(MouseState mouseState)
+        public virtual void onClick()
         {
-            uiState = (int)UIState.CLICKED;
+            //uiState = (int)UIState.CLICKED;
             //active = true;
             // popups and stuff would go here
         }
@@ -47,6 +47,13 @@ namespace A_Merchants_Tale
         {
             uiState = (int)UIState.NEUTRAL;
             visualState = (int)UIState.NEUTRAL;
+        }
+
+        public virtual void remove()
+        {
+            screen = -1;
+
+
         }
         // Here we go 
         // goes 'down' the attached hierarchy until it reaches the base
@@ -137,5 +144,50 @@ namespace A_Merchants_Tale
             return Logic.checkMouseCollison(this, mouseState);
         }
 
+        public Boolean isRelated(Interactable interactable)
+        {
+            // totally need to rewrite this, but it works for now 
+            Interactable bottom = this.AttachedToo;
+            while (bottom.AttachedToo != null)
+            {
+                bottom = bottom.AttachedToo;
+
+                if (bottom == interactable)
+                {
+                    return true;
+                }
+            }
+            return false;
+            /*
+            int j = 0;
+            while (bottom.AttachedFrom[0] != null)
+            {
+                for (int i = 0; i < bottom.AttachedFrom.Length; i++)
+                {
+                    if (bottom.AttachedFrom[i] == interactable)
+                    {
+                        return true;
+                    }
+                }
+
+                bottom = bottom.AttachedFrom[0];
+                
+
+            }
+            */
+        }
+
+        public Boolean upwardRelatedCheck(Interactable interactable, Interactable origin)
+        {
+            Interactable bottom = origin;
+            if (origin.AttachedFrom[0] != null)
+            {
+                return upwardRelatedCheck(interactable.AttachedFrom[1], origin);
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

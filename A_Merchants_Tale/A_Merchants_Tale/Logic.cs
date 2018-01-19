@@ -92,9 +92,10 @@ namespace A_Merchants_Tale
             //need to get array of all interactables besides background
             foreach (Interactable element in interactable)
             {
-                if (element != null && element.visualState != (int)UIState.CLICKED)
+                if (element != null && element.uiState != (int)UIState.CLICKED)
                 {
-                    element.clear();
+                    element.uiState = (int)UIState.NEUTRAL;
+                    element.visualState = (int)UIState.NEUTRAL;
                 }
             }
         }
@@ -103,7 +104,7 @@ namespace A_Merchants_Tale
         {
             foreach (Interactable element in interactable)
             {
-                if (element != null && element.visualState == (int)UIState.CLICKED)
+                if (element != null && element.uiState == (int)UIState.CLICKED)
                 {
                     element.clear();
                 }

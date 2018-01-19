@@ -22,7 +22,7 @@ namespace A_Merchants_Tale
             this.screen = 1;
 
         }
-        public override void onClick(MouseState mouseState)
+        public override void onClick()
         {
             this.clearAttachedToo();
 

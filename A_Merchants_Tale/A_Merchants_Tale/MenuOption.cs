@@ -17,11 +17,12 @@ namespace A_Merchants_Tale
 
         public override void clear()
         {
-            visualState = (int)UIState.NEUTRAL;
-            active = false;
+            //visualState = (int)UIState.NEUTRAL;
+            //active = false;
             // active = false;
             //setRectangle(new Rectangle(0,0,0,0));
-            rectangle = new Rectangle(0, 0, 0, 0);
+            // rectangle = new Rectangle(0, 0, 0, 0);
+            remove();
         }
     }
 }

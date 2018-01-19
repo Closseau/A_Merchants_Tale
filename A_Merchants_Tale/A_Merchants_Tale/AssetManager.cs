@@ -259,69 +259,13 @@ namespace A_Merchants_Tale
             }
             else
             {
-
-                if (currentMouseLogicResult.uiState == (int)UIState.CLICKED && currentMouseLogicResult.active)
+                if (currentMouseLogicResult.uiState != (int)UIState.NEUTRAL && currentMouseLogicResult.active)
                 {
-                    currentMouseLogicResult.active = false;
-                    //New Menu clicked (idea: no need to reset anything if menu is clicked)
-
-                    //make switch statement to determine which menu it is via ID
-
+                    //reset active state on menu to stop further calls
+                    //currentMouseLogicResult.active = false;
+                    //conditional/switch to determine which menu this is 
+                    // catch-all for shopmenu related actions
                     shopTileMenuClick();
-                    //call corisponding method to deal with that menu (type?)
-                }
-                else if (currentMouseLogicResult.uiState == (int)UIState.HOVERED && currentMouseLogicResult.active)
-                {
-                    currentMouseLogicResult.active = false;
-                    // menu hovered (menus should be checked for hover props event though they dont had an effect do to there menu opts)
-
-
-                    //deal with previously hovered element
-
-                    if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
-                    {
-                        //clear previous
-                        previouslyHovered.uiState = (int)UIState.NEUTRAL;
-                        previouslyHovered.visualState = (int)UIState.NEUTRAL;
-                    }
-
-                    //make switch statement to determine which menu it is via ID
-
-                    //call corisponding method to deal with that menu (type?)
-                    shopTileMenuClick();
-                    //set previous for clearing later
-                    //previouslyHovered = currentMouseLogicResult;
-                    //set visual state, rewrite when a above is finished
-                    //currentMouseLogicResult.visualState = (int)UIState.HOVERED;
-                }
-                else if (currentMouseLogicResult.uiState == (int)UIState.HARDHOVER && currentMouseLogicResult.active)
-                {
-                    currentMouseLogicResult.active = false;
-                    //menu hard hover
-
-
-                    //deal with previously hardhovered element
-
-                    if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
-                    {
-                        //clear previous
-                        previouslyHovered.uiState = (int)UIState.NEUTRAL;
-                        previouslyHovered.visualState = (int)UIState.NEUTRAL;
-                    }
-
-
-                    //make switch statement to determine which menu it is via ID
-
-                    //call corisponding method to deal with that menu (type?)
-
-
-                    shopTileMenuClick();
-                    //set previous for clearing later
-                    //previouslyHovered = currentMouseLogicResult;
-                    //set visual state, rewrite when a above is finished
-                    //currentMouseLogicResult.visualState = (int)UIState.HARDHOVER;
-
-
                 }
             }
 
@@ -456,7 +400,7 @@ namespace A_Merchants_Tale
 
             for (int i = 0; i < myOptions.Length; i++)
             {
-                if (myOptions[i] != null)
+                if (myOptions[i] != null && myOptions[i].screen == currentScreen)
                     myOptions[i].Draw(menuOption[myOptions[i].visualState], spriteBatch);
             }
 
@@ -465,13 +409,14 @@ namespace A_Merchants_Tale
             {
                 startMenuBackground.Draw(startMenu, spriteBatch);
             }
-                for(int i = 0; i < myStartMenuButtons.Length; i++)
-                {
-                    if(myStartMenuButtons[i] != null && myStartMenuButtons[i].type == (int)UIType.START && myStartMenuButtons[i].screen == currentScreen)
-                        myStartMenuButtons[i].Draw(startMenuStart[myStartMenuButtons[i].visualState], spriteBatch);
-                    else if(myStartMenuButtons[i] != null && myStartMenuButtons[i].type == (int)UIType.EXIT && myStartMenuButtons[i].screen == currentScreen)
-                        myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].visualState], spriteBatch);
-                }
+
+            for(int i = 0; i < myStartMenuButtons.Length; i++)
+            {
+                if(myStartMenuButtons[i] != null && myStartMenuButtons[i].type == (int)UIType.START && myStartMenuButtons[i].screen == currentScreen)
+                    myStartMenuButtons[i].Draw(startMenuStart[myStartMenuButtons[i].visualState], spriteBatch);
+                else if(myStartMenuButtons[i] != null && myStartMenuButtons[i].type == (int)UIType.EXIT && myStartMenuButtons[i].screen == currentScreen)
+                    myStartMenuButtons[i].Draw(startMenuExit[myStartMenuButtons[i].visualState], spriteBatch);
+            }
             
 
         }
@@ -485,11 +430,13 @@ namespace A_Merchants_Tale
             for (int i = 0; i < 2; i++)
             {
                 myOptions[i] = new MenuOption(new Rectangle(myMenu[1].xPos + 5,
-                    myMouse.Y + 5 + (150 * i),
+                    myMouse.Y + 50 + (100 * i),
                     130 , 50 ));
                 myMenu[1].AttachedFrom[i] = myOptions[i];
                 myOptions[i].AttachedToo = myMenu[1];
             }
+            myOptions[2] = new ExitButton(new Rectangle(myMenu[1].xPos + myMenu[1].width - 35, myMenu[1].yPos + 5, 30, 30), myMenu[1]);
+            myMenu[1].AttachedFrom[2] = myOptions[2];
         }
         public void shopTileMenuClick()
         {
@@ -502,6 +449,7 @@ namespace A_Merchants_Tale
 
             if (currentMouseLogicResultDoesntExist)
             {
+                Logic.clearState(myMenu[1].AttachedFrom);
             }
             else
             {
@@ -514,17 +462,17 @@ namespace A_Merchants_Tale
                     //make switch statement to determine which menu it is via ID
 
                     //call corisponding method to deal with that menu (type?)
-
+                    currentMouseLogicResult.onClick();
                     // reseting active state
                     // does previous exist?
-                    if (previouslyHovered != null && previouslyHovered.uiState != (int)UIState.CLICKED)
+                    if (previouslyClicked != null && currentMouseLogicResult.isRelated(previouslyClicked) == false)
                     {
                         //clear previous
-                        previouslyHovered.uiState = (int)UIState.NEUTRAL;
-                        previouslyHovered.visualState = (int)UIState.NEUTRAL;
+                        previouslyClicked.uiState = (int)UIState.NEUTRAL;
+                        previouslyClicked.visualState = (int)UIState.NEUTRAL;
                     }
                     //set previous for clearing later
-                    previouslyHovered = currentMouseLogicResult;
+                    previouslyClicked = currentMouseLogicResult;
                     //set visual state
                     currentMouseLogicResult.visualState = (int)UIState.CLICKED;
                 }
@@ -569,36 +517,6 @@ namespace A_Merchants_Tale
 
                 }
             }
-        }
-        public void shopTileMenuHover(Interactable interactable)
-        {
-            //not excatly sure where to put this so for now its here
-
-            Boolean currentMouseLogicResultDoesntExist;
-
-            currentMouseLogicResult = Logic.hasMouseClicked(myMenu, myMouse, previousMouseState, currentScreen);
-
-            currentMouseLogicResultDoesntExist = (currentMouseLogicResult == null);
-
-            if (currentMouseLogicResultDoesntExist)
-            {
-            }
-
-        }
-        public void shopTileMenuHHover(Interactable interactable)
-        {
-            //not excatly sure where to put this so for now its here
-
-            Boolean currentMouseLogicResultDoesntExist;
-
-            currentMouseLogicResult = Logic.hasMouseClicked(myMenu, myMouse, previousMouseState, currentScreen);
-
-            currentMouseLogicResultDoesntExist = (currentMouseLogicResult == null);
-
-            if (currentMouseLogicResultDoesntExist)
-            {
-            }
-
         }
     }
 }
